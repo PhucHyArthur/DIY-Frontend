@@ -45,7 +45,7 @@ import ClientsEdit from "./pages/admin/customers/clients/edit";
 import PrivateRoute from "./components/Auth/PrivateRoute";
 import { TokenContext } from "./context/TokenContext";
 import { useContext } from "react";
-import Dashboard from "./pages/admin/Dashboard"; // Import trang Dashboard
+import Dashboard from "./pages/admin/dashboard"; 
 
 function App() {
   const [token] = useContext(TokenContext);
