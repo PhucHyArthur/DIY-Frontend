@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "name": "Central Warehouse",
+        "address": "45 Central Avenue, Downtown City",
+        "capacity": 5000,
+        "description": "Main warehouse for all product categories",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 2,
+        "name": "East Storage",
+        "address": "89 East Industrial Park, Cityville",
+        "capacity": 3000,
+        "description": "Storage for electronics and tech products",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 3,
+        "name": "West Distribution Center",
+        "address": "123 West Industrial Avenue, Townsville",
+        "capacity": 4500,
+        "description": "Warehouse for fast-moving consumer goods",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 4,
+        "name": "South Storage",
+        "address": "56 South Road, Suburbia",
+        "capacity": 6000,
+        "description": "Dedicated warehouse for furniture storage",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 5,
+        "name": "North Depot",
+        "address": "101 North Drive, Uptown",
+        "capacity": 7000,
+        "description": "Storage space for bulk shipments",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 6,
+        "name": "Overseas Warehouse",
+        "address": "202 International Port, SeaCity",
+        "capacity": 12000,
+        "description": "Warehouse for imports and exports",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 7,
+        "name": "Regional Distribution Hub",
+        "address": "320 Regional Way, Cityview",
+        "capacity": 10000,
+        "description": "Regional center for goods distribution",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 8,
+        "name": "Frozen Goods Warehouse",
+        "address": "78 Cold Storage Street, FrostTown",
+        "capacity": 2000,
+        "description": "Specialized warehouse for perishable items",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 9,
+        "name": "Packaging Facility",
+        "address": "25 Packaging Lane, Industrious Park",
+        "capacity": 2500,
+        "description": "Facility dedicated to packaging and labeling",
+        "is_deleted": false,
+        "is_fulled": false
+    },
+    {
+        "id": 10,
+        "name": "Spare Parts Warehouse",
+        "address": "88 Machinery Road, TechDistrict",
+        "capacity": 3500,
+        "description": "Warehouse for spare parts and technical components",
+        "is_deleted": false,
+        "is_fulled": false
+    }
+]

@@ -1,0 +1,313 @@
+[
+    {
+        "id": 1,
+        "warehouse": 1,
+        "name": "Zone A",
+        "capacity": 1000,
+        "number_of_aisles": 4,
+        "description": "General storage for light goods",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 2,
+        "warehouse": 1,
+        "name": "Zone B",
+        "capacity": 1500,
+        "number_of_aisles": 5,
+        "description": "Storage for large goods and machinery",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 3,
+        "warehouse": 1,
+        "name": "Zone C",
+        "capacity": 2000,
+        "number_of_aisles": 6,
+        "description": "Temperature-controlled storage for perishable goods",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 4,
+        "warehouse": 2,
+        "name": "Zone A",
+        "capacity": 600,
+        "number_of_aisles": 2,
+        "description": "Temperature controlled storage zone",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 5,
+        "warehouse": 2,
+        "name": "Zone B",
+        "capacity": 800,
+        "number_of_aisles": 3,
+        "description": "Storage for chemicals and hazardous materials",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 6,
+        "warehouse": 3,
+        "name": "Zone A",
+        "capacity": 1200,
+        "number_of_aisles": 5,
+        "description": "Storage for furniture and oversized items",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 7,
+        "warehouse": 3,
+        "name": "Zone B",
+        "capacity": 1000,
+        "number_of_aisles": 4,
+        "description": "Storage for electronics and tech products",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 8,
+        "warehouse": 4,
+        "name": "Zone A",
+        "capacity": 500,
+        "number_of_aisles": 3,
+        "description": "Zone for small parts and accessories storage",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 9,
+        "warehouse": 4,
+        "name": "Zone B",
+        "capacity": 1000,
+        "number_of_aisles": 4,
+        "description": "General storage for consumer goods",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 10,
+        "warehouse": 5,
+        "name": "Zone A",
+        "capacity": 2000,
+        "number_of_aisles": 5,
+        "description": "Storage for raw materials and supplies",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 11,
+        "warehouse": 5,
+        "name": "Zone B",
+        "capacity": 2500,
+        "number_of_aisles": 6,
+        "description": "Temperature-controlled zone for refrigerated goods",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 12,
+        "warehouse": 6,
+        "name": "Zone A",
+        "capacity": 4000,
+        "number_of_aisles": 8,
+        "description": "High-capacity storage for heavy goods",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 13,
+        "warehouse": 6,
+        "name": "Zone B",
+        "capacity": 3500,
+        "number_of_aisles": 7,
+        "description": "Storage for electronic components and fragile items",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 14,
+        "warehouse": 7,
+        "name": "Zone A",
+        "capacity": 1500,
+        "number_of_aisles": 5,
+        "description": "Storage for automotive parts and machinery",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 15,
+        "warehouse": 8,
+        "name": "Zone A",
+        "capacity": 1200,
+        "number_of_aisles": 4,
+        "description": "Storage for electronics and tech equipment",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 16,
+        "warehouse": 8,
+        "name": "Zone B",
+        "capacity": 1500,
+        "number_of_aisles": 5,
+        "description": "General storage for home goods and furniture",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 17,
+        "warehouse": 9,
+        "name": "Zone A",
+        "capacity": 1800,
+        "number_of_aisles": 6,
+        "description": "Storage for automotive parts and heavy machinery",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 18,
+        "warehouse": 9,
+        "name": "Zone B",
+        "capacity": 2200,
+        "number_of_aisles": 7,
+        "description": "Storage for chemical products and hazardous materials",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 19,
+        "warehouse": 10,
+        "name": "Zone A",
+        "capacity": 800,
+        "number_of_aisles": 3,
+        "description": "Storage for office supplies and packaging materials",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 20,
+        "warehouse": 10,
+        "name": "Zone B",
+        "capacity": 1000,
+        "number_of_aisles": 4,
+        "description": "Storage for textiles and clothing",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 21,
+        "warehouse": 11,
+        "name": "Zone A",
+        "capacity": 1500,
+        "number_of_aisles": 5,
+        "description": "Storage for medical supplies and pharmaceuticals",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 22,
+        "warehouse": 12,
+        "name": "Zone A",
+        "capacity": 900,
+        "number_of_aisles": 4,
+        "description": "Storage for furniture and home decor",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 23,
+        "warehouse": 12,
+        "name": "Zone B",
+        "capacity": 1100,
+        "number_of_aisles": 5,
+        "description": "Storage for seasonal products and promotional items",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 24,
+        "warehouse": 13,
+        "name": "Zone A",
+        "capacity": 2000,
+        "number_of_aisles": 6,
+        "description": "Storage for food products and beverages",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 25,
+        "warehouse": 13,
+        "name": "Zone B",
+        "capacity": 2500,
+        "number_of_aisles": 7,
+        "description": "Storage for packaging materials and raw ingredients",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 26,
+        "warehouse": 14,
+        "name": "Zone A",
+        "capacity": 1800,
+        "number_of_aisles": 5,
+        "description": "Storage for large appliances and heavy machinery",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 27,
+        "warehouse": 14,
+        "name": "Zone B",
+        "capacity": 2200,
+        "number_of_aisles": 6,
+        "description": "Storage for fragile goods and electronics",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    },
+    {
+        "id": 28,
+        "warehouse": 15,
+        "name": "Zone A",
+        "capacity": 1000,
+        "number_of_aisles": 4,
+        "description": "Storage for medical equipment and supplies",
+        "is_deleted": false,
+        "is_fulled": false,
+        "is_capacity_exceeded": false
+    }
+]
+
+
+

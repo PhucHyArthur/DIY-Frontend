@@ -1,0 +1,182 @@
+[
+    {
+        "id": 1,
+        "order_number": "PO-10001",
+        "supplier": 1,
+        "order_date": "2024-11-27",
+        "due_date": "2024-12-10",
+        "status": "Pending",
+        "remarks": "Restock materials",
+        "is_deleted": false,
+        "order_lines": [
+            {
+                "material": 2,
+                "quantity": "100.00",
+                "location": {
+                    "id": 1,
+                    "rack": 1,
+                    "bin_number": "A1",
+                    "description": "Near entrance, left side",
+                    "is_deleted": false,
+                    "is_fulled": false
+                }
+            },
+            {
+                "material": 3,
+                "quantity": "50.00",
+                "location": {
+                    "id": 2,
+                    "rack": 2,
+                    "bin_number": "B1",
+                    "description": "Middle aisle, top shelf",
+                    "is_deleted": false,
+                    "is_fulled": false
+                }
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "order_number": "PO-10002",
+        "supplier": 2,
+        "order_date": "2024-11-27",
+        "due_date": "2024-12-12",
+        "status": "Pending",
+        "remarks": "Urgent restock for project",
+        "is_deleted": false,
+        "order_lines": [
+            {
+                "material": 4,
+                "quantity": "200.00",
+                "location": {
+                    "id": 3,
+                    "rack": 3,
+                    "bin_number": "C3",
+                    "description": "Near loading dock",
+                    "is_deleted": false,
+                    "is_fulled": true
+                }
+            },
+            {
+                "material": 5,
+                "quantity": "150.00",
+                "location": {
+                    "id": 4,
+                    "rack": 1,
+                    "bin_number": "A3",
+                    "description": "Corner aisle",
+                    "is_deleted": false,
+                    "is_fulled": false
+                }
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "order_number": "PO-10003",
+        "supplier": 3,
+        "order_date": "2024-11-28",
+        "due_date": "2024-12-15",
+        "status": "Pending",
+        "remarks": "Restock bulk materials",
+        "is_deleted": false,
+        "order_lines": [
+            {
+                "material": 6,
+                "quantity": "300.00",
+                "location": {
+                    "id": 5,
+                    "rack": 2,
+                    "bin_number": "B5",
+                    "description": "High rack near exit",
+                    "is_deleted": false,
+                    "is_fulled": false
+                }
+            },
+            {
+                "material": 7,
+                "quantity": "80.00",
+                "location": {
+                    "id": 6,
+                    "rack": 4,
+                    "bin_number": "D2",
+                    "description": "Back corner of warehouse",
+                    "is_deleted": false,
+                    "is_fulled": false
+                }
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "order_number": "PO-10004",
+        "supplier": 4,
+        "order_date": "2024-11-29",
+        "due_date": "2024-12-18",
+        "status": "Pending",
+        "remarks": "Special order for upcoming project",
+        "is_deleted": false,
+        "order_lines": [
+            {
+                "material": 8,
+                "quantity": "400.00",
+                "location": {
+                    "id": 7,
+                    "rack": 3,
+                    "bin_number": "C4",
+                    "description": "Middle row, bottom shelf",
+                    "is_deleted": false,
+                    "is_fulled": true
+                }
+            },
+            {
+                "material": 9,
+                "quantity": "120.00",
+                "location": {
+                    "id": 8,
+                    "rack": 5,
+                    "bin_number": "E1",
+                    "description": "Overflow area",
+                    "is_deleted": false,
+                    "is_fulled": false
+                }
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "order_number": "PO-10005",
+        "supplier": 5,
+        "order_date": "2024-11-30",
+        "due_date": "2024-12-20",
+        "status": "Pending",
+        "remarks": "Seasonal restock",
+        "is_deleted": false,
+        "order_lines": [
+            {
+                "material": 10,
+                "quantity": "600.00",
+                "location": {
+                    "id": 9,
+                    "rack": 6,
+                    "bin_number": "F2",
+                    "description": "High bay near ventilation",
+                    "is_deleted": false,
+                    "is_fulled": true
+                }
+            },
+            {
+                "material": 1,
+                "quantity": "50.00",
+                "location": {
+                    "id": 10,
+                    "rack": 2,
+                    "bin_number": "B3",
+                    "description": "Back aisle, right side",
+                    "is_deleted": false,
+                    "is_fulled": false
+                }
+            }
+        ]
+    }
+]

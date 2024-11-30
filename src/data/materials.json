@@ -1,0 +1,152 @@
+[
+    {
+        "id": 1,
+        "name": "Wools",
+        "category": "Easy Fire",
+        "image": [
+            "https://example.com/images/wool1.png",
+            "https://example.com/images/wool2.png"
+        ],
+        "unit": "1.00",
+        "quantity_in_stock": 500,
+        "description": "",
+        "expired_date": "2025-01-01",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 2,
+        "name": "Bricks",
+        "category": "Construction",
+        "image": [
+            "https://example.com/images/brick1.png",
+            "https://example.com/images/brick2.png"
+        ],
+        "unit": "10.00",
+        "quantity_in_stock": 1000,
+        "description": "High-quality construction bricks.",
+        "expired_date": "2025-06-15",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 3,
+        "name": "Steel Rods",
+        "category": "Reinforcement",
+        "image": [
+            "https://example.com/images/steel1.png",
+            "https://example.com/images/steel2.png"
+        ],
+        "unit": "50.00",
+        "quantity_in_stock": 300,
+        "description": "Durable steel rods for construction.",
+        "expired_date": "2025-03-20",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 4,
+        "name": "Cement Bags",
+        "category": "Binding Material",
+        "image": [
+            "https://example.com/images/cement1.png",
+            "https://example.com/images/cement2.png"
+        ],
+        "unit": "20.00",
+        "quantity_in_stock": 800,
+        "description": "Premium cement bags for strong binding.",
+        "expired_date": "2024-12-31",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 5,
+        "name": "Gravel",
+        "category": "Aggregate",
+        "image": [
+            "https://example.com/images/gravel1.png",
+            "https://example.com/images/gravel2.png"
+        ],
+        "unit": "500.00",
+        "quantity_in_stock": 1500,
+        "description": "Fine gravel for concrete mix.",
+        "expired_date": "2025-05-10",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 6,
+        "name": "Sand",
+        "category": "Aggregate",
+        "image": [
+            "https://example.com/images/sand1.png",
+            "https://example.com/images/sand2.png"
+        ],
+        "unit": "1000.00",
+        "quantity_in_stock": 2000,
+        "description": "Clean and fine sand for plastering.",
+        "expired_date": "2025-07-01",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 7,
+        "name": "Glass Sheets",
+        "category": "Finishing Material",
+        "image": [
+            "https://example.com/images/glass1.png",
+            "https://example.com/images/glass2.png"
+        ],
+        "unit": "5.00",
+        "quantity_in_stock": 250,
+        "description": "Clear glass sheets for windows.",
+        "expired_date": "2026-01-01",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 8,
+        "name": "PVC Pipes",
+        "category": "Plumbing",
+        "image": [
+            "https://example.com/images/pvc1.png",
+            "https://example.com/images/pvc2.png"
+        ],
+        "unit": "100.00",
+        "quantity_in_stock": 700,
+        "description": "High-quality PVC pipes for plumbing.",
+        "expired_date": "2025-11-20",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 9,
+        "name": "Paint Cans",
+        "category": "Finishing Material",
+        "image": [
+            "https://example.com/images/paint1.png",
+            "https://example.com/images/paint2.png"
+        ],
+        "unit": "15.00",
+        "quantity_in_stock": 400,
+        "description": "Durable paint cans in multiple colors.",
+        "expired_date": "2025-09-15",
+        "is_available": true,
+        "is_deleted": false
+    },
+    {
+        "id": 10,
+        "name": "Tiles",
+        "category": "Flooring",
+        "image": [
+            "https://example.com/images/tiles1.png",
+            "https://example.com/images/tiles2.png"
+        ],
+        "unit": "10.00",
+        "quantity_in_stock": 500,
+        "description": "High-quality ceramic tiles.",
+        "expired_date": "2026-03-01",
+        "is_available": true,
+        "is_deleted": false
+    }
+]

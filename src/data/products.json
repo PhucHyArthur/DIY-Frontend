@@ -1,0 +1,222 @@
+[
+    {
+        "id": 1,
+        "name": "Teddy Bear",
+        "category": "",
+        "image": [
+            "https://example.com/images/wool1.png",
+            "https://example.com/images/wool2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "25.50",
+        "quantity_in_stock": 500,
+        "description": "",
+        "expired_date": "2025-01-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 1,
+            "bin_number": "A1",
+            "description": "Top shelf, left side",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 2,
+        "name": "Stuffed Elephant",
+        "category": "",
+        "image": [
+            "https://example.com/images/elephant1.png",
+            "https://example.com/images/elephant2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "30.00",
+        "quantity_in_stock": 300,
+        "description": "Soft and cuddly elephant stuffed animal.",
+        "expired_date": "2025-06-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 2,
+            "bin_number": "B2",
+            "description": "Middle shelf near the entrance",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 3,
+        "name": "Doll Set",
+        "category": "",
+        "image": [
+            "https://example.com/images/doll1.png",
+            "https://example.com/images/doll2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "15.00",
+        "quantity_in_stock": 1000,
+        "description": "A set of 5 different dolls.",
+        "expired_date": "2025-03-15",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 3,
+            "bin_number": "C3",
+            "description": "Bottom shelf in the corner",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 4,
+        "name": "Toy Train",
+        "category": "",
+        "image": [
+            "https://example.com/images/train1.png",
+            "https://example.com/images/train2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "40.00",
+        "quantity_in_stock": 200,
+        "description": "Battery-operated toy train.",
+        "expired_date": "2025-12-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 4,
+            "bin_number": "D4",
+            "description": "Middle shelf, near the window",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 5,
+        "name": "Puzzle Set",
+        "category": "",
+        "image": [
+            "https://example.com/images/puzzle1.png",
+            "https://example.com/images/puzzle2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "20.00",
+        "quantity_in_stock": 800,
+        "description": "100-piece jigsaw puzzle set.",
+        "expired_date": "2025-09-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 5,
+            "bin_number": "E5",
+            "description": "High shelf, right side",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 6,
+        "name": "Building Blocks",
+        "category": "",
+        "image": [
+            "https://example.com/images/blocks1.png",
+            "https://example.com/images/blocks2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "18.00",
+        "quantity_in_stock": 600,
+        "description": "Colorful building blocks for creative play.",
+        "expired_date": "2025-05-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 6,
+            "bin_number": "F6",
+            "description": "Top shelf in the back",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 7,
+        "name": "Toy Robot",
+        "category": "",
+        "image": [
+            "https://example.com/images/robot1.png",
+            "https://example.com/images/robot2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "35.00",
+        "quantity_in_stock": 400,
+        "description": "Interactive robot with sound and movement.",
+        "expired_date": "2025-07-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 7,
+            "bin_number": "G7",
+            "description": "Middle shelf, near the entrance",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 8,
+        "name": "Plush Unicorn",
+        "category": "",
+        "image": [
+            "https://example.com/images/unicorn1.png",
+            "https://example.com/images/unicorn2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "28.00",
+        "quantity_in_stock": 250,
+        "description": "Soft and plush unicorn toy.",
+        "expired_date": "2025-10-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 8,
+            "bin_number": "H8",
+            "description": "Bottom shelf, near the toys section",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 9,
+        "name": "Soft Bunny",
+        "category": "",
+        "image": [
+            "https://example.com/images/bunny1.png",
+            "https://example.com/images/bunny2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "22.50",
+        "quantity_in_stock": 450,
+        "description": "Adorable bunny plushie.",
+        "expired_date": "2025-04-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 9,
+            "bin_number": "I9",
+            "description": "Middle shelf, close to the front",
+            "is_fulled": false
+        }
+    },
+    {
+        "id": 10,
+        "name": "Action Figure Set",
+        "category": "",
+        "image": [
+            "https://example.com/images/actionfigure1.png",
+            "https://example.com/images/actionfigure2.png"
+        ],
+        "unit": "1.00",
+        "selling_price": "50.00",
+        "quantity_in_stock": 350,
+        "description": "Set of 5 action figures from the popular series.",
+        "expired_date": "2025-08-01",
+        "is_available": true,
+        "is_deleted": false,
+        "location": {
+            "rack": 10,
+            "bin_number": "J10",
+            "description": "Top shelf, near the corner",
+            "is_fulled": false
+        }
+    }
+]

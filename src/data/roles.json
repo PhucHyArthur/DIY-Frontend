@@ -1,0 +1,49 @@
+[
+    {
+      "name": "Admin",
+      "description": "Administrator with full access",
+      "scopes": [
+        "users_create", "users_read", "users_update", "users_delete",
+        "raw_materials_create", "raw_materials_read", "raw_materials_update", "raw_materials_delete",
+        "finished_products_create", "finished_products_read", "finished_products_update", "finished_products_delete",
+        "suppliers_create", "suppliers_read", "suppliers_update", "suppliers_delete",
+        "purchases_orders_create", "purchases_orders_read", "purchases_orders_update", "purchases_orders_delete",
+        "sales_orders_create", "sales_orders_read", "sales_orders_update", "sales_orders_delete",
+        "sales_bills_create", "sales_bills_read", "sales_bills_update", "sales_bills_delete",
+        "purchases_bills_create", "purchases_bills_read", "purchases_bills_update", "purchases_bills_delete",
+        "enduser"
+      ]
+    },
+    {
+      "name": "Manager",
+      "description": "Manager with access to most resources",
+      "scopes": [
+        "users_read", "users_update",
+        "raw_materials_read", "raw_materials_update",
+        "finished_products_read", "finished_products_update",
+        "suppliers_read", "suppliers_update",
+        "purchases_orders_read", "purchases_orders_update",
+        "sales_orders_read", "sales_orders_update",
+        "sales_bills_read", "sales_bills_update",
+        "purchases_bills_read", "purchases_bills_update",
+        "common_read"
+      ]
+    },
+    {
+      "name": "Sales",
+      "description": "Sales team with restricted access",
+      "scopes": [
+        "sales_orders_create", "sales_orders_read", "sales_orders_update", "sales_orders_delete",
+        "sales_bills_create", "sales_bills_read", "sales_bills_update", "sales_bills_delete",
+        "common_read"
+      ]
+    },
+    {
+      "name": "Warehouse",
+      "description": "Warehouse staff with access to warehouse management",
+      "scopes": [
+        "warehouse_create", "warehouse_read", "warehouse_update", "warehouse_delete",
+        "common_read"
+      ]
+    }
+  ]

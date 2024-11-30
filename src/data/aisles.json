@@ -1,0 +1,65 @@
+[
+    {
+        "id": 1,
+        "zone": 1,
+        "name": "Aisle 1",
+        "capacity": 100,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Main aisle for small items"
+    },
+    {
+        "id": 2,
+        "zone": 1,
+        "name": "Aisle 2",
+        "capacity": 150,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Aisle for larger boxes"
+    },
+    {
+        "id": 3,
+        "zone": 2,
+        "name": "Aisle 1",
+        "capacity": 120,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Storage for temperature-sensitive items"
+    },
+    {
+        "id": 4,
+        "zone": 2,
+        "name": "Aisle 2",
+        "capacity": 100,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Main aisle for bulk storage"
+    },
+    {
+        "id": 5,
+        "zone": 3,
+        "name": "Aisle 1",
+        "capacity": 200,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Aisle for automotive parts"
+    },
+    {
+        "id": 6,
+        "zone": 3,
+        "name": "Aisle 2",
+        "capacity": 250,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Aisle for heavy machinery storage"
+    },
+    {
+        "id": 7,
+        "zone": 4,
+        "name": "Aisle 1",
+        "capacity": 300,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Aisle for chemical products"
+    }
+]

@@ -1,0 +1,65 @@
+[
+    {
+        "id": 1,
+        "aisle": 1,
+        "name": "Rack 1",
+        "capacity": 50,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Rack for small electronic components"
+    },
+    {
+        "id": 2,
+        "aisle": 1,
+        "name": "Rack 2",
+        "capacity": 70,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Rack for packaged items"
+    },
+    {
+        "id": 3,
+        "aisle": 2,
+        "name": "Rack 1",
+        "capacity": 100,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Rack for large boxes and pallets"
+    },
+    {
+        "id": 4,
+        "aisle": 2,
+        "name": "Rack 2",
+        "capacity": 120,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Rack for bulk storage"
+    },
+    {
+        "id": 5,
+        "aisle": 3,
+        "name": "Rack 1",
+        "capacity": 150,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Rack for automotive parts storage"
+    },
+    {
+        "id": 6,
+        "aisle": 3,
+        "name": "Rack 2",
+        "capacity": 180,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Rack for large machinery storage"
+    },
+    {
+        "id": 7,
+        "aisle": 4,
+        "name": "Rack 1",
+        "capacity": 250,
+        "is_fulled": false,
+        "is_deleted": false,
+        "description": "Rack for chemical products storage"
+    }
+]
