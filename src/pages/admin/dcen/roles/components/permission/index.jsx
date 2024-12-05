@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Box, Checkbox } from '@chakra-ui/react';
+import React, { useState } from "react";
+import { Box, Checkbox } from "@chakra-ui/react";
 
-const PermissionTable = ({ title, permissions, centerCheckboxes }) => {
+const PermissionTable = ({ title, permissions, centerCheckboxes, onPermissionsChange }) => {
   const [checkedPermissions, setCheckedPermissions] = useState(
-    permissions.map(perm => ({
+    permissions.map((perm) => ({
       ...perm,
       fullAccess: false,
       view: false,
@@ -14,7 +14,7 @@ const PermissionTable = ({ title, permissions, centerCheckboxes }) => {
   );
 
   const handleFullAccessChange = (index) => {
-    setCheckedPermissions(prevState => {
+    setCheckedPermissions((prevState) => {
       const newPermissions = [...prevState];
       const fullAccessChecked = !newPermissions[index].fullAccess;
 
@@ -27,12 +27,13 @@ const PermissionTable = ({ title, permissions, centerCheckboxes }) => {
         delete: fullAccessChecked,
       };
 
+      onPermissionsChange(title, newPermissions); // Update parent state
       return newPermissions;
     });
   };
 
   const handlePermissionChange = (index, field) => {
-    setCheckedPermissions(prevState => {
+    setCheckedPermissions((prevState) => {
       const newPermissions = [...prevState];
       newPermissions[index][field] = !newPermissions[index][field];
 
@@ -40,6 +41,7 @@ const PermissionTable = ({ title, permissions, centerCheckboxes }) => {
         newPermissions[index].fullAccess = false;
       }
 
+      onPermissionsChange(title, newPermissions); // Update parent state
       return newPermissions;
     });
   };
@@ -72,25 +74,29 @@ const PermissionTable = ({ title, permissions, centerCheckboxes }) => {
                 <td className="p-3 text-center">
                   <Checkbox
                     isChecked={perm.view}
-                    onChange={() => handlePermissionChange(index, 'view')}
+                    onChange={() => handlePermissionChange(index, "view")}
                   />
                 </td>
                 <td className="p-3 text-center">
                   <Checkbox
                     isChecked={perm.create}
-                    onChange={() => handlePermissionChange(index, 'create')}
+                    onChange={() => handlePermissionChange(index, "create")}
                   />
                 </td>
                 <td className="p-3 text-center">
-                  <Checkbox
-                    isChecked={perm.edit}
-                    onChange={() => handlePermissionChange(index, 'edit')}
-                  />
+                  {perm.name === "Clients" ? (
+                    ""
+                  ) : (
+                    <Checkbox
+                      isChecked={perm.edit}
+                      onChange={() => handlePermissionChange(index, "edit")}
+                    />
+                  )}
                 </td>
                 <td className="p-3 text-center">
                   <Checkbox
                     isChecked={perm.delete}
-                    onChange={() => handlePermissionChange(index, 'delete')}
+                    onChange={() => handlePermissionChange(index, "delete")}
                   />
                 </td>
               </tr>
