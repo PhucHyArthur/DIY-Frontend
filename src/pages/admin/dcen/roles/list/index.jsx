@@ -22,31 +22,30 @@ import {
 } from "@chakra-ui/react";
 import { LuChevronRight, LuMoveDown } from "react-icons/lu";
 import { Link } from "react-router-dom";
-import axios from 'axios';
 
+import axios from "axios";
 import { API, EMPLOYEE } from "../../../../../constant/API";
-import { useContext,useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { TokenContext } from "../../../../../context/TokenContext";
 
 const RolesList = () => {
-  const [list, SetList] = useState(null)
+  const [list, SetList] = useState(null);
   const [token] = useContext(TokenContext);
 
   const fetchRoleList = async () => {
     try {
       const response = await axios.get(`${API}${EMPLOYEE.Role_List}`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       });
-  
+
       if (response.status >= 200 && response.status < 300) {
         const data = response.data;
-        console.log(data);
-        // SetList(data); // Set the fetched role list into the state
+        SetList(data);
       } else {
-        throw new Error('Failed to fetch roles');
+        throw new Error("Failed to fetch roles");
       }
     } catch (error) {
       console.log(error.message);
@@ -57,7 +56,7 @@ const RolesList = () => {
   useEffect(() => {
     fetchRoleList();
   }, []); // Empty dependency array to only run once when the component mounts
-
+  console.log(list)
   return (
     <Box p={6}>
       <Flex justifyContent={"space-between"}>
@@ -79,7 +78,7 @@ const RolesList = () => {
           </Text>
           <LuChevronRight />
           <Text fontSize="l" fontWeight="medium" color={"orange.400"}>
-          Role List
+            Role List
           </Text>
         </HStack>
       </Flex>
@@ -115,38 +114,34 @@ const RolesList = () => {
             <Tr>
               <Th>Role Name</Th>
               <Th>Description</Th>
+              <Th>Scopes</Th>
               <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>Admin</Td>
-              <Td>Unrestricted access to all modules.</Td>
-              <Td>
-                <Flex gap={2}>
-                  <Button size="sm" colorScheme="blue" variant="outline">
-                    Edit
-                  </Button>
-                  <Button size="sm" colorScheme="blue" variant="outline">
-                    Clone
-                  </Button>
-                </Flex>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Warehouse User</Td>
-              <Td></Td>
-              <Td>
-                <Flex gap={2}>
-                  <Button size="sm" colorScheme="blue" variant="outline">
-                    Edit
-                  </Button>
-                  <Button size="sm" colorScheme="blue" variant="outline">
-                    Clone
-                  </Button>
-                </Flex>
-              </Td>
-            </Tr>
+            {list &&
+              list.map((role) => (
+                <Tr key={role.id}>
+                  <Td>{role.name}</Td>
+                  <Td>{role.description}</Td>
+                  <Td>
+                    <Flex gap={2}>
+                    <Link to={`../edit/${role.id}`}>
+                      <Button size="sm" colorScheme="blue" variant="outline">
+                        Edit
+                      </Button>
+                    </Link>
+
+                    <Link to={"../add"}>
+                      <Button size="sm" colorScheme="blue" variant="outline">
+                        Clone
+                      </Button>
+                      </Link>
+
+                    </Flex>
+                  </Td>
+                </Tr>
+              ))}
           </Tbody>
         </Table>
       </Box>
