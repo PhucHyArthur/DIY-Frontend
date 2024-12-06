@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {Text,HStack,Flex} from '@chakra-ui/react';
 import ProductForm from "../../../components/productForm"
+import { LuEye, LuMoveDown, LuPencil, LuTrash, LuChevronRight } from "react-icons/lu";
 
 const ProductsAdd = () =>  {
 
