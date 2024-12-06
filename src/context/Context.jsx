@@ -1,10 +1,13 @@
-// context/DataContext.jsx
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import { API, WAREHOUSES, INVENTORY, SALES, SUPPLIERS, ORDERS, EMPLOYEE } from '../constant/API';
+import { TokenContext } from './TokenContext';
 
-// Khởi tạo context
-export const DataContext = createContext();
+const DataContext = createContext();
 
 const DataProvider = ({ children }) => {
+  const [token] = useState(localStorage.getItem('authToken'));
+
   const [aisles, setAisles] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [products, setProducts] = useState([]);
@@ -16,38 +19,168 @@ const DataProvider = ({ children }) => {
   const [warehouses, setWarehouses] = useState([]);
   const [zones, setZones] = useState([]);
 
+  const getAisles = async () => {
+    try {
+      const response = await axios.get(`${API}${WAREHOUSES.Aisle_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Aisles Data:', response.data);
+      setAisles(response.data);
+    } catch (error) {
+      console.error("Error fetching aisles data: ", error);
+    }
+  };
+
+  const getMaterials = async () => {
+    try {
+      const response = await axios.get(`${API}${INVENTORY.Material_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Materials Data:', response.data);
+      setMaterials(response.data);
+    } catch (error) {
+      console.error("Error fetching materials data: ", error);
+    }
+  };
+
+  const getProducts = async () => {
+    try {
+      const response = await axios.get(`${API}${INVENTORY.Product_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Products Data:', response.data);
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products data: ", error);
+    }
+  };
+
+  const getPurchaseOrders = async () => {
+    try {
+      const response = await axios.get(`${API}${ORDERS.Purchase_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Purchase Orders Data:', response.data);
+      setPurchaseOrders(response.data);
+    } catch (error) {
+      console.error("Error fetching purchase orders data: ", error);
+    }
+  };
+
+  const getRacks = async () => {
+    try {
+      const response = await axios.get(`${API}${WAREHOUSES.Rack_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Racks Data:', response.data);
+      setRacks(response.data);
+    } catch (error) {
+      console.error("Error fetching racks data: ", error);
+    }
+  };
+
+  const getRoles = async () => {
+    try {
+      const response = await axios.get(`${API}${EMPLOYEE.Role_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Roles Data:', response.data);
+      setRoles(response.data);
+    } catch (error) {
+      console.error("Error fetching roles data: ", error);
+    }
+  };
+
+  const getSalesOrders = async () => {
+    try {
+      const response = await axios.get(`${API}${ORDERS.Sales_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Sales Orders Data:', response.data);
+      setSalesOrders(response.data);
+    } catch (error) {
+      console.error("Error fetching sales orders data: ", error);
+    }
+  };
+
+  const getSuppliers = async () => {
+    try {
+      const response = await axios.get(`${API}${SUPPLIERS.List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Suppliers Data:', response.data);
+      setSuppliers(response.data);
+    } catch (error) {
+      console.error("Error fetching suppliers data: ", error);
+    }
+  };
+
+  const getWarehouses = async () => {
+    try {
+      const response = await axios.get(`${API}${WAREHOUSES.List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Warehouses Data:', response.data);
+      setWarehouses(response.data);
+    } catch (error) {
+      console.error("Error fetching warehouses data: ", error);
+    }
+  };
+
+  const getZones = async () => {
+    try {
+      const response = await axios.get(`${API}${WAREHOUSES.Zones_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Zones Data:', response.data);
+      setZones(response.data);
+    } catch (error) {
+      console.error("Error fetching zones data: ", error);
+    }
+  };
+
   useEffect(() => {
-    // Hàm nạp dữ liệu từ các file JSON
-    const fetchData = async () => {
-      try {
-        const aislesData = await import('../data/aisles.json');
-        const materialsData = await import('../data/materials.json');
-        const productsData = await import('../data/products.json');
-        const purchaseOrdersData = await import('../data/purchaseorders.json');
-        const racksData = await import('../data/racks.json');
-        const rolesData = await import('../data/roles.json');
-        const salesOrdersData = await import('../data/salesorders.json');
-        const suppliersData = await import('../data/suppliers.json');
-        const warehousesData = await import('../data/warehouses.json');
-        const zonesData = await import('../data/zones.json');
-
-        setAisles(aislesData.default || []);
-        setMaterials(materialsData.default || []);
-        setProducts(productsData.default || []);
-        setPurchaseOrders(purchaseOrdersData.default || []);
-        setRacks(racksData.default || []);
-        setRoles(rolesData.default || []);
-        setSalesOrders(salesOrdersData.default || []);
-        setSuppliers(suppliersData.default || []);
-        setWarehouses(warehousesData.default || []);
-        setZones(zonesData.default || []);
-      } catch (error) {
-        console.error('Lỗi khi nạp dữ liệu từ JSON:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    getAisles();
+    getMaterials();
+    getProducts();
+    getPurchaseOrders();
+    getRacks();
+    getRoles();
+    getSalesOrders();
+    getSuppliers();
+    getWarehouses();
+    getZones();
+  }, []); // Runs once when the component mounts
 
   return (
     <DataContext.Provider
@@ -80,3 +213,4 @@ const DataProvider = ({ children }) => {
 };
 
 export default DataProvider;
+export { DataContext };

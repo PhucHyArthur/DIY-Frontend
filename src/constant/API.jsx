@@ -18,13 +18,13 @@ export const EMPLOYEE = {
 }
 
 export const INVENTORY = {
-    Material_List: "inventory/raw-materials/",
+    Material_List: "inventory/raw-materials/list/",
     Material_Detail: "inventory/raw-materials/<int:pk>/",
     Material_Create: "inventory/raw-materials/create/",
     Material_Update: "inventory/raw-materials/update/<int:pk>/",
     Material_Delete: "inventory/raw-materials/delete/<int:pk>/",
 
-    Product_List: "inventory/finished-products/",
+    Product_List: "inventory/finished-products/list/",
     Product_Detail: "inventory/finished-products/<int:pk>/",
     Product_Create: "inventory/finished-products/create/",
     Product_Update: "inventory/finished-products/update/<int:pk>/",
@@ -32,25 +32,29 @@ export const INVENTORY = {
 }
 
 export const WAREHOUSES = {
-    List:"warehouses/",
-    Add:"warehouses/add/",
+    List:"warehouses/list/",
+    Add:"warehouses/create/",
     Edit:"warehouses/edit/<int:pk>/",
     Delete:"warehouses/delete/<int:pk>/",
+    Detail:"warehouses/detail/<int:pk>/",
 
-    Zones_List:"warehouses/zones/",
-    Zones_Add:"warehouses/zones/add/",
+    Zones_List:"warehouses/zones/list/",
+    Zones_Add:"warehouses/zones/create/",
     Zones_Edit:"warehouses/zones/edit/<int:pk>/",
     Zones_Delete:"warehouses/zones/delete/<int:pk>/",
+    Zones_Detail:"warehouses/detail/<int:pk>/",
 
-    Aisle_List:"warehouses/aisles/",
-    Aisle_Add:"warehouses/aisles/add/",
+    Aisle_List:"warehouses/aisles/list/",
+    Aisle_Add:"warehouses/aisles/create/",
     Aisle_Edit:"warehouses/aisles/edit/<int:pk>/",
     Aisle_Delete:"warehouses/aisles/delete/<int:pk>/",
+    Aisle_Detail:"warehouses/detail/<int:pk>/",
 
-    Rack_List:"warehouses/racks/",
-    Rack_Add:"warehouses/racks/add/",
+    Rack_List:"warehouses/racks/list/",
+    Rack_Add:"warehouses/racks/create/",
     Rack_Edit:"warehouses/racks/edit/<int:pk>/",
     Rack_Delete:"warehouses/racks/delete/<int:pk>/",
+    Rack_Detail:"warehouses/detail/<int:pk>/",
 }
 
 export const SALES = {
@@ -66,19 +70,19 @@ export const SALES = {
 }
 
 export const ORDERS = {
-    Sales_List:"sales-orders/",
-    Sales_Add:"sales-orders/create/",
-    Sales_Edit:"sales-orders/update/<int:pk>/",
-    Sales_Delete:"sales-orders/delete/<int:pk>/",
+    Sales_List:"orders/sales-orders/list/",
+    Sales_Add:"orders/sales-orders/create/",
+    Sales_Edit:"orders/sales-orders/update/<int:pk>/",
+    Sales_Delete:"orders/sales-orders/delete/<int:pk>/",
 
-    Purchase_List:"purchase-orders/",
-    Purchase_Add:"purchase-orders/create/",
-    Purchase_Edit:"purchase-orders/update/<int:pk>/",
-    Purchase_Delete:"purchase-orders/delete/<int:pk>/",
+    Purchase_List:"orders/purchase-orders/list/",
+    Purchase_Add:"orders/purchase-orders/create/",
+    Purchase_Edit:"orders/purchase-orders/update/<int:pk>/",
+    Purchase_Delete:"orders/purchase-orders/delete/<int:pk>/",
 }
 
 export const SUPPLIERS = {
-    List:"suppliers/",
+    List:"suppliers/list/",
     Add:"suppliers/create/",
     Edit:"suppliers/edit/<int:pk>/",
     Delete:"suppliers/delete/<int:pk>/",

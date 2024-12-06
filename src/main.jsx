@@ -9,11 +9,11 @@ import DataProvider from './context/Context'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ChakraProvider>
+    <TokenProvider>
       <DataProvider>
-        <TokenProvider>
           <App />
-        </TokenProvider>
       </DataProvider>
+      </TokenProvider>
     </ChakraProvider>
   </React.StrictMode>
 )
