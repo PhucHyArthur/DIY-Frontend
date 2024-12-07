@@ -54,7 +54,7 @@ function App() {
     <Router>
       <Routes>
         {/* Route cho trang login */}
-        <Route path="/" element={token ? <Navigate to="/admin" /> : <Login />} />
+        <Route path="/" element={token ? <Navigate to="/admin/dashboard" /> : <Login />} />
 
         {/* Các route cho admin settings */}
         <Route path="/admin/settings" element={

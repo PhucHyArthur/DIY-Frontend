@@ -23,7 +23,7 @@ const Login = () => {
 
       localStorage.setItem('authToken', token);
       setToken(token);
-      navigate("/admin")
+      navigate("/admin/dashboard")
 
     } catch (err) {
       if (err.response && err.response.status === 422) {

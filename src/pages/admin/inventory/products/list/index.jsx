@@ -1,9 +1,8 @@
-import { useState } from "react";
-import {Button, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Switch, Box, Text, Input, Table, Thead, Tbody, Tr, Th, Td, useDisclosure, Checkbox, HStack} from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Button, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Switch, Box, Text, Input, Table, Thead, Tbody, Tr, Th, Td, useDisclosure, Checkbox, HStack } from "@chakra-ui/react";
 import { LuEye, LuMoveDown, LuPencil, LuTrash, LuChevronRight } from "react-icons/lu";
 import CustomModal from "../../../../../components/Modal/default";
 import { Link } from "react-router-dom";
-import { DataContext } from "../../../../../context/Context";
 
 const MaterialsList = () => {
   const [products, setProducts] = useState([
@@ -14,6 +13,7 @@ const MaterialsList = () => {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [modalContent, setModalContent] = useState({});
+  const [expandedRow, setExpandedRow] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSort = (column) => {
@@ -44,6 +44,11 @@ const MaterialsList = () => {
         : "Are you sure you want to change the availability of this product?",
     });
     onOpen();
+  };
+
+
+  const toggleExpandedRow = (productId) => {
+    setExpandedRow(expandedRow === productId ? null : productId);
   };
 
   return (
@@ -96,40 +101,58 @@ const MaterialsList = () => {
           </Thead>
           <Tbody>
             {sortedData.map((product) => (
-              <Tr key={product._id}>
-                <Td cursor="pointer">
-                  <Flex justifyContent={"center"}>
-                    <Checkbox />
-                  </Flex>
-                </Td>
-                <Td>
-                  <Flex align="center" gap={3}>
-                    <Image src={product.image} alt={product.name} boxSize="50px" />
-                    <Text color="gray.500" _hover={{ color: "blue.500" }} cursor="pointer">
-                      {product.name}
-                    </Text>
-                  </Flex>
-                </Td>
-                <Td>{product.categories[0].name}</Td>
-                <Td>{product.price}</Td>
-                <Td>{product.quantity}</Td>
-                <Td>
-                  <Flex justifyContent={"center"}>
-                    <Switch isChecked={product.available} onChange={() => openModal(product._id, "toggle")} />
-                  </Flex>
-                </Td>
-                <Td>
-                  <Flex gap={2}>
-                    <Link to={`../edit/${product._id}`}>
-                      <Button aria-label="Edit " colorScheme="green" size="sm">Edit</Button>
-                    </Link>
-                    <Link to={`../detail/${product._id}`}>
-                      <Button aria-label="View" colorScheme="blue" size="sm" >View</Button>
-                    </Link>
-                    <Button aria-label="Delete" colorScheme="red" onClick={() => openModal(product._id, "delete")} size="sm">Delete</Button>
-                  </Flex>
-                </Td>
-              </Tr>
+              <React.Fragment key={product._id}>
+                <Tr>
+                  <Td cursor="pointer">
+                    <Flex justifyContent={"center"}>
+                      <Checkbox />
+                    </Flex>
+                  </Td>
+                  <Td>
+                    <Flex align="center" gap={3}>
+                      <Image src={product.image} alt={product.name} boxSize="50px" />
+                      <Text color="gray.500" _hover={{ color: "blue.500" }} cursor="pointer">
+                        {product.name}
+                      </Text>
+                    </Flex>
+                  </Td>
+                  <Td>{product.categories[0].name}</Td>
+                  <Td>{product.price}</Td>
+                  <Td>{product.quantity}</Td>
+                  <Td>
+                    <Flex justifyContent={"center"}>
+                      <Switch isChecked={product.available} onChange={() => openModal(product._id, "toggle")} />
+                    </Flex>
+                  </Td>
+                  <Td>
+                    <Flex gap={2}>
+                      <Link to={`../edit/${product._id}`}>
+                        <Button aria-label="Edit " colorScheme="green" size="sm">Edit</Button>
+                      </Link>
+                      <Link to={`../detail/${product._id}`}>
+                        <Button aria-label="View" colorScheme="blue" size="sm" >View</Button>
+                      </Link>
+                      <Button aria-label="Delete" colorScheme="red" onClick={() => openModal(product._id, "delete")} size="sm">Delete</Button>
+                      <Button aria-label="More Info" colorScheme="teal" onClick={() => toggleExpandedRow(product._id)} size="sm">
+                        More Info
+                      </Button>
+                    </Flex>
+                  </Td>
+                </Tr>
+
+                {expandedRow === product._id && (
+                  <Tr>
+                    <Td colSpan={7}>
+                      <Box p={4} border="1px" borderColor="gray.200">
+                        <Text fontSize="md">Additional Information for {product.name}</Text>
+                        <Text>Price: ${product.price}</Text>
+                        <Text>Quantity: {product.quantity}</Text>
+                        <Text>Categories: {product.categories.map(cat => cat.name).join(", ")}</Text>
+                      </Box>
+                    </Td>
+                  </Tr>
+                )}
+              </React.Fragment>
             ))}
           </Tbody>
         </Table>

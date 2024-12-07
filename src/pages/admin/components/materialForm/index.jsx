@@ -7,7 +7,7 @@ import { LuImagePlus } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import SelectWithAddOption from '../selectWithAdd';
 
-const MaterialForm = ({ id }) => {
+const MaterialForm = ({ id, type }) => {
   return (
     <Box p={8} bg="white" borderRadius="md" shadow="md" borderWidth="1px" maxWidth="1200px" maxHeight="1200px" mx="auto" marginTop={10}>
       <Stack direction={["column", "row"]} spacing={8}>
@@ -107,19 +107,6 @@ const MaterialForm = ({ id }) => {
                 type={"Material"}
               />
             </FormControl>
-           
-              {/* <Input placeholder="Original Price" />
-            
-            <FormControl>   
-              <HStack spacing={4}>
-                <Input placeholder="Quantity in Stock" />
-                <Select placeholder="Select Unit Count">
-                  <option value="piece">Piece</option>
-                  <option value="box">Box</option>
-                  <option value="dozen">Dozen</option>
-                </Select>
-              </HStack>
-            </FormControl> */}
 
             <FormControl isRequired>
             <FormLabel>Location</FormLabel>
