@@ -46,7 +46,7 @@ const MaterialsList = () => {
     onOpen();
   };
 
-  // Function to toggle expanded row visibility
+
   const toggleExpandedRow = (productId) => {
     setExpandedRow(expandedRow === productId ? null : productId);
   };

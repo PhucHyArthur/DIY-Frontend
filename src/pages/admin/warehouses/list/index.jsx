@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Box,
   Grid,
@@ -19,8 +19,13 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
+import { DataContext } from '../../../../context/Context';
+
 const WarehousesList = () => {
-  const [zones, setZones] = useState([]); // Danh sách các zone
+
+  const {zones, setZones } = useContext(DataContext)
+  console.log(zones)
+  // const [zones, setZones] = useState([]); // Danh sách các zone
   const [selectedZone, setSelectedZone] = useState(null); // Zone được chọn
   const [selectedAisle, setSelectedAisle] = useState(null); // Aisle được chọn
   const [selectedRack, setSelectedRack] = useState(null); // Rack được chọn

@@ -24,6 +24,12 @@ export const INVENTORY = {
     Material_Update: "inventory/raw-materials/update/<int:pk>/",
     Material_Delete: "inventory/raw-materials/delete/<int:pk>/",
 
+    Material_Line_List: "inventory/raw-materials-line/list/",
+    Material_Line_Detail: "inventory/raw-materials-line/<int:pk>/",
+    Material_Line_Create: "inventory/raw-materials-line/create/",
+    Material_Line_Update: "inventory/raw-materials-line/update/<int:pk>/",
+    Material_Line_Delete: "inventory/raw-materials-line/delete/<int:pk>/",
+
     Product_List: "inventory/finished-products/list/",
     Product_Detail: "inventory/finished-products/<int:pk>/",
     Product_Create: "inventory/finished-products/create/",
@@ -86,6 +92,11 @@ export const SUPPLIERS = {
     Add:"suppliers/create/",
     Edit:"suppliers/edit/<int:pk>/",
     Delete:"suppliers/delete/<int:pk>/",
+
+    Representative_List:"suppliers/representatives/list/",
+    Representative_Add:"suppliers/representatives/create/",
+    Representative_Edit:"suppliers/representatives/edit/<int:pk>/",
+    Representative_Delete:"suppliers/representatives/delete/<int:pk>/",
 }
 
 export const PAYMENT = {
