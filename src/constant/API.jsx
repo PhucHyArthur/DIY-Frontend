@@ -19,9 +19,9 @@ export const EMPLOYEE = {
 
 export const INVENTORY = {
     Material_List: "inventory/raw-materials/list/",
-    Material_Detail: "inventory/raw-materials/<int:pk>/",
+    Material_Detail: "inventory/raw-materials/detail/",
     Material_Create: "inventory/raw-materials/create/",
-    Material_Update: "inventory/raw-materials/update/<int:pk>/",
+    Material_Update: "inventory/raw-materials/update/",
     Material_Delete: "inventory/raw-materials/delete/<int:pk>/",
 
     Material_Line_List: "inventory/raw-materials-line/list/",
