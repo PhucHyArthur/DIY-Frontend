@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Text, HStack, Flex, Divider, Box } from "@chakra-ui/react";
 import { LuChevronRight } from "react-icons/lu";
 import { useParams } from "react-router-dom";
-import WarehouseTable from "../../components/warehouses/WarehouseTable";
 
 import { DataContext } from "../../../../context/Context";
 import Zones from "../../components/warehouses/Zones";
@@ -12,7 +11,6 @@ const WareshousesDetail = () => {
   const [rackId, setRackId] = useState(null)
   const { warehouseId } = useParams();
 
-  console.log("rackId : ",rackId)
   return (
     <Box>
       <Flex justifyContent={"space-between"} p={6}>
@@ -39,7 +37,7 @@ const WareshousesDetail = () => {
         </HStack>
       </Flex>
       <Flex>
-        <Flex width={"60%"} gap={4} alignItems={'center'} justifyContent={'center'}>
+        <Flex width={"60%"} gap={4} alignItems={'start'} flexDirection={'column'} marginLeft={"3%"} marginRight={"3%"}>
           {zones
             .filter((item) => item.warehouse == warehouseId)
             .map((zone) => (
