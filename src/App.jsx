@@ -90,8 +90,8 @@ function App() {
             <Route index element={<ErrorPage />} />
             <Route path="list" element={<WarehousesList />} />
             <Route path="add" element={<WarehousesAdd />} />
-            <Route path="edit/:purchaseId" element={<WarehousesEdit />} />
-            <Route path="detail/:purchaseId" element={<WarehousesDetail />} />
+            <Route path="edit/:warehouseId" element={<WarehousesEdit />} />
+            <Route path="detail/:warehouseId" element={<WarehousesDetail />} />
           </Route>
 
           {/* Các route cho customers */}
