@@ -18,7 +18,7 @@ const DataProvider = ({ children }) => {
   const [suppliers, setSuppliers] = useState([]);
   const [warehouses, setWarehouses] = useState([]);
   const [zones, setZones] = useState([]);
-  const [loactions, setLocations] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   const getAisles = async () => {
     try {
@@ -172,14 +172,14 @@ const DataProvider = ({ children }) => {
 
   const getLocations = async () => {
     try {
-      const response = await axios.get(`${API}${WAREHOUSES.Zones_List}`, {
+      const response = await axios.get(`${API}${WAREHOUSES.Location_List}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-      console.log('Zones Data:', response.data);
-      setZones(response.data);
+      console.log('Locations Data:', response.data);
+      setLocations(response.data);
     } catch (error) {
       console.error("Error fetching zones data: ", error);
     }
@@ -196,6 +196,7 @@ const DataProvider = ({ children }) => {
     getSuppliers();
     getWarehouses();
     getZones();
+    getLocations();
   }, []); // Runs once when the component mounts
 
   return (
@@ -220,7 +221,20 @@ const DataProvider = ({ children }) => {
         warehouses,
         setWarehouses,
         zones,
+        locations,
+        setLocations,
         setZones,
+        getAisles,
+        getMaterials,
+        getProducts,
+        getPurchaseOrders,
+        getRacks,
+        getRoles,
+        getSalesOrders,
+        getSuppliers,
+        getWarehouses,
+        getZones,
+        getLocations,
       }}
     >
       {children}

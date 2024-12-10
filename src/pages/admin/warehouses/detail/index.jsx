@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Text, HStack, Flex, Divider, Box } from "@chakra-ui/react";
-import { LuChevronRight } from "react-icons/lu";
+import { LuChevronRight,LuMenu } from "react-icons/lu";
 import { useParams } from "react-router-dom";
-
 import { DataContext } from "../../../../context/Context";
 import Zones from "../../components/warehouses/Zones";
 
 const WareshousesDetail = () => {
   const { zones } = useContext(DataContext);
-  const [rackId, setRackId] = useState(null)
   const { warehouseId } = useParams();
+  const [selectedRackId, setSelectedRackId] = useState(null);
 
   return (
     <Box>
@@ -37,14 +36,17 @@ const WareshousesDetail = () => {
         </HStack>
       </Flex>
       <Flex>
+        
+      </Flex>
+      <Flex>
         <Flex width={"60%"} gap={4} alignItems={'start'} flexDirection={'column'} marginLeft={"3%"} marginRight={"3%"}>
           {zones
             .filter((item) => item.warehouse == warehouseId)
             .map((zone) => (
-              <Zones zone={zone} setRackId={setRackId}/>
+              <Zones zone={zone} setRackId={setSelectedRackId} />
             ))}
         </Flex>
-        <Flex width={"40%"} background={"yellow.100"}>{rackId}</Flex>
+        <Flex width={"40%"} background={"yellow.100"}>{selectedRackId}</Flex>
       </Flex>
     </Box>
   );

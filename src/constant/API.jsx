@@ -61,6 +61,12 @@ export const WAREHOUSES = {
     Rack_Edit:"warehouses/racks/edit/<int:pk>/",
     Rack_Delete:"warehouses/racks/delete/<int:pk>/",
     Rack_Detail:"warehouses/detail/<int:pk>/",
+
+    Location_List:"warehouses/locations/list/",
+    Location_Add:"warehouses/locations/create/",
+    Location_Edit:"warehouses/locations/edit/<int:pk>/",
+    Location_Delete:"warehouses/locations/delete/<int:pk>/",
+    Location_Detail:"warehouses/locations/detail/<int:pk>/",
 }
 
 export const SALES = {
