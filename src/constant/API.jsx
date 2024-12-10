@@ -1,4 +1,4 @@
-export const API = 'http://localhost:8000/api/'
+export const API = 'https://diy-dashboard-one.vercel.app/api/'
 
 export const EMPLOYEE = {
     register :"auth/clients/register/",
