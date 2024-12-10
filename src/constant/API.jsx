@@ -1,4 +1,4 @@
-export const API = 'https://diy-dashboard-one.vercel.app/api/'
+export const API = 'http://localhost:8000/api/'
 
 export const EMPLOYEE = {
     register :"auth/clients/register/",
@@ -6,15 +6,15 @@ export const EMPLOYEE = {
 
     Employee_Add : "auth/employees/create/",
     Employee_List : "auth/employees/list/",
-    Employee_Edit : "auth/employees/edit/<int:pk>/",
+    Employee_Edit : "auth/employees/edit/",
     Employee_Delete : "auth/employees/delete/<int:pk>/",
-    Employee_Detail : "auth/employees/detail/<int:pk>/",
+    Employee_Detail : "auth/employees/detail/",
 
     Role_Add : "auth/roles/create/",
     Role_List : "auth/roles/list/",
-    Role_Edit : "auth/roles/edit/<int:pk>/",
+    Role_Edit : "auth/roles/edit/",
     Role_Delete : "auth/roles/delete/<int:pk>/",
-    Role_Detail : "auth/roles/detail/<int:pk>/",
+    Role_Detail : "auth/roles/detail/",
 }
 
 export const INVENTORY = {

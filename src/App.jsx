@@ -46,6 +46,7 @@ import PrivateRoute from "./components/Auth/PrivateRoute";
 import { TokenContext } from "./context/TokenContext";
 import { useContext } from "react";
 import Dashboard from "./pages/admin/dashboard"; 
+import RolesDetail from "./pages/admin/dcen/roles/detail";
 
 function App() {
   const [token] = useContext(TokenContext);
@@ -72,7 +73,8 @@ function App() {
             <Route index element={<ErrorPage />} />
             <Route path="list" element={<RolesList />} />
             <Route path="add" element={<RolesAdd />} />
-            <Route path="edit/:roleId" element={<RolesEdit />} />
+            <Route path="edit/:id" element={<RolesEdit />} />
+            <Route path="detail/:id" element={<RolesDetail/>} />
           </Route>
         </Route>
 
