@@ -14,16 +14,22 @@ const RoleForm = ({
   initialRole = { name: "", description: "", scopes: {} },
   onSubmit,
   isLoading,
-  isEdit = false, // True nếu là RolesEdit, False nếu là RolesAdd
+  isEdit = false,
 }) => {
-  const [roleName, setRoleName] = useState(initialRole.name);
-  const [description, setDescription] = useState(initialRole.description);
-  const [permissionsState, setPermissionsState] = useState(initialRole.scopes);
+  const [roleName, setRoleName] = useState("");
+  const [description, setDescription] = useState("");
+  const [permissionsState, setPermissionsState] = useState({});
 
   useEffect(() => {
-    setRoleName(initialRole.name);
-    setDescription(initialRole.description);
-    setPermissionsState(initialRole.scopes);
+    if (initialRole) {
+      setRoleName((prev) => (prev === "" ? initialRole.name || "" : prev));
+      setDescription((prev) =>
+        prev === "" ? initialRole.description || "" : prev
+      );
+      setPermissionsState((prev) =>
+        Object.keys(prev).length === 0 ? initialRole.scopes || {} : prev
+      );
+    }
   }, [initialRole]);
 
   const handleSubmit = () => {
@@ -32,7 +38,6 @@ const RoleForm = ({
       return;
     }
 
-    // Chuyển đổi permissionsState thành danh sách scopes
     const updatedScopes = [];
     Object.values(permissionsState).forEach((groupPermissions) => {
       groupPermissions.forEach((perm) => {
@@ -44,7 +49,6 @@ const RoleForm = ({
       });
     });
 
-    // Gọi hàm onSubmit với dữ liệu đã chuẩn bị
     onSubmit({ name: roleName, description, scopes: updatedScopes });
   };
 
