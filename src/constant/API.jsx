@@ -33,7 +33,7 @@ export const INVENTORY = {
     Product_List: "inventory/finished-products/list/",
     Product_Detail: "inventory/finished-products/<int:pk>/",
     Product_Create: "inventory/finished-products/create/",
-    Product_Update: "inventory/finished-products/update/<int:pk>/",
+    Product_Update: "inventory/finished-products/edit/<int:pk>/",
     Product_Delete: "inventory/finished-products/delete/<int:pk>/",
 }
 

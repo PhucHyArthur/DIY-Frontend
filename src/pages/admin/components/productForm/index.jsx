@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useState, useContext, useEffect } from 'react';
 import {
   Box, Input, Textarea, Switch, Button, Select, FormControl, FormLabel, Stack, HStack,
   Flex,
@@ -6,8 +6,156 @@ import {
 import SelectWithAddOption from '../selectWithAdd';
 import { LuSearch, LuImagePlus } from "react-icons/lu";
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { DataContext } from '../../../../context/Context';
+import { API,INVENTORY } from '../../../../constant/API';
+import CustomToast from '../../../../components/Toast';
 
-const ProductForm = ({ id }) => {
+
+
+const ProductForm = ({ id , type}) => {
+  const {getProducts, products, racks}= useContext(DataContext)
+  const [token] = useState(localStorage.getItem('authToken'));
+  const showToast = CustomToast(); 
+  const [formData, setFormData] = useState({
+    productId: '',
+    productName: '',
+    category: '',
+    sellingPrice: '',
+    totalQuantity: '',
+    unit: '',
+    rack: '',
+    description: '',
+    expiryDate: '',
+    expiryTime: '',
+    binNumber: '',
+  
+  });
+
+  // Tự động tìm sản phẩm khi `id` thay đổi
+  useEffect(() => {
+    if (id?.productId && Array.isArray(products)) {
+      const product = products.find((p) => p.id === id.productId || p.id === Number(id.productId));
+      if (product) {
+        setFormData({
+          productId: product.id || "",
+          productName: product.name || "",
+          category: product.category || "",
+          sellingPrice: product.selling_price || "",
+          totalQuantity: product.total_quantity || "",
+          unit: product.unit || "",
+          rack: product.location?.rack || "",
+          description: product.description || "",
+          expiryDate: product.expired_date || "",
+          expiryTime: "",
+          binNumber: product.location?.bin_number || "",
+        });
+      }
+    }
+  }, [id, products]);
+  
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const payload = {
+      name: formData.productName,
+      category: formData.category,
+      selling_price: formData.sellingPrice,
+      total_quantity: formData.totalQuantity,
+      unit: formData.unit,
+      location: {
+        rack: formData.rack,
+        bin_number: formData.binNumber,
+      },
+      description: formData.description,
+      expired_date: formData.expiryDate,
+      images: [],
+    };
+  
+    try {
+      if (type === "add") {
+        // Thực hiện tạo mới sản phẩm
+        const response = await axios.post(
+          `${API}${INVENTORY.Product_Create}`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log('Product created:', response.data);
+        showToast("success", "Product Added", "Product created successfully!");
+      } else if (type === "edit") {
+        // Thực hiện cập nhật sản phẩm
+        console.log(`${API}${INVENTORY.Product_Update.replace("<int:pk>", formData.productId)}`)
+        const response = await axios.put(
+          `${API}${INVENTORY.Product_Update.replace("<int:pk>", formData.productId)}`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log('Product updated:', response.data);
+        showToast("success", "Product Updated", "Product updated successfully!");
+      }
+  
+      await getProducts(); // Cập nhật danh sách sản phẩm
+    } catch (error) {
+      console.error('Error submitting product:', error.response || error);
+      showToast("error", "Product Error", "Failed to submit product!");
+    }
+  };  
+
+  const calculateExpiryDate = (expiryTime) => {
+    const today = new Date();
+    switch (expiryTime) {
+      case '15_days' :
+        today.setDate(today.getDate() + 15)
+      case '3_months':
+        today.setMonth(today.getMonth() + 3);
+        break;
+      case '6_months':
+        today.setMonth(today.getMonth() + 6);
+        break;
+      case '1_year':
+        today.setFullYear(today.getFullYear() + 1);
+        break;
+      default:
+        break;
+    }
+    return today.toISOString().split('T')[0]; // Format YYYY-MM-DD
+  };
+
+  const handleExpiryTimeChange = (e) => {
+    const selectedExpiryTime = e.target.value;
+    const calculatedDate = calculateExpiryDate(selectedExpiryTime);
+  
+    setFormData((prev) => ({
+      ...prev,
+      expiryTime: selectedExpiryTime,
+      expiryDate: calculatedDate,
+    }));
+  };
+  
+  const handleCategoryChange = (category) => {
+    setFormData((prev) => ({
+      ...prev,
+      category, // Cập nhật giá trị category trong formData
+    }));
+  };
+
+
   return (
     <Box p={8} bg="white" borderRadius="md" borderWidth="1px" shadow="md" maxWidth="1200px" maxHeight="1200px" mx="auto" marginTop={10}>
       <Stack direction={["column", "row"]} spacing={8}>
@@ -97,23 +245,48 @@ const ProductForm = ({ id }) => {
 
               <FormLabel>Product Infomation</FormLabel>
                 <HStack spacing={4}>
-                  <Input placeholder="Product Id" />
-                  <Input placeholder="Product Name" />
+                  <Input 
+                  name="productId"
+                  value={formData.productId}
+                  placeholder="Product Id" 
+                  isDisabled={true}/>
+                  <Input 
+                  name="productName"
+                  placeholder="Product Name"
+                  value={formData.productName}
+                  onChange={handleInputChange} />
                 </HStack>
               </FormControl>
 
             <FormControl isRequired>
               <SelectWithAddOption 
                 type="Product"
+                onCategoryChange={handleCategoryChange}
               />
             </FormControl>
            
-              <Input placeholder="Selling Price" />
+              <Input 
+              name="sellingPrice"
+              placeholder="Selling Price"
+              value={formData.sellingPrice}
+              onChange={handleInputChange}
+              />
             
             <FormControl isRequired>   
               <HStack spacing={4}>
-                <Input placeholder="Quantity in Stock" />
-                <Select placeholder="Select Unit Count">
+                <Input 
+                name="totalQuantity"
+                placeholder="Quantity in Stock"
+                value={formData.totalQuantity}
+                onChange={handleInputChange} 
+                />
+                <Select 
+                name="unit"
+                placeholder="Select Unit Count"
+                value={formData.unit}
+                onChange={handleInputChange}
+                >
+                  <option value="1.00">1.00</option>
                   <option value="piece">Piece</option>
                   <option value="box">Box</option>
                   <option value="dozen">Dozen</option>
@@ -123,49 +296,42 @@ const ProductForm = ({ id }) => {
 
             <FormControl isRequired>
             <FormLabel>Location</FormLabel>
-              <HStack>
-                <Select placeholder="Zones">
-                  <option value="rm1">RM1</option>
-                  <option value="rm2">RM2</option>
-                  <option value="fd1">FD1</option>
-                  <option value="fd2">FD2</option>
-                </Select>
-
-                <Select placeholder="Aisles">
-                  <option value="a1">A1</option>
-                  <option value="a2">A2</option>
-                </Select>
-
-                <Select placeholder="Racks">
-                  <option value="r1">R1</option>
-                  <option value="r2">R2</option>
-                </Select>
-
-              </HStack>
+            <HStack>
+              <Select
+                name="rack"
+                placeholder="Racks"
+                value={formData.rack}
+                onChange={handleInputChange}
+              >
+                {racks.map((rack) => (
+                  <option key={rack.id} value={rack.id}>
+                    {rack.name}
+                </option>
+                ))}
+              </Select>
+            </HStack>
             </FormControl>
 
             <FormControl isRequired>
-              <FormLabel>Ingredients</FormLabel>
+              <FormLabel>Bin Number</FormLabel>
               
-              <div className="relative">
-                    <input type="text" placeholder="Search materials..."
-                        className="bg-transparent outline-none border-[1px] border-[#ccc] rounded-full px-5 py-2 w-full" />
-                    <div className="absolute right-2 top-1/2 translate-y-[-50%] border-[1px] border-[#ccc] p-[6px] rounded-full cursor-pointer bg-gray-300 hover:bg-gray-500">
-                        <LuSearch />
-                    </div>
-                </div>
-
-              <HStack marginTop={4}>
-                <Button colorScheme="blue" borderRadius={40}>Ingredient 1</Button>
-                <Button colorScheme="blue" borderRadius={40}>Ingredient 2</Button>
-                <Button colorScheme="blue" borderRadius={40}>Ingredient 3</Button>
-              </HStack>
+              <Input 
+              name="binNumber"
+              placeholder="Bin Number"
+              value={formData.binNumber}
+              onChange={handleInputChange}
+              />
               
             </FormControl>
             
             <FormControl>
               <FormLabel>Description</FormLabel>
-              <Textarea placeholder="Description" />
+              <Textarea
+              name="description" 
+              placeholder="Description" 
+              value={formData.description}
+              onChange={handleInputChange}
+              />
             </FormControl>
 
             <FormControl display="flex" alignItems="center" isRequired gap={4} justifyContent={"space-between"}>
@@ -173,13 +339,19 @@ const ProductForm = ({ id }) => {
                 <FormLabel mb="0" width={"auto"}>Add Expiry Date</FormLabel>
                 
                 <HStack>
-                  <Select width={"20vw"} placeholder="Expiry time">
-                    <option value="r2">3 months from the date</option>
-                    <option value="r2">6 months from the date</option>
-                    <option value="r2">1 year from the date</option>
+                  <Select 
+                   width="20vw"
+                   placeholder="Expiry time"
+                   value={formData.expiryTime}
+                   onChange={handleExpiryTimeChange}
+                  >
+                    <option value="15_days">15 days from the date</option>
+                    <option value="3_months">3 months from the date</option>
+                    <option value="6_months">6 months from the date</option>
+                    <option value="1_year">1 year from the date</option>
                   </Select>
                 </HStack>
-                <Input type="date" defaultValue="2024-10-26" w={"auto"}/>
+                <Input type="date" value={formData.expiryDate} readOnly w={"auto"}/>
             </FormControl>
           </Stack>
         
@@ -193,7 +365,7 @@ const ProductForm = ({ id }) => {
         <Button variant="outline" colorScheme="blue">Close</Button>
       </Link>
         
-        <Button colorScheme="orange">Save</Button>
+        <Button colorScheme="orange" onClick={handleSubmit}>{type === "add" ? "Add Product" : "Update Product"}</Button>
       
       </HStack>
     </Box>

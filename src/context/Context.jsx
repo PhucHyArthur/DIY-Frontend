@@ -221,6 +221,7 @@ const DataProvider = ({ children }) => {
         setWarehouses,
         zones,
         setZones,
+        getProducts
       }}
     >
       {children}

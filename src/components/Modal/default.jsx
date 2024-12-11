@@ -26,7 +26,7 @@ const CustomModal = ({ isOpen, onClose, title, bodyContent, onConfirm }) => {
           <Button  colorScheme="red" onClick={onClose} mr={3}>
             Cancel
           </Button>
-          <Button colorScheme="green" onClick={onConfirm}>
+          <Button colorScheme="green" onClick={()=>{onConfirm();onClose()}}>
             Confirm
           </Button>
         </ModalFooter>
