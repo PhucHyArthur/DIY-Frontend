@@ -4,7 +4,7 @@ import {
   ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure,
 } from '@chakra-ui/react';
 
-const SelectWithAddOption = ({ type }) => {  // Correctly destructure the 'type' prop
+const SelectWithAddOption = ({ type, onCategoryChange  }) => {  // Correctly destructure the 'type' prop
   const [options, setOptions] = useState([
     { value: 'category1', label: 'Category 1' },
     { value: 'category2', label: 'Category 2' },
@@ -12,20 +12,37 @@ const SelectWithAddOption = ({ type }) => {  // Correctly destructure the 'type'
 
   const [newOption, setNewOption] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedOption, setSelectedOption] = useState('');
 
   const handleAddOption = () => {
     if (newOption.trim() !== '') {
-      setOptions([...options, { value: newOption.toLowerCase().replace(/\s+/g, '-'), label: newOption }]);
+      const newCategory = {
+        value: newOption.toLowerCase().replace(/\s+/g, '-'),
+        label: newOption,
+      };
+      setOptions([...options, newCategory]);
+      setSelectedOption(newCategory.value);
+      onCategoryChange(newCategory.value); // Gửi dữ liệu về cha
       setNewOption('');
       onClose();
     }
+  };
+
+  const handleSelectChange = (e) => {
+    const value = e.target.value;
+    setSelectedOption(value);
+    onCategoryChange(value); // Gửi dữ liệu về cha
   };
 
   return (
     <VStack align="start" spacing={4}>
       <FormControl>
         <HStack>
-          <Select placeholder={`Select ${type} Category`}>  {/* Use the 'type' prop here */}
+          <Select 
+          placeholder={`Select ${type} Category`}
+          value={selectedOption}
+          onChange={handleSelectChange} // Gọi hàm khi thay đổi lựa chọn
+          >  {/* Use the 'type' prop here */}
             {options.map((option, index) => (
               <option key={index} value={option.value}>{option.label}</option>
             ))}

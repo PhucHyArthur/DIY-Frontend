@@ -46,6 +46,7 @@ import PrivateRoute from "./components/Auth/PrivateRoute";
 import { TokenContext } from "./context/TokenContext";
 import { useContext } from "react";
 import Dashboard from "./pages/admin/dashboard"; 
+import ProductsEdit from "./pages/admin/inventory/products/edit";
 import RolesDetail from "./pages/admin/dcen/roles/detail";
 
 function App() {
@@ -128,7 +129,7 @@ function App() {
               <Route path="list" element={<ProductsList />} />
               <Route path="add" element={<ProductsAdd />} />
               <Route path="detail/:productId" element={<ProductsDetail />} />
-              <Route path="edit/:productId" element={<ProductsDetail />} />
+              <Route path="edit/:productId" element={<ProductsEdit />} />
             </Route>
           </Route>
 

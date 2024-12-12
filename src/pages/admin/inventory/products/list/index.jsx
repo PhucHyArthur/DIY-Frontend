@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Switch, Box, Text, Input, Table, Thead, Tbody, Tr, Th, Td, useDisclosure, Checkbox, HStack } from "@chakra-ui/react";
 import { LuEye, LuMoveDown, LuPencil, LuTrash, LuChevronRight } from "react-icons/lu";
 import CustomModal from "../../../../../components/Modal/default";
 import { Link } from "react-router-dom";
+import { DataContext } from "../../../../../context/Context";
+import axios from "axios";
+import { API, INVENTORY } from "../../../../../constant/API";
+import CustomToast from "../../../../../components/Toast";
 
 const MaterialsList = () => {
-  const [products, setProducts] = useState([
-    { _id: "1", name: "Sample Product 1", categories: [{ name: "Category 1" }], price: 100, quantity: 200, available: true, image: "https://via.placeholder.com/150" },
-    { _id: "2", name: "Sample Product 2", categories: [{ name: "Category 2" }], price: 200, quantity: 300, available: false, image: "https://via.placeholder.com/150" },
-  ]);
-  const [viewProducts, setViewProducts] = useState(products);
+  const {products} = useContext(DataContext)
+  const [token] = useState(localStorage.getItem('authToken'));
+  const [viewProduct, setViewProduct] = useState(products);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [modalContent, setModalContent] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const showToast = CustomToast();
 
   const handleSort = (column) => {
     const direction = sortedColumn === column && sortDirection === "asc" ? "desc" : "asc";
@@ -22,7 +25,7 @@ const MaterialsList = () => {
     setSortDirection(direction);
   };
 
-  const sortedData = [...viewProducts].sort((a, b) => {
+  const sortedData = [...viewProduct].sort((a, b) => {
     if (sortedColumn) {
       if (a[sortedColumn] < b[sortedColumn]) return sortDirection === "asc" ? -1 : 1;
       if (a[sortedColumn] > b[sortedColumn]) return sortDirection === "asc" ? 1 : -1;
@@ -31,10 +34,14 @@ const MaterialsList = () => {
   });
 
   const handleSearch = (e) => {
-    setViewProducts(products.filter(product => product.name.toLowerCase().includes(e.target.value.toLowerCase())));
+    setViewProduct(products.filter(product => product.name.toLowerCase().includes(e.target.value.toLowerCase())));
   };
 
-  const openModal = (productId, action) => {
+  const openModal = (productId, action, currentAvailability) => {
+    const actionHandler = action === "delete" 
+      ? () => deleteProduct(productId) 
+      : () => updateAvailability(productId, currentAvailability);
+  
     setModalContent({
       productId,
       action,
@@ -42,22 +49,64 @@ const MaterialsList = () => {
       bodyContent: action === "delete"
         ? "This product will be removed if you click confirm"
         : "Are you sure you want to change the availability of this product?",
+      onConfirm: actionHandler,
     });
     onOpen();
   };
-
-
+  
   const toggleExpandedRow = (productId) => {
     setExpandedRow(expandedRow === productId ? null : productId);
   };
 
+  const deleteProduct = async (productId) => {
+    
+    try {
+      await axios.delete(`${API}${INVENTORY.Product_Delete}`.replace("<int:pk>", productId), {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      showToast("success", "Product Deleted", "The product has been successfully deleted.");
+      
+      // Cập nhật lại danh sách sản phẩm sau khi xóa
+      setViewProduct(viewProduct.filter((product) => product.id !== productId));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      showToast("error", "Delete Failed", "An error occurred while deleting the product.");
+    }
+  };
+  
+  const updateAvailability = async (productId, currentAvailability) => {
+    try {
+      const updatedAvailability = !currentAvailability;
+      await axios.patch(
+        `${API}${INVENTORY.Product_Update}`.replace("<int:pk>", productId),
+        { is_available: updatedAvailability },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      showToast("success", "Availability Updated", "The product availability has been updated.");
+  
+      // Cập nhật danh sách tại chỗ
+      setViewProduct((prev) =>
+        prev.map((product) =>
+          product.id === productId
+            ? { ...product, is_available: updatedAvailability }
+            : product
+        )
+      );
+    } catch (error) {
+      console.error("Error updating availability:", error);
+      showToast("error", "Update Failed", "An error occurred while updating the product availability.");
+    }
+  };
+  
   return (
     <Box p={6}>
       <Flex justifyContent={"space-between"}>
         <Text fontSize="xl" fontWeight="medium">Product List</Text>
 
         <HStack>
-          <Text fontSize="l" fontWeight="medium" _hover={{ color: "orange.500", cursor: "pointer", transition: "all, 0.5s" }}>Products</Text>
+          <Text fontSize="l" fontWeight="medium" _hover={{ color: "orange.500", cursor: "pointer", transition: "all, 0.5s" }}>Product</Text>
           <LuChevronRight />
           <Text fontSize="l" fontWeight="medium" color={"orange.400"}>Product List</Text>
         </HStack>
@@ -101,7 +150,7 @@ const MaterialsList = () => {
           </Thead>
           <Tbody>
             {sortedData.map((product) => (
-              <React.Fragment key={product._id}>
+              <React.Fragment key={product.id}>
                 <Tr>
                   <Td cursor="pointer">
                     <Flex justifyContent={"center"}>
@@ -116,37 +165,37 @@ const MaterialsList = () => {
                       </Text>
                     </Flex>
                   </Td>
-                  <Td>{product.categories[0].name}</Td>
-                  <Td>{product.price}</Td>
-                  <Td>{product.quantity}</Td>
+                  <Td>{product.category}</Td>
+                  <Td>{product.selling_price}</Td>
+                  <Td>{product.total_quantity}</Td>
                   <Td>
                     <Flex justifyContent={"center"}>
-                      <Switch isChecked={product.available} onChange={() => openModal(product._id, "toggle")} />
+                      <Switch isChecked={product.is_available}  onChange={() => openModal(product.id, "toggle", product.is_available)} />
                     </Flex>
                   </Td>
                   <Td>
                     <Flex gap={2}>
-                      <Link to={`../edit/${product._id}`}>
+                      <Link to={`../edit/${product.id}`}>
                         <Button aria-label="Edit " colorScheme="green" size="sm">Edit</Button>
                       </Link>
-                      <Link to={`../detail/${product._id}`}>
+                      <Link to={`../detail/${product.id}`}>
                         <Button aria-label="View" colorScheme="blue" size="sm" >View</Button>
                       </Link>
-                      <Button aria-label="Delete" colorScheme="red" onClick={() => openModal(product._id, "delete")} size="sm">Delete</Button>
-                      <Button aria-label="More Info" colorScheme="teal" onClick={() => toggleExpandedRow(product._id)} size="sm">
+                      <Button aria-label="Delete" colorScheme="red" onClick={() => openModal(product.id, "delete")} size="sm">Delete</Button>
+                      <Button aria-label="More Info" colorScheme="teal" onClick={() => toggleExpandedRow(product.id)} size="sm">
                         More Info
                       </Button>
                     </Flex>
                   </Td>
                 </Tr>
 
-                {expandedRow === product._id && (
+                {expandedRow === product.id && (
                   <Tr>
                     <Td colSpan={7}>
                       <Box p={4} border="1px" borderColor="gray.200">
                         <Text fontSize="md">Additional Information for {product.name}</Text>
-                        <Text>Price: ${product.price}</Text>
-                        <Text>Quantity: {product.quantity}</Text>
+                        <Text>Price: ${product.selling_price}</Text>
+                        <Text>Quantity: {product.total_quantity}</Text>
                         <Text>Categories: {product.categories.map(cat => cat.name).join(", ")}</Text>
                       </Box>
                     </Td>
@@ -163,7 +212,7 @@ const MaterialsList = () => {
         onClose={onClose}
         title={modalContent.title}
         bodyContent={modalContent.bodyContent}
-        onConfirm={onClose}
+        onConfirm={modalContent.onConfirm}
       />
     </Box>
   );

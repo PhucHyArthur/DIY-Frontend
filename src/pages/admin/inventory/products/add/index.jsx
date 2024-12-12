@@ -16,7 +16,7 @@ const ProductsAdd = () =>  {
         <Text fontSize="l" fontWeight="medium" color={"orange.400"}>Product Add</Text>
       </HStack>
     </Flex>
-      <ProductForm/>
+      <ProductForm type="add"/>
     </div>
   );
 };
