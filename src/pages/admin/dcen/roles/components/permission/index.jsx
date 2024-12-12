@@ -2,6 +2,18 @@ import React, { memo, useState, useEffect } from "react";
 import { Box, Checkbox, Text } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+} from '@chakra-ui/react'
+
 const PermissionTable = ({
   id,
   title,
@@ -69,38 +81,38 @@ const PermissionTable = ({
         {title}
       </Text>
       <Box overflowX="auto">
-        <table className="min-w-full table-auto border-collapse">
-          <thead>
-            <tr>
-              <th>Permission</th>
-              <th>Full Access</th>
+        <Table className="min-w-full table-auto border-collapse">
+          <Thead>
+            <Tr>
+              <Th width={"20%"}>Permission</Th>
+              <Th>Full Access</Th>
               {columns.map((col) => (
-                <th key={col.key}>{col.label}</th>
+                <Th key={col.key}>{col.label}</Th>
               ))}
-            </tr>
-          </thead>
-          <tbody>
+            </Tr>
+          </Thead>
+          <Tbody>
             {checkedPermissions.map((perm, index) => (
-              <tr key={index}>
-                <td>{perm.name}</td>
-                <td>
+              <Tr key={index}>
+                <Td>{perm.name}</Td>
+                <Td>
                   <Checkbox
                     isChecked={perm.fullAccess}
                     onChange={() => handleFullAccessChange(index)}
                   />
-                </td>
+                </Td>
                 {columns.map((col) => (
-                  <td key={col.key}>
+                  <Td key={col.key}>
                     <Checkbox
                       isChecked={perm[col.key]}
                       onChange={() => handlePermissionChange(index, col.key)}
                     />
-                  </td>
+                  </Td>
                 ))}
-              </tr>
+              </Tr>
             ))}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
       </Box>
     </Box>
   );

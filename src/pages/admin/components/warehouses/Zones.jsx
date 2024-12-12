@@ -186,8 +186,19 @@ const Zones = ({ zone, setRackId }) => {
   };
 
   const handleDeleteZone = (id) => {
-      deleteZone(id)
-      getZones()
+      if(filteredAisles.length > 0){
+        toast({
+          title: "Zone Deleted Failed",
+          description: `There are items in "${zone.name}"`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return
+      }else{
+        deleteZone(id)
+        getZones()
+      }
   };
 
   return (
