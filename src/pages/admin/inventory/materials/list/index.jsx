@@ -153,7 +153,6 @@ const MaterialsList = () => {
                   </Td>
                   <Td>
                     <Flex align="center" gap={3}>
-                      {/* Hiển thị ảnh của material */}
                       {material.images && material.images.length > 0 ? (
                         <Image src={material.images[0].url} alt={material.name} boxSize="50px" />
                       ) : (
