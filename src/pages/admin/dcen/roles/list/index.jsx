@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
   Flex,
-  Tabs,
-  TabList,
-  Tab,
   Table,
   Thead,
   Tbody,
@@ -13,24 +10,24 @@ import {
   Th,
   Td,
   HStack,
-  MenuList,
   Menu,
   MenuItem,
   MenuButton,
+  MenuList,
   Input,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { LuChevronRight, LuMoveDown } from "react-icons/lu";
 import { Link } from "react-router-dom";
-
 import axios from "axios";
 import { API, EMPLOYEE } from "../../../../../constant/API";
-import { useContext, useEffect } from "react";
 import { TokenContext } from "../../../../../context/TokenContext";
 
 const RolesList = () => {
-  const [list, SetList] = useState(null);
+  const [list, setList] = useState([]);
   const [token] = useContext(TokenContext);
+  const toast = useToast();
 
   const fetchRoleList = async () => {
     try {
@@ -42,21 +39,25 @@ const RolesList = () => {
       });
 
       if (response.status >= 200 && response.status < 300) {
-        const data = response.data;
-        SetList(data);
+        setList(response.data);
       } else {
         throw new Error("Failed to fetch roles");
       }
     } catch (error) {
-      console.log(error.message);
+      toast({
+        title: "Error",
+        description: error.message || "Unable to fetch roles.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
-  // You can use useEffect to fetch data on component mount
   useEffect(() => {
     fetchRoleList();
-  }, []); // Empty dependency array to only run once when the component mounts
-  console.log(list)
+  }, []);
+
   return (
     <Box p={6}>
       <Flex justifyContent={"space-between"}>
@@ -82,6 +83,7 @@ const RolesList = () => {
           </Text>
         </HStack>
       </Flex>
+
       <Flex justify="space-between" m={10} align="center">
         <Input placeholder="Search" w="sm" />
         <Flex align="center" gap={2}>
@@ -102,46 +104,54 @@ const RolesList = () => {
         </Flex>
       </Flex>
 
-      <Box
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-        borderTop={"none"}
-        m={10}
-      >
+      <Box borderWidth="1px" borderRadius="lg" overflow="hidden" m={10}>
         <Table variant="simple" size="lg">
           <Thead>
             <Tr>
               <Th>Role Name</Th>
               <Th>Description</Th>
-              <Th>Scopes</Th>
-              <Th></Th>
+              <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {list &&
+            {list.length > 0 ? (
               list.map((role) => (
                 <Tr key={role.id}>
                   <Td>{role.name}</Td>
                   <Td>{role.description}</Td>
                   <Td>
                     <Flex gap={2}>
-                    <Link to={`../edit/${role.id}`}>
-                      <Button size="sm" colorScheme="blue" variant="outline">
-                        Edit
-                      </Button>
-                    </Link>
-
-                    <Link to={"../add"}>
-                      <Button size="sm" colorScheme="blue" variant="outline">
-                        Clone
-                      </Button>
+                      <Link to={`../detail/${role.id}`}>
+                        <Button size="sm" colorScheme="blue" variant="outline">
+                          View
+                        </Button>
                       </Link>
-
+                      <Link to={`../edit/${role.id}`}>
+                        <Button size="sm" colorScheme="blue" variant="outline">
+                          Edit
+                        </Button>
+                      </Link>
+                      <Link
+                        to={{
+                          pathname: "../add",
+                          state: { cloneData: role },
+                        }}
+                      >
+                        <Button size="sm" colorScheme="blue" variant="outline">
+                          Clone
+                        </Button>
+                      </Link>
                     </Flex>
                   </Td>
                 </Tr>
-              ))}
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan="3" textAlign="center">
+                  No roles found.
+                </Td>
+              </Tr>
+            )}
           </Tbody>
         </Table>
       </Box>

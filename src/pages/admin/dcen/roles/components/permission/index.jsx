@@ -1,104 +1,102 @@
-import React, { useState } from "react";
-import { Box, Checkbox } from "@chakra-ui/react";
+import React, { memo, useState, useEffect } from "react";
+import { Box, Checkbox, Text } from "@chakra-ui/react";
+import PropTypes from "prop-types";
 
-const PermissionTable = ({ title, permissions, centerCheckboxes, onPermissionsChange }) => {
-  const [checkedPermissions, setCheckedPermissions] = useState(
-    permissions.map((perm) => ({
-      ...perm,
-      fullAccess: false,
-      view: false,
-      create: false,
-      edit: false,
-      delete: false,
-    }))
-  );
+const PermissionTable = ({
+  id,
+  title,
+  permissions,
+  initialPermissions = [],
+  onPermissionsChange,
+  columns = [
+    { key: "view", label: "View" },
+    { key: "create", label: "Create" },
+    { key: "edit", label: "Edit" },
+    { key: "delete", label: "Delete" },
+  ],
+}) => {
+  const [checkedPermissions, setCheckedPermissions] = useState([]);
 
-  const handleFullAccessChange = (index) => {
-    setCheckedPermissions((prevState) => {
-      const newPermissions = [...prevState];
-      const fullAccessChecked = !newPermissions[index].fullAccess;
-
-      newPermissions[index] = {
-        ...newPermissions[index],
-        fullAccess: fullAccessChecked,
-        view: fullAccessChecked,
-        create: fullAccessChecked,
-        edit: fullAccessChecked,
-        delete: fullAccessChecked,
-      };
-
-      onPermissionsChange(title, newPermissions); // Update parent state
-      return newPermissions;
-    });
-  };
+  useEffect(() => {
+    if (initialPermissions.length > 0) {
+      setCheckedPermissions(initialPermissions);
+    } else {
+      setCheckedPermissions(
+        permissions.map((perm) => ({
+          ...perm,
+          fullAccess: false,
+          view: false,
+          create: false,
+          edit: false,
+          delete: false,
+        }))
+      );
+    }
+  }, [permissions, initialPermissions]);
 
   const handlePermissionChange = (index, field) => {
     setCheckedPermissions((prevState) => {
       const newPermissions = [...prevState];
       newPermissions[index][field] = !newPermissions[index][field];
+      newPermissions[index].fullAccess = Object.values(newPermissions[index])
+        .slice(1)
+        .every((val) => val);
+      onPermissionsChange(id, newPermissions);
+      return newPermissions;
+    });
+  };
 
-      if (!newPermissions[index][field]) {
-        newPermissions[index].fullAccess = false;
-      }
-
-      onPermissionsChange(title, newPermissions); // Update parent state
+  const handleFullAccessChange = (index) => {
+    setCheckedPermissions((prevState) => {
+      const newPermissions = [...prevState];
+      const isFullAccess = !newPermissions[index].fullAccess;
+      newPermissions[index] = {
+        ...newPermissions[index],
+        fullAccess: isFullAccess,
+        view: isFullAccess,
+        create: isFullAccess,
+        edit: isFullAccess,
+        delete: isFullAccess,
+      };
+      onPermissionsChange(id, newPermissions);
       return newPermissions;
     });
   };
 
   return (
-    <Box className="mb-6">
-      <Box className="mb-4 text-lg font-semibold">{title}</Box>
-      <Box className="overflow-x-auto">
+    <Box>
+      <Text fontWeight="semibold" mb={4}>
+        {title}
+      </Text>
+      <Box overflowX="auto">
         <table className="min-w-full table-auto border-collapse">
           <thead>
-            <tr className="bg-gray-200 text-left">
-              <th className="p-3">Permission</th>
-              <th className="p-3 text-center">Full Access</th>
-              <th className="p-3 text-center">View</th>
-              <th className="p-3 text-center">Create</th>
-              <th className="p-3 text-center">Edit</th>
-              <th className="p-3 text-center">Delete</th>
+            <tr>
+              <th>Permission</th>
+              <th>Full Access</th>
+              {columns.map((col) => (
+                <th key={col.key}>{col.label}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {checkedPermissions.map((perm, index) => (
-              <tr className="border-b" key={index}>
-                <td className="p-3">{perm.name}</td>
-                <td className="p-3 text-center">
+              <tr key={index}>
+                <td>{perm.name}</td>
+                <td>
                   <Checkbox
                     isChecked={perm.fullAccess}
                     onChange={() => handleFullAccessChange(index)}
                   />
                 </td>
-                <td className="p-3 text-center">
-                  <Checkbox
-                    isChecked={perm.view}
-                    onChange={() => handlePermissionChange(index, "view")}
-                  />
-                </td>
-                <td className="p-3 text-center">
-                  <Checkbox
-                    isChecked={perm.create}
-                    onChange={() => handlePermissionChange(index, "create")}
-                  />
-                </td>
-                <td className="p-3 text-center">
-                  {perm.name === "Clients" ? (
-                    ""
-                  ) : (
+                {columns.map((col) => (
+                  <td key={col.key}>
                     <Checkbox
-                      isChecked={perm.edit}
-                      onChange={() => handlePermissionChange(index, "edit")}
+                      isChecked={perm[col.key]}
+                      onChange={() => handlePermissionChange(index, col.key)}
                     />
-                  )}
-                </td>
-                <td className="p-3 text-center">
-                  <Checkbox
-                    isChecked={perm.delete}
-                    onChange={() => handlePermissionChange(index, "delete")}
-                  />
-                </td>
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
@@ -108,4 +106,22 @@ const PermissionTable = ({ title, permissions, centerCheckboxes, onPermissionsCh
   );
 };
 
-export default PermissionTable;
+PermissionTable.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  permissions: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  initialPermissions: PropTypes.array,
+  onPermissionsChange: PropTypes.func.isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ),
+};
+
+export default memo(PermissionTable);

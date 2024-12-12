@@ -6,15 +6,15 @@ export const EMPLOYEE = {
 
     Employee_Add : "auth/employees/create/",
     Employee_List : "auth/employees/list/",
-    Employee_Edit : "auth/employees/edit/<int:pk>/",
+    Employee_Edit : "auth/employees/edit/",
     Employee_Delete : "auth/employees/delete/<int:pk>/",
-    Employee_Detail : "auth/employees/detail/<int:pk>/",
+    Employee_Detail : "auth/employees/detail/",
 
     Role_Add : "auth/roles/create/",
     Role_List : "auth/roles/list/",
-    Role_Edit : "auth/roles/edit/<int:pk>/",
+    Role_Edit : "auth/roles/edit/",
     Role_Delete : "auth/roles/delete/<int:pk>/",
-    Role_Detail : "auth/roles/detail/<int:pk>/",
+    Role_Detail : "auth/roles/detail/",
 }
 
 export const INVENTORY = {
@@ -61,6 +61,12 @@ export const WAREHOUSES = {
     Rack_Edit:"warehouses/racks/edit/<int:pk>/",
     Rack_Delete:"warehouses/racks/delete/<int:pk>/",
     Rack_Detail:"warehouses/detail/<int:pk>/",
+
+    Location_List:"warehouses/locations/list/",
+    Location_Add:"warehouses/locations/create/",
+    Location_Edit:"warehouses/locations/edit/<int:pk>/",
+    Location_Delete:"warehouses/locations/delete/<int:pk>/",
+    Location_Detail:"warehouses/locations/detail/<int:pk>/",
 }
 
 export const SALES = {
