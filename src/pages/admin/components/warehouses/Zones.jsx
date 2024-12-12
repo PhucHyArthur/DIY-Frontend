@@ -38,12 +38,14 @@ import { TokenContext } from "../../../../context/TokenContext";
 import { DataContext } from "../../../../context/Context";
 
 const Zones = ({ zone, setRackId }) => {
-  const { getAisles, aisles } = useContext(DataContext);
+  const { getAisles, aisles, getZones } = useContext(DataContext);
   const [token] = useContext(TokenContext);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [errors, setErrors] = useState({});
   const toast = useToast();
+
+  const filteredAisles = aisles.filter((aisle) => aisle.zone === zone.id)
 
   const [newAisle, setNewAisle] = useState({
     zone: zone.id,
@@ -123,6 +125,44 @@ const Zones = ({ zone, setRackId }) => {
     }
   };
 
+  const deleteZone = async (id) =>{
+    try {
+      const response = await axios.delete(
+        `${API}${WAREHOUSES.Zones_Delete}${id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        toast({
+          title: "Zone Deleted",
+          description: `Zone "${zone.name}" has been deleted successfully.`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        console.log("Zone deleted successfully:", response.data);
+        return response.data;
+      } else {
+        throw new Error("Failed to delete Zone");
+      }
+    } catch (error) {
+      toast({
+        title: "Zone deleted Failed",
+        description: `${error.response.request.response}`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.error("Error deleteing Zone:", error.response.request.response);
+      throw error;
+    }
+  }
+
   // Handle form submission
   const handleAddAisle = () => {
     const validationErrors = validate();
@@ -143,6 +183,11 @@ const Zones = ({ zone, setRackId }) => {
       // Set validation errors
       setErrors(validationErrors);
     }
+  };
+
+  const handleDeleteZone = (id) => {
+      deleteZone(id)
+      getZones()
   };
 
   return (
@@ -173,7 +218,7 @@ const Zones = ({ zone, setRackId }) => {
             Add Aisle
           </MenuItem>
           <MenuItem icon={<LuPen />}>Edit Zone Detail</MenuItem>
-          <MenuItem color={"red"} icon={<LuTrash2 />}>
+          <MenuItem color={"red"} icon={<LuTrash2 />} onClick={()=>handleDeleteZone(zone.id)}>
             Delete Zone
           </MenuItem>
         </MenuList>
@@ -193,9 +238,7 @@ const Zones = ({ zone, setRackId }) => {
 
       {/* List of Aisles */}
       <Box display={"flex"} gap={4} flexDirection={"column"} marginTop={5}>
-        {aisles
-          .filter((aisle) => aisle.zone === zone.id)
-          .map((aisle) => (
+        {filteredAisles.map((aisle) => (
             <Aisles key={aisle.id} aisle={aisle} setRackId={setRackId} />
           ))}
       </Box>
