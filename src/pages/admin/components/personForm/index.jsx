@@ -26,7 +26,7 @@ const generateRandomPassword = () => {
   return password;
 };
 
-const PersonForm = ({ type, action }) => {
+const PersonForm = ({ type, action, onSave, onBack, onChange }) => {
   const { id } = useParams();
   const toast = useToast();
   const [formData, setFormData] = useState({
@@ -38,6 +38,18 @@ const PersonForm = ({ type, action }) => {
     address: '',
     hire_date: '',
     gender: '',
+  });
+  const [personData, setPersonData] = useState({
+    name: '',
+    birth: '',
+    gender: '',
+    tel: '',
+    email: '',
+    position: '',
+    bank_name: '',
+    bank_branch: '',
+    bank_number: '',
+    swift_code: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [roles, setRoles] = useState([]); // State để lưu danh sách roles
@@ -96,6 +108,13 @@ const PersonForm = ({ type, action }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const updatedData = { ...personData, [name]: value };
+    setPersonData(updatedData);
+    onChange(updatedData); // Truyền dữ liệu lên component cha
+  };
+
   // Tạo mật khẩu ngẫu nhiên
   const handleGeneratePassword = () => {
     const randomPassword = generateRandomPassword();
@@ -148,142 +167,247 @@ const PersonForm = ({ type, action }) => {
       mx="auto"
       marginTop={10}
     >
-      <Stack spacing={4}>
-        <HStack spacing={4}>
-          <FormControl isRequired>
-            <FormLabel>Username</FormLabel>
-            <Input
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Username"
-              isReadOnly={action === 'detail'}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              type="email"
-              isReadOnly={action === 'detail'}
-            />
-          </FormControl>
-        </HStack>
-
-        <HStack spacing={4}>
-          {action === 'add' && (
+      {type !== "supplier" ? (
+        <Stack spacing={4}>
+          <HStack spacing={4}>
             <FormControl isRequired>
-              <FormLabel>Password</FormLabel>
-              <HStack>
-                <Input
-                  name="password"
-                  value={formData.password}
-                  readOnly
-                  placeholder="Generated Password"
-                />
-                <Button onClick={handleGeneratePassword} colorScheme="teal">
-                  Generate Password
-                </Button>
-              </HStack>
-            </FormControl>
-          )}
-
-          {(action === 'edit' || action === 'detail') && (
-            <FormControl isRequired>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Username</FormLabel>
               <Input
-                name="password"
-                value="****"
-                readOnly
-                placeholder="****"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Username"
+                isReadOnly={action === "detail"}
               />
             </FormControl>
-          )}
-        </HStack>
+            <FormControl isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                type="email"
+                isReadOnly={action === "detail"}
+              />
+            </FormControl>
+          </HStack>
 
-        <HStack spacing={4}>
+          <HStack spacing={4}>
+            {action === "add" && (
+              <FormControl isRequired>
+                <FormLabel>Password</FormLabel>
+                <HStack>
+                  <Input
+                    name="password"
+                    value={formData.password}
+                    readOnly
+                    placeholder="Generated Password"
+                  />
+                  <Button onClick={handleGeneratePassword} colorScheme="teal">
+                    Generate Password
+                  </Button>
+                </HStack>
+              </FormControl>
+            )}
+
+            {(action === "edit" || action === "detail") && (
+              <FormControl isRequired>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  name="password"
+                  value="****"
+                  readOnly
+                  placeholder="****"
+                />
+              </FormControl>
+            )}
+          </HStack>
+
+          <HStack spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>Role</FormLabel>
+              <Select
+                name="role_name"
+                value={formData.role_name}
+                onChange={handleChange}
+                placeholder="Select Role"
+                isReadOnly={action === "detail"}
+              >
+                {roles.map((role) => (
+                  <option key={role.id} value={role.name}>
+                    {role.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Phone Number</FormLabel>
+              <Input
+                name="phone_number"
+                value={formData.phone_number}
+                onChange={handleChange}
+                placeholder="Phone Number"
+                isReadOnly={action === "detail"}
+              />
+            </FormControl>
+          </HStack>
+
           <FormControl isRequired>
-            <FormLabel>Role</FormLabel>
-            <Select
-              name="role_name"
-              value={formData.role_name}
-              onChange={handleChange}
-              placeholder="Select Role"
-              isReadOnly={action === 'detail'}
-            >
-              {roles.map((role) => (
-                <option key={role.id} value={role.name}>
-                  {role.name}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Phone Number</FormLabel>
+            <FormLabel>Address</FormLabel>
             <Input
-              name="phone_number"
-              value={formData.phone_number}
+              name="address"
+              value={formData.address}
               onChange={handleChange}
-              placeholder="Phone Number"
-              isReadOnly={action === 'detail'}
+              placeholder="Address"
+              isReadOnly={action === "detail"}
             />
           </FormControl>
-        </HStack>
 
-        <FormControl isRequired>
-          <FormLabel>Address</FormLabel>
-          <Input
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="Address"
-            isReadOnly={action === 'detail'}
-          />
-        </FormControl>
+          <HStack spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>Hire Date</FormLabel>
+              <Input
+                name="hire_date"
+                type="date"
+                value={formData.hire_date}
+                onChange={handleChange}
+                isReadOnly={action === "detail"}
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Gender</FormLabel>
+              <RadioGroup
+                name="gender"
+                value={formData.gender}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, gender: value }))
+                }
+              >
+                <HStack spacing={4}>
+                  <Radio value="male" isDisabled={action === "detail"}>
+                    Male
+                  </Radio>
+                  <Radio value="female" isDisabled={action === "detail"}>
+                    Female
+                  </Radio>
+                  <Radio value="other" isDisabled={action === "detail"}>
+                    Other
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </FormControl>
+          </HStack>
+        </Stack>
+      ) : (
+        <Stack spacing={4}>
+          <HStack spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>Username</FormLabel>
+              <Input
+                name="name" // Tương ứng với personData.name
+                value={personData.name}
+                onChange={handleInputChange}
+                placeholder="Username"
+                isReadOnly={action === "detail"}
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input
+                name="email" // Tương ứng với personData.email
+                value={personData.email}
+                onChange={handleInputChange}
+                placeholder="Email"
+                type="email"
+                isReadOnly={action === "detail"}
+              />
+            </FormControl>
+          </HStack>
 
-        <HStack spacing={4}>
-          <FormControl isRequired>
-            <FormLabel>Hire Date</FormLabel>
-            <Input
-              name="hire_date"
-              type="date"
-              value={formData.hire_date}
-              onChange={handleChange}
-              isReadOnly={action === 'detail'}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Gender</FormLabel>
-            <RadioGroup
-              name="gender"
-              value={formData.gender}
-              onChange={(value) => setFormData((prev) => ({ ...prev, gender: value }))}
-            >
-              <HStack spacing={4}>
-                <Radio value="male" isDisabled={action === 'detail'}>
-                  Male
-                </Radio>
-                <Radio value="female" isDisabled={action === 'detail'}>
-                  Female
-                </Radio>
-                <Radio value="other" isDisabled={action === 'detail'}>
-                  Other
-                </Radio>
-              </HStack>
-            </RadioGroup>
-          </FormControl>
-        </HStack>
-      </Stack>
+          <HStack spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>Position</FormLabel>
+              <Input
+                name="position" // Tương ứng với personData.position
+                value={personData.position}
+                onChange={handleInputChange}
+                placeholder="Position"
+                isReadOnly={action === "detail"}
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Phone Number</FormLabel>
+              <Input
+                name="tel" // Tương ứng với personData.tel
+                value={personData.tel}
+                onChange={handleInputChange}
+                placeholder="Phone Number"
+                isReadOnly={action === "detail"}
+              />
+            </FormControl>
+          </HStack>
 
-      {action !== 'detail' && (
+          <HStack spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>Birth Day</FormLabel>
+              <Input
+                name="birth" // Tương ứng với personData.birth
+                type="date"
+                value={personData.birth}
+                onChange={handleInputChange}
+                isReadOnly={action === "detail"}
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Gender</FormLabel>
+              <RadioGroup
+                name="gender" // Tương ứng với personData.gender
+                value={personData.gender}
+                onChange={(value) => {
+                  setPersonData((prevData) => ({ ...prevData, gender: value }));
+                  onChange({ ...personData, gender: value }); // Cập nhật khi gender thay đổi
+                }}
+              >
+                <HStack spacing={4}>
+                  <Radio value="M" isDisabled={action === "detail"}>
+                    Male
+                  </Radio>
+                  <Radio value="F" isDisabled={action === "detail"}>
+                    Female
+                  </Radio>
+                  <Radio value="other" isDisabled={action === "detail"}>
+                    Other
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </FormControl>
+          </HStack>
+        </Stack>
+      )}
+
+      {action !== "detail" && (
         <HStack mt={8} justify="flex-end">
-          <Button variant="outline" colorScheme="blue" onClick={() => navigate('/users/list')}>
+          <Button
+            variant="outline"
+            colorScheme="blue"
+            onClick={() => navigate("/users/list")}
+          >
             Cancel
           </Button>
-          <Button colorScheme="orange" isLoading={isLoading} onClick={handleSubmit}>
+          <Button
+            variant="outline"
+            colorScheme="blue"
+            onClick={onBack}
+            display={type === "supplier" ? "block" : "none"}
+          >
+            Back
+          </Button>
+          <Button
+            colorScheme="orange"
+            isLoading={isLoading}
+            onClick={type === "supplier" ? onSave : handleSubmit}
+          >
             Save
           </Button>
         </HStack>
