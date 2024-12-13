@@ -48,6 +48,8 @@ import { useContext } from "react";
 import Dashboard from "./pages/admin/dashboard"; 
 import ProductsEdit from "./pages/admin/inventory/products/edit";
 import RolesDetail from "./pages/admin/dcen/roles/detail";
+import UsersDetail from "./pages/admin/dcen/users/detail";
+import ActivateAccount from "./pages/admin/dcen/users/activate";
 
 function App() {
   const [token] = useContext(TokenContext);
@@ -68,7 +70,8 @@ function App() {
             <Route index element={<ErrorPage />} />
             <Route path="list" element={<UsersList />} />
             <Route path="add" element={<UsersAdd />} />
-            <Route path="edit/:userId" element={<UsersEdit />} />
+            <Route path="edit/:id" element={<UsersEdit />} />
+            <Route path="detail/:id" element={<UsersDetail/>} />
           </Route>
           <Route path="roles">
             <Route index element={<ErrorPage />} />
@@ -78,7 +81,7 @@ function App() {
             <Route path="detail/:id" element={<RolesDetail/>} />
           </Route>
         </Route>
-
+        <Route path="activate-account/:uid/:token" element={<ActivateAccount />} />
         {/* Các route cho admin panel */}
         <Route path="/admin" element={
           <PrivateRoute>

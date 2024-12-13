@@ -7,8 +7,9 @@ export const EMPLOYEE = {
     Employee_Add : "auth/employees/create/",
     Employee_List : "auth/employees/list/",
     Employee_Edit : "auth/employees/edit/",
-    Employee_Delete : "auth/employees/delete/<int:pk>/",
+    Employee_Delete : "auth/employees/delete/",
     Employee_Detail : "auth/employees/detail/",
+    Account_Activate : "auth/activate/",
 
     Role_Add : "auth/roles/create/",
     Role_List : "auth/roles/list/",
