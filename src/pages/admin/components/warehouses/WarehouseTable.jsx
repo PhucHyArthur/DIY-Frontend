@@ -26,8 +26,8 @@ import { Link } from "react-router-dom";
 
 const WarehouseTable = ({ warehouses }) => {
   const warehousesList = warehouses.map(warehouse => ({
-    ...warehouse, // Sao chép các key-value từ object gốc
-    progress: 80   // Thêm key progress với giá trị mặc định là 0
+    ...warehouse,
+    progress: 80  
   }));
 
   return (

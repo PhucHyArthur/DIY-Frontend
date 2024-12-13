@@ -42,31 +42,31 @@ export const WAREHOUSES = {
     List:"warehouses/list/",
     Add:"warehouses/create/",
     Edit:"warehouses/edit/<int:pk>/",
-    Delete:"warehouses/delete/<int:pk>/",
+    Delete:"warehouses/delete/",
     Detail:"warehouses/detail/<int:pk>/",
 
     Zones_List:"warehouses/zones/list/",
     Zones_Add:"warehouses/zones/create/",
     Zones_Edit:"warehouses/zones/edit/<int:pk>/",
-    Zones_Delete:"warehouses/zones/delete/<int:pk>/",
+    Zones_Delete:"warehouses/zones/delete/",
     Zones_Detail:"warehouses/detail/<int:pk>/",
 
     Aisle_List:"warehouses/aisles/list/",
     Aisle_Add:"warehouses/aisles/create/",
     Aisle_Edit:"warehouses/aisles/edit/<int:pk>/",
-    Aisle_Delete:"warehouses/aisles/delete/<int:pk>/",
+    Aisle_Delete:"warehouses/aisles/delete/",
     Aisle_Detail:"warehouses/detail/<int:pk>/",
 
     Rack_List:"warehouses/racks/list/",
     Rack_Add:"warehouses/racks/create/",
     Rack_Edit:"warehouses/racks/edit/<int:pk>/",
-    Rack_Delete:"warehouses/racks/delete/<int:pk>/",
+    Rack_Delete:"warehouses/racks/delete/",
     Rack_Detail:"warehouses/detail/<int:pk>/",
 
     Location_List:"warehouses/locations/list/",
     Location_Add:"warehouses/locations/create/",
     Location_Edit:"warehouses/locations/edit/<int:pk>/",
-    Location_Delete:"warehouses/locations/delete/<int:pk>/",
+    Location_Delete:"warehouses/locations/delete/",
     Location_Detail:"warehouses/locations/detail/<int:pk>/",
 }
 

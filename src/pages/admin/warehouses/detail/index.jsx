@@ -1,18 +1,44 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, HStack, Flex, Box, Select, Button } from "@chakra-ui/react";
+import { Text, HStack, Flex, Box, Select } from "@chakra-ui/react";
 
 import { useDisclosure } from "@chakra-ui/react";
+
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  FormErrorMessage,
+  useToast,
+} from "@chakra-ui/react";
 
 import { LuChevronRight } from "react-icons/lu";
 import { useParams, useNavigate } from "react-router-dom";
 import { DataContext } from "../../../../context/Context";
 import Zones from "../../components/warehouses/Zones";
-import ReusableModal from "../../components/warehouses/Modal/ReusableModal";
+
+import axios from "axios";
+import { API,WAREHOUSES } from "../../../../constant/API";
+import { TokenContext } from "../../../../context/TokenContext";
 
 const WareshousesDetail = () => {
+  const [token] = useState(localStorage.getItem('authToken'));
   const navigate = useNavigate();
+  const toast = useToast();
   const { warehouseId } = useParams();
-  const { zones, warehouses } = useContext(DataContext);
+  const { zones, warehouses, getZones } = useContext(DataContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [errors, setErrors] = useState({});
   const [selectedRackId, setSelectedRackId] = useState(null);
@@ -32,7 +58,7 @@ const WareshousesDetail = () => {
     if (!zone.name.trim()) {
       newErrors.name = "Rack name is required.";
     }
-    if (!zone.capacity || zone.capacity < 100 || zone.capacity > 1000) {
+    if (!zone.capacity || zone.capacity < 100 ) {
       newErrors.capacity = "Capacity must be between 100 and 1000.";
     }
     if (
@@ -45,25 +71,66 @@ const WareshousesDetail = () => {
     return newErrors;
   };
 
-  const createZone = () => {};
+  const createZone = async (data) => {
+    try {
+      const response = await axios.post(
+        `${API}${WAREHOUSES.Zones_Add}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        console.log("Rack created successfully:", response.data);
+        return response.data;
+      } else {
+        throw new Error("Failed to create rack");
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
-      console.log("create", zone);
+      try {
+        await createZone(zone);
 
-      setErrors({});
-      setZone(initialZone);
-      onClose();
+        toast({
+          title: "Zone Added.",
+          description: `Zone "${zone.name}" has been added successfully.`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+
+        setZone(initialZone);
+        getZones();
+        setErrors({});
+        onClose();
+
+      } catch (error) {
+        toast({
+          title: "Error Adding Zone.",
+          description:
+            error.response?.data?.message ||
+            "An error occurred while adding the Zone.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+      }
     } else {
       console.log("error");
       setErrors(validationErrors);
     }
   };
-
-  useEffect(() => {
-    
-  },[zone])
   return (
     <Box>
       <Flex justifyContent={"space-between"} p={6}>
@@ -126,15 +193,86 @@ const WareshousesDetail = () => {
           {selectedRackId}
         </Flex>
       </Flex>
-      <ReusableModal
-        isOpen={isOpen}
-        onClose={onClose}
-        data={zone}
-        setData={setZone}
-        type={"addZone"}
-        errors={errors}
-        handleSubmit={handleSubmit}
-      />
+
+      {/* modal */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add Zone</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {/* Name Input */}
+            <FormControl isInvalid={errors.name} mb={4}>
+              <FormLabel>Name</FormLabel>
+              <Input
+                name="name"
+                placeholder="Enter Zone name"
+                value={zone.name || ""}
+                onChange={(e) => setZone({ ...zone, name: e.target.value })}
+              />
+              {errors.name && (
+                <FormErrorMessage>{errors.name}</FormErrorMessage>
+              )}
+            </FormControl>
+
+            {/* Capacity Input */}
+            <FormControl mt={4} isInvalid={errors.capacity}>
+              <FormLabel>Capacity</FormLabel>
+              <NumberInput
+                name="capacity"
+                placeholder="Enter Capacity"
+                min={100}
+                value={zone.capacity || 0}
+                onChange={(valueAsNumber) =>
+                  setZone({ ...zone, capacity: valueAsNumber })
+                }
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              {errors.capacity && (
+                <FormErrorMessage>{errors.capacity}</FormErrorMessage>
+              )}
+            </FormControl>
+
+            {/* Max Aisle Input */}
+            <FormControl mt={4} isInvalid={errors.number_of_aisles}>
+              <FormLabel>Max Aisle</FormLabel>
+              <NumberInput
+                name="aislenum"
+                placeholder="Enter number of Aisle in Zone"
+                value={zone.number_of_aisles || 0}
+                onChange={(valueAsNumber) =>
+                  setZone({
+                    ...zone,
+                    number_of_aisles: valueAsNumber,
+                  })
+                }
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              {errors.number_of_aisles && (
+                <FormErrorMessage>{errors.number_of_aisles}</FormErrorMessage>
+              )}
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button colorScheme="green" onClick={() => handleSubmit()}>
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

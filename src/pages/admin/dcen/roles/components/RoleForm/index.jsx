@@ -10,6 +10,18 @@ import {
 } from "@chakra-ui/react";
 import RolePermissions from "../RolesPermissions";
 
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+} from '@chakra-ui/react'
+
 const RoleForm = ({
   initialRole = { name: "", description: "", scopes: {} },
   onSubmit,
@@ -53,7 +65,7 @@ const RoleForm = ({
   };
 
   return (
-    <Box>
+    <Box marginLeft={"10%"} marginRight={"10%"} marginTop={"80px"}>
       <Stack spacing={4}>
         <FormControl>
           <FormLabel>Role Name</FormLabel>
