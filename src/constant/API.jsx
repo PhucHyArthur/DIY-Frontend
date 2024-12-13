@@ -85,12 +85,12 @@ export const SALES = {
 export const ORDERS = {
     Sales_List:"orders/sales-orders/list/",
     Sales_Add:"orders/sales-orders/create/",
-    Sales_Edit:"orders/sales-orders/update/",
+    Sales_Edit:"orders/sales-orders/edit/",
     Sales_Delete:"orders/sales-orders/delete/",
 
     Purchase_List:"orders/purchase-orders/list/",
     Purchase_Add:"orders/purchase-orders/create/",
-    Purchase_Edit:"orders/purchase-orders/update/",
+    Purchase_Edit:"orders/purchase-orders/edit/",
     Purchase_Delete:"orders/purchase-orders/delete/",
 }
 
