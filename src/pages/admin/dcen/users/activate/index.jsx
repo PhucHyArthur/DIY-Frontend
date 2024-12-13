@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Box, Text, Spinner, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { API, EMPLOYEE } from "../../../../../constant/API";
 
 const ActivateAccount = () => {
-  const { uid, token } = useParams(); 
+  // const { uid, token } = useParams(); 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search)
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null);
   const toast = useToast(); 
   const navigate = useNavigate();
+
+  const uid = queryParams.get("uid");
+  const token = queryParams.get("token");
+  console.log(uid)
+  console.log(token)
 
   useEffect(() => {
     const activateAccount = async () => {
