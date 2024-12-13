@@ -7,7 +7,6 @@ const DataContext = createContext();
 
 const DataProvider = ({ children }) => {
   const [token] = useState(localStorage.getItem('authToken'));
-
   const [aisles, setAisles] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [products, setProducts] = useState([]);

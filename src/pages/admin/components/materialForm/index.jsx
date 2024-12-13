@@ -17,7 +17,7 @@ import { API, INVENTORY } from "../../../../constant/API";
 import { TokenContext } from "../../../../context/TokenContext";
 
 const MaterialForm = ({ id = null, mode = "add" }) => {
-  const [token] = useContext(TokenContext);
+  const {token} = useContext(TokenContext);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");

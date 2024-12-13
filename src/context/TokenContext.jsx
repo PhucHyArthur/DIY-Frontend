@@ -1,20 +1,21 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+
 export const TokenContext = createContext();
 
 export const TokenProvider = ({ children }) => {
-    const [token, setToken] = useState("");
-    
+    const [token, setToken] = useState(null); // Giữ nguyên token
+    const [responseData, setResponseData] = useState(null); // Thêm biến để lưu response
+
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            setToken(token);
-        }
-    }, []); 
+        const storedToken = localStorage.getItem('authToken');
+        const storedResponse = localStorage.getItem('authResponse');
+        setToken(storedToken);
+        setResponseData(JSON.parse(storedResponse));
+    }, []);
 
     return (
-        <TokenContext.Provider value={[token, setToken]}>
-            {children }
+        <TokenContext.Provider value={{ token, setToken, responseData, setResponseData }}>
+            {children}
         </TokenContext.Provider>
     );
 };
-

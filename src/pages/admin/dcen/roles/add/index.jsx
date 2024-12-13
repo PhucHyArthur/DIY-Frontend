@@ -7,7 +7,7 @@ import { TokenContext } from "../../../../../context/TokenContext";
 import { API, EMPLOYEE } from "../../../../../constant/API";
 
 const RolesAdd = () => {
-  const [token] = useContext(TokenContext);
+  const {token} = useContext(TokenContext);
   const toast = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

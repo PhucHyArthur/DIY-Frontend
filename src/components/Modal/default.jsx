@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
-const CustomModal = ({ isOpen, onClose, title, bodyContent, onConfirm }) => {
+const CustomModal = ({ productId ,isOpen, onClose, title, bodyContent, onConfirm }) => {
   return (
     <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} >
       <ModalOverlay />
@@ -26,7 +26,7 @@ const CustomModal = ({ isOpen, onClose, title, bodyContent, onConfirm }) => {
           <Button  colorScheme="red" onClick={onClose} mr={3}>
             Cancel
           </Button>
-          <Button colorScheme="green" onClick={()=>{onConfirm();onClose()}}>
+          <Button colorScheme="green" onClick={()=>{onConfirm(productId);onClose()}}>
             Confirm
           </Button>
         </ModalFooter>

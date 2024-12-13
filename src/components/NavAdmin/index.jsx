@@ -37,7 +37,7 @@ const NavAdmin = () => {
   const navigate = useNavigate();
   let n_token = localStorage.getItem('authToken');
   const [page, setPage] = useState("");
-  const [token, setToken] = useContext(TokenContext);
+  const {token, setToken} = useContext(TokenContext);
 
   const handleLogout = async () => {
     try {
