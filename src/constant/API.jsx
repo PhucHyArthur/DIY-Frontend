@@ -1,4 +1,4 @@
-export const API = 'https://diy-dashboard-one.vercel.app/api/'
+export const API = 'https://diy-frontend-five.vercel.app/api/'
 
 export const EMPLOYEE = {
     register :"auth/clients/register/",

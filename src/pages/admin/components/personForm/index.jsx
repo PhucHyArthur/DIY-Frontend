@@ -10,8 +10,7 @@ import {
   HStack,
   RadioGroup,
   Radio,
-  VStack,
-  useToast
+  useToast,
 } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -41,8 +40,25 @@ const PersonForm = ({ type, action }) => {
     gender: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [roles, setRoles] = useState([]); // State để lưu danh sách roles
   const [token] = useContext(TokenContext);
   const navigate = useNavigate();
+
+  // Fetch danh sách roles
+  useEffect(() => {
+    axios
+      .get(`${API}auth/roles/list/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setRoles(response.data); // Lưu danh sách roles vào state
+      })
+      .catch((error) => {
+        console.error('Error fetching roles:', error);
+      });
+  }, [token]);
 
   // Fetch data cho chế độ "edit" hoặc "detail"
   useEffect(() => {
@@ -58,7 +74,7 @@ const PersonForm = ({ type, action }) => {
           const data = response.data;
           setFormData({
             username: data.username || '',
-            password: '****', // Không hiển thị mật khẩu thật
+            password: '****',
             email: data.email || '',
             role_name: data.role_name || '',
             phone_number: data.phone_number || '',
@@ -198,9 +214,11 @@ const PersonForm = ({ type, action }) => {
               placeholder="Select Role"
               isReadOnly={action === 'detail'}
             >
-              <option value="admin">Admin</option>
-              <option value="supplier">Supplier</option>
-              <option value="hr">HR</option>
+              {roles.map((role) => (
+                <option key={role.id} value={role.name}>
+                  {role.name}
+                </option>
+              ))}
             </Select>
           </FormControl>
           <FormControl isRequired>
