@@ -66,7 +66,7 @@ const BillsList = () => {
                 <Td>
                   <HStack spacing={1}>
 
-                    <Link to={'../detail/' + (bill.refNumber || `Ref-${index + 1}`)}>
+                    <Link to={'../detail/' +(selectedList ==="purchases" ? "Import":"Export")+ (bill.id) }>
                       <Button size="sm" colorScheme="green">{selectedList ==="purchases" ? "Import":"Export"}</Button>
                     </Link>
                   </HStack>
