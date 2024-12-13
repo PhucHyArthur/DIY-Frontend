@@ -81,7 +81,7 @@ function App() {
             <Route path="detail/:id" element={<RolesDetail/>} />
           </Route>
         </Route>
-        <Route path="activate-account/:uid/:token" element={<ActivateAccount />} />
+        <Route path="/activate-account/:uid/:token" element={<ActivateAccount />} />
         {/* Các route cho admin panel */}
         <Route path="/admin" element={
           <PrivateRoute>
