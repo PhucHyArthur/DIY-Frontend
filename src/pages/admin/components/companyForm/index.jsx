@@ -6,7 +6,7 @@ import { LuImagePlus } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import VietnamLocationSelector from '../locationSelector';
 
-const CompanyForm = ({ id, type }) => {
+const CompanyForm = ({ id, type, onSave,onBack  }) => {
   return (
     <Box p={8} bg="white" borderRadius="md" shadow="md" borderWidth="1px" maxWidth="1200px" maxHeight="1200px" mx="auto" marginTop={10}>
       
@@ -46,7 +46,8 @@ const CompanyForm = ({ id, type }) => {
         <Link to={"../list"}>
           <Button variant="outline" colorScheme="blue">Close</Button>
         </Link>
-        <Button colorScheme="orange">Save</Button>
+        <Button variant="outline" colorScheme="blue" onClick={onBack} >Back</Button>
+        <Button colorScheme="orange" onClick={onSave}>Save</Button>
       </HStack>
     </Box>
   );

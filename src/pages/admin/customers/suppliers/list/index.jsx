@@ -1,15 +1,19 @@
-import React from 'react';
-import { Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Text, Button,Input, ButtonGroup,Flex,HStack,Menu,MenuItem,MenuList,MenuButton } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Text, Button,Input, ButtonGroup,Flex,HStack,Menu,MenuItem,MenuList,MenuButton, useConst } from '@chakra-ui/react';
 import { LuChevronRight,LuMoveDown } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
+import { DataContext } from "../../../../../context/Context";
 
-const suppliers = [
-  { id: 1, name: 'Người bán A', company: 'Company A', category: 'Material', itemSupply: 100},
-  { id: 2, name: 'Người bán B', company: 'Company B', category: 'Tool', itemSupply: 50 },
-  { id: 3, name: 'Người bán C', company: 'Company C', category: 'Material', itemSupply: 200 },
-];
+// const suppliers = [
+//   { id: 1, name: 'Người bán A', company: 'Company A', category: 'Material', itemSupply: 100},
+//   { id: 2, name: 'Người bán B', company: 'Company B', category: 'Tool', itemSupply: 50 },
+//   { id: 3, name: 'Người bán C', company: 'Company C', category: 'Material', itemSupply: 200 },
+// ];
 
 const SuppliersList = () => {
+
+  const{suppliers}=useContext(DataContext)
+  
 
   const handleDeleteProduct = (supplierId) => {
 

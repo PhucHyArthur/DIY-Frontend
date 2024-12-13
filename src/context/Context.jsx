@@ -19,6 +19,7 @@ const DataProvider = ({ children }) => {
   const [warehouses, setWarehouses] = useState([]);
   const [zones, setZones] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [representatives, setRepresentatives] = useState([])
 
   const getAisles = async () => {
     try {
@@ -185,6 +186,21 @@ const DataProvider = ({ children }) => {
     }
   };
 
+  const getRepresentatives= async () => {
+    try {
+      const response = await axios.get(`${API}${SUPPLIERS.Representative_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log('Representatives Data:', response.data);
+      setRepresentatives(response.data);
+    } catch (error) {
+      console.error("Error fetching zones data: ", error);
+    }
+  };
+
   useEffect(() => {
     getAisles();
     getMaterials();
@@ -197,6 +213,7 @@ const DataProvider = ({ children }) => {
     getWarehouses();
     getZones();
     getLocations();
+    getRepresentatives();
   }, []); // Runs once when the component mounts
 
   return (
@@ -224,6 +241,8 @@ const DataProvider = ({ children }) => {
         locations,
         setLocations,
         setZones,
+        representatives,
+        setRepresentatives,
         getAisles,
         getMaterials,
         getProducts,
@@ -235,6 +254,7 @@ const DataProvider = ({ children }) => {
         getWarehouses,
         getZones,
         getLocations,
+        getRepresentatives,
       }}
     >
       {children}

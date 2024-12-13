@@ -6,7 +6,10 @@ import { LuImagePlus } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import VietnamLocationSelector from '../locationSelector';
 
-const PersonForm = ({ id, type, action }) => {
+const PersonForm = ({ id, type, action ,onSave,onBack,onChange }) => {
+  const handleInputChange = (field, value) => {
+    onChange({ [field]: value });
+  };
   return (
     <Box p={8} bg="white" borderRadius="md" shadow="md" borderWidth="1px" maxWidth="1200px" maxHeight="1200px" mx="auto" marginTop={10}>
       
@@ -17,7 +20,7 @@ const PersonForm = ({ id, type, action }) => {
             <HStack spacing={8}>
             <FormControl isRequired> 
               <FormLabel>Full Name</FormLabel>
-              <Input placeholder="Full Name" />
+              <Input placeholder="Full Name" onChange={(e) => handleInputChange('fullName', e.target.value)}/>
             </FormControl>
             {type == "user" && (
                 <FormControl isRequired>
@@ -96,9 +99,10 @@ const PersonForm = ({ id, type, action }) => {
 
       <HStack mt={8} justify="flex-end">
         <Link to={"../list"}>
-          <Button variant="outline" colorScheme="blue">Close</Button>
+          <Button variant="outline" colorScheme="blue" >Close</Button>
         </Link>
-        <Button colorScheme="orange">Save</Button>
+        <Button variant="outline" colorScheme="blue" onClick={onBack} isDisabled={true}>Back</Button>
+        <Button colorScheme="orange" onClick={onSave}>Next</Button>
       </HStack>
     </Box>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChakraProvider, Box, Heading, FormControl, FormLabel, Input, Button, VStack } from '@chakra-ui/react';
 
-function BankDetailForm() {
+function BankDetailForm({onSave,onBack }) {
   return (
     <ChakraProvider>
       <Box maxW="500px" mx="auto" mt="10" p="8" borderWidth="1px" borderRadius="lg" boxShadow="lg">
@@ -30,9 +30,9 @@ function BankDetailForm() {
             <FormLabel>Swift Code</FormLabel>
             <Input placeholder="Enter Swift code" />
           </FormControl>
-
-          <Button colorScheme="orange" width="full" type="submit">
-            Save
+          <Button variant="outline" width="full" colorScheme="blue" onClick={onBack}>Back</Button>
+          <Button colorScheme="orange" width="full" type="submit" onClick={onSave}>
+            Next
           </Button>
         </VStack>
       </Box>
