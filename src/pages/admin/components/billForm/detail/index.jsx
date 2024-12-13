@@ -1,108 +1,138 @@
-import React from 'react';
-import { Box, Text, VStack, HStack, Divider, Grid, GridItem, Table, Tbody, Tr, Td, Th, Thead, Tabs, TabList, Tab, Button } from '@chakra-ui/react';
+import React from "react";
+import {
+  Box,
+  Text,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Flex,
+  VStack,
+} from "@chakra-ui/react";
 
 const BillsDetailForm = () => {
   return (
-    <Box p={8} maxW="1200px" mx="auto" bg="white" borderRadius="md" boxShadow="md">
-      <Text fontSize="2xl" fontWeight="bold" mb={2}>Tên của Bill</Text>
-
-      <HStack justifyContent="end" mb={4}>
-        <HStack spacing={3}>
-          <Button size="sm" variant="outline">Edit</Button>
-          <Button size="sm" variant="outline">PDF</Button>
-          <Button size="sm" variant="outline">Print</Button>
-          <Button size="sm" variant="outline">Attach</Button>
-          <Button size="sm" colorScheme="teal">Record Payment</Button>
-          <Button size="sm" variant="outline">More</Button>
-        </HStack>
-      </HStack>
-
-      <Box p={4} mb={6} border="1px solid" borderColor="gray.200" borderRadius="md">
-        <Text fontSize="lg" fontWeight="bold" mb={1}>Record Payment</Text>
-        <Text fontSize="sm" color="gray.600">
-          This bill is in the open status. You can now record payment for this bill.
+    <Box p={6} borderWidth={1} borderRadius="md" boxShadow="md">
+      <VStack spacing={4} align="stretch">
+        {/* Header */}
+        <Box>
+          <Text fontWeight="bold">DIY COMPANY</Text>
+          <Text>Address</Text>
+          <Text>Thành phố Đà Nẵng, Việt Nam</Text>
+        </Box>
+        <Text align="center" fontSize="xl" fontWeight="bold">
+          PHIẾU NHẬP KHO
         </Text>
-        <Button mt={4} colorScheme="teal" size="sm">Record Payment</Button>
-      </Box>
+        <Text align="center">Ngày 14 tháng 07 năm 2022</Text>
+        <Flex justifyContent="space-between">
+          <Text>Số: NK00012</Text>
+          <Text>Nợ: 156</Text>
+          <Text>Có: 331</Text>
+        </Flex>
 
-      <HStack justifyContent="space-between" mb={8}>
-        <VStack align="start" spacing={0}>
-          <Text fontSize="lg" fontWeight="bold">Hoang</Text>
-          <Text fontSize="sm">01 Le Van Duyet Street</Text>
-          <Text fontSize="sm">Quan Son Tra</Text>
-          <Text fontSize="sm">Da Nang</Text>
-          <Text fontSize="sm">VietNam</Text>
-        </VStack>
+        {/* Information Section */}
+        <Box>
+          <Text>- Họ và tên người giao: CÔNG TY TNHH THIẾT BỊ TÂN AN PHÁT</Text>
+          <Text>- Theo hóa đơn số 1379 ngày 14 tháng 07 năm 2022 của CÔNG TY TNHH THIẾT BỊ TÂN AN PHÁT</Text>
+          <Text>- Nhập tại kho: Kho NVL</Text>
+        </Box>
 
-        <VStack align="end" spacing={0}>
-          <Text fontSize="4xl" fontWeight="bold">BILL</Text>
-          <Text fontSize="sm">Bill 01</Text>
-          <Text fontSize="sm" mt={2}>Balance Due</Text>
-          <Text fontSize="lg" fontWeight="bold">€0,00</Text>
-        </VStack>
-      </HStack>
+        {/* Table */}
+        <Table variant="simple" size="sm">
+          <Thead>
+            <Tr>
+              <Th>STT</Th>
+              <Th>Tên, nhãn hiệu, quy cách, phẩm chất vật tư, dụng cụ sản phẩm, hàng hóa</Th>
+              <Th>Mã số</Th>
+              <Th>Đơn vị tính</Th>
+              <Th>Số lượng theo chứng từ</Th>
+              <Th>Thực nhập</Th>
+              <Th>Đơn giá</Th>
+              <Th>Thành tiền</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td>1</Td>
+              <Td>1 bu lông liên kết M6x20</Td>
+              <Td>BULONG</Td>
+              <Td>Cái</Td>
+              <Td>200.00</Td>
+              <Td>165.00</Td>
+              <Td>33,000</Td>
+            </Tr>
+            <Tr>
+              <Td>2</Td>
+              <Td>Dây điện Cadivi 4.0 (1 cuộn 100m)</Td>
+              <Td>DAYDIEN</Td>
+              <Td>Cuộn</Td>
+              <Td>5.00</Td>
+              <Td>1,507,000.00</Td>
+              <Td>7,535,000</Td>
+            </Tr>
+            <Tr>
+              <Td>3</Td>
+              <Td>Đèn báo CHINT</Td>
+              <Td>DENBAOCHINT</Td>
+              <Td>Cái</Td>
+              <Td>70.00</Td>
+              <Td>20,500.00</Td>
+              <Td>1,435,000</Td>
+            </Tr>
+            <Tr>
+              <Td>4</Td>
+              <Td>Đèn báo pha phi 22 ND16-22A/2</Td>
+              <Td>DENBAOPHA22</Td>
+              <Td>Cái</Td>
+              <Td>80.00</Td>
+              <Td>20,400.00</Td>
+              <Td>1,632,000</Td>
+            </Tr>
+            <Tr>
+              <Td>5</Td>
+              <Td>
+                Đèn báo nguồn hiển thị điện áp AC 80-500V OX-AD16 22mm 50+
+              </Td>
+              <Td>DENBAONGUON</Td>
+              <Td>Cái</Td>
+              <Td>45.00</Td>
+              <Td>50,000.00</Td>
+              <Td>2,250,000</Td>
+            </Tr>
+          </Tbody>
+        </Table>
 
-      <Grid templateColumns="auto auto" gap={4} mb={6}>
-        <GridItem>
-          <Text fontSize="sm" fontWeight="bold">Order Number :</Text>
-          <Text fontSize="sm">PO-00011</Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="sm" fontWeight="bold">Bill Date :</Text>
-          <Text fontSize="sm">18 Feb 2020</Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="sm" fontWeight="bold">Due Date :</Text>
-          <Text fontSize="sm">18 Feb 2020</Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="sm" fontWeight="bold">Terms :</Text>
-          <Text fontSize="sm">Due on Receipt</Text>
-        </GridItem>
-      </Grid>
+        <Box>
+          <Text fontWeight="bold">Cộng: 12,885,000</Text>
+          <Text>- Tổng số tiền (Viết bằng chữ): Mười hai triệu tám trăm tám mươi lăm nghìn đồng chẵn.</Text>
+        </Box>
 
-      <Box mb={6}>
-        <Text fontSize="sm" fontWeight="bold" mb={1}>Bill From</Text>
-        <Text color="blue.500" fontSize="sm" fontWeight="bold">Hoang Poker</Text>
-      </Box>
-
-      <Table variant="simple" size="sm">
-        <Thead bg="gray.100">
-          <Tr>
-            <Th>#</Th>
-            <Th>Item & Description</Th>
-            <Th>Qty</Th>
-            <Th>Rate</Th>
-            <Th>Amount</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <Tr>
-            <Td>1</Td>
-            <Td>AKs</Td>
-            <Td>5,00 box</Td>
-            <Td>0,1234</Td>
-            <Td>0,00</Td>
-          </Tr>
-        </Tbody>
-      </Table>
-
-      <VStack spacing={2} mt={6} align="stretch">
-        <HStack justifyContent="space-between" fontSize="sm">
-          <Text>Sub Total</Text>
-          <Text>0,00</Text>
-        </HStack>
-        <HStack justifyContent="space-between" fontSize="sm">
-          <Text>Total</Text>
-          <Text fontWeight="bold">€0,00</Text>
-        </HStack>
-        <HStack justifyContent="space-between" fontSize="lg" fontWeight="bold">
-          <Text>Balance Due</Text>
-          <Text>€0,00</Text>
-        </HStack>
+        {/* Signatures */}
+        <Flex justifyContent="space-between" mt={8}>
+          <Box>
+            <Text>Người lập phiếu</Text>
+            <Text>(Ký, họ tên)</Text>
+          </Box>
+          <Box>
+            <Text>Người giao hàng</Text>
+            <Text>(Ký, họ tên)</Text>
+          </Box>
+          <Box>
+            <Text>Thủ kho</Text>
+            <Text>(Ký, họ tên)</Text>
+          </Box>
+          <Box>
+            <Text>Kế toán trưởng</Text>
+            <Text>(Hoặc bộ phận có nhu cầu nhập)</Text>
+            <Text>(Ký, họ tên)</Text>
+          </Box>
+        </Flex>
       </VStack>
     </Box>
   );
 };
 
 export default BillsDetailForm;
+

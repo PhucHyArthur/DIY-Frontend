@@ -39,7 +39,7 @@ import { DataContext } from "../../../../context/Context";
 
 const Zones = ({ zone, setRackId }) => {
   const { getAisles, aisles, getZones } = useContext(DataContext);
-  const [token] = useContext(TokenContext);
+  const {token} = useContext(TokenContext);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [errors, setErrors] = useState({});

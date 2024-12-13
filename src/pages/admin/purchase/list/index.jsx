@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Button,
   Flex,
@@ -20,14 +20,23 @@ import {
   useDisclosure,
   Checkbox,
   HStack,
+
 } from "@chakra-ui/react";
 import { LuChevronRight, LuChevronDown, LuChevronUp } from "react-icons/lu";
 import CustomModal from "../../../../components/Modal/default";
 import { Link } from "react-router-dom";
 import { DataContext } from "../../../../context/Context";
 
+import{ useToast} from "@chakra-ui/react";
+import axios from "axios";
+import { API,ORDERS } from "../../../../constant/API";
+import { TokenContext } from "../../../../context/TokenContext";
+
 const PurchaseList = () => {
-  const { purchaseOrders, suppliers } = useContext(DataContext);
+  const {token} = useContext(TokenContext);
+  const { purchaseOrders, suppliers, getPurchaseOrders, materials } = useContext(DataContext);
+  const toast = useToast();
+
   const [viewProducts, setViewProducts] = useState(purchaseOrders);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -53,21 +62,21 @@ const PurchaseList = () => {
   });
 
   const handleSearch = (e) => {
-    setViewProducts(
-      materials.filter((product) =>
-        product.name.toLowerCase().includes(e.target.value.toLowerCase())
-      )
-    );
+    // setViewProducts(
+    //   materials.filter((product) =>
+    //     product.name.toLowerCase().includes(e.target.value.toLowerCase())
+    //   )
+    // );
   };
 
   const openModal = (productId, action) => {
     setModalContent({
-      productId,
+      productId: productId,
       action,
       title: action === "delete" ? "Confirm Deletion" : "Confirm Availability",
       bodyContent:
         action === "delete"
-          ? "This raw material will be removed if you click confirm"
+          ? "This PurchaseOrder will be removed if you click confirm"
           : "Are you sure you want to change the availability of this raw material?",
     });
     onOpen();
@@ -82,6 +91,55 @@ const PurchaseList = () => {
   const toggleExpandedRow = (productId) => {
     setExpandedRow(expandedRow === productId ? null : productId);
   };
+
+  const materialName = (id) =>{
+    const index = materials.findIndex(material => material.id === id)
+    console.log(index)
+    return materials[index].name
+  }
+
+  const deleteOrder = async (id) =>{
+    try {
+      const response = await axios.delete(
+        `${API}${ORDERS.Purchase_Delete}${id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        toast({
+          title: "Purchase Deleted",
+          description: `Purchase has been deleted successfully.`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        getPurchaseOrders()
+        console.log("Purchase deleted successfully:", response.data);
+        return response.data;
+      } else {
+        throw new Error("Failed to delete Purchase");
+      }
+    } catch (error) {
+      toast({
+        title: "Purchase deleted Failed",
+        description: `${error}`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.error("Error deleteing Purchase:", error);
+      throw error;
+    }
+  }
+
+  useEffect(()=>{
+    setViewProducts(purchaseOrders)
+  },[purchaseOrders])
 
   return (
     <Box p={6}>
@@ -227,17 +285,14 @@ const PurchaseList = () => {
                               <Th>Materials</Th>
                               <Th>Price Each</Th>
                               <Th>Quantity</Th>
-                              <Th>Line Total</Th>
                             </Tr>
                           </Thead>
                           <Tbody>
-                            {purchaseOrder.order_lines.map((line) => (
-                              <Tr key={line.id}>
-                                {/* <Td>{line.supplier_name}</Td>
-                                <Td>{line.price_per_unit}</Td>
+                            {purchaseOrder.order_lines.map((line,index) => (
+                              <Tr key={index}>
+                                <Td>{materialName(line.material)}</Td>
                                 <Td>{line.quantity}</Td>
-                                <Td>{line.location?.bin_number}</Td>
-                                <Td>{line.line_total}</Td> */}
+                                <Td>{line.unit_price}</Td>
                               </Tr>
                             ))}
                           </Tbody>
@@ -251,13 +306,13 @@ const PurchaseList = () => {
           </Tbody>
         </Table>
       </Box>
-
       <CustomModal
         isOpen={isOpen}
         onClose={onClose}
         title={modalContent.title}
         bodyContent={modalContent.bodyContent}
-        onConfirm={onClose}
+        productId={modalContent.productId}
+        onConfirm={deleteOrder}
       />
     </Box>
   );

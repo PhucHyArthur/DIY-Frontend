@@ -43,7 +43,6 @@ import MaterialsEdit from "./pages/admin/inventory/materials/edit";
 import SuppliersEdit from "./pages/admin/customers/suppliers/edit";
 import ClientsEdit from "./pages/admin/customers/clients/edit";
 import PrivateRoute from "./components/Auth/PrivateRoute";
-import { TokenContext } from "./context/TokenContext";
 import { useContext } from "react";
 import Dashboard from "./pages/admin/dashboard"; 
 import ProductsEdit from "./pages/admin/inventory/products/edit";
@@ -51,8 +50,10 @@ import RolesDetail from "./pages/admin/dcen/roles/detail";
 import UsersDetail from "./pages/admin/dcen/users/detail";
 import ActivateAccount from "./pages/admin/dcen/users/activate";
 
+import { TokenContext } from "./context/TokenContext";
+
 function App() {
-  const [token] = useContext(TokenContext);
+  const { token } = useContext(TokenContext);
   
   return (
     <Router>

@@ -41,7 +41,7 @@ const PersonForm = ({ type, action }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [roles, setRoles] = useState([]); // State để lưu danh sách roles
-  const [token] = useContext(TokenContext);
+  const {token} = useContext(TokenContext);
   const navigate = useNavigate();
 
   // Fetch danh sách roles

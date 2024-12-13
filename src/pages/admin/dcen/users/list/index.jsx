@@ -30,7 +30,7 @@ import axios from "axios";
 const UsersList = () => {
   const [list, setList] = useState([]);
   const [search, setSearch] = useState("");
-  const [token] = useContext(TokenContext);
+  const {token} = useContext(TokenContext);
   const toast = useToast();
   const navigate = useNavigate();
 

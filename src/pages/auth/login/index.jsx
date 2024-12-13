@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { TokenContext} from "../../../context/TokenContext";
 
 const Login = () => {
-  const [token, setToken] = useContext(TokenContext);
+  const {token, setToken, setResponseData} = useContext(TokenContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,23 +18,25 @@ const Login = () => {
         username,
         password,
       });
-      
+  
       const token = response.data.access_token;
-
+      const fullResponse = response.data;
+  
       localStorage.setItem('authToken', token);
+      localStorage.setItem('authResponse', JSON.stringify(fullResponse));
+  
       setToken(token);
-      navigate("/admin/dashboard")
+      setResponseData(fullResponse);
 
+      navigate("/admin/dashboard");
     } catch (err) {
       if (err.response && err.response.status === 422) {
-        console.log(err.response)
         console.error("Email hoặc mật khẩu không đúng");
       } else {
-        console.log(err.response)
         console.error("Đã xảy ra lỗi khi đăng nhập");
       }
     }
-  }
+  };
   
   return (
     <div

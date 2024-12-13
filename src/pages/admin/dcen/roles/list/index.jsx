@@ -26,7 +26,7 @@ import { TokenContext } from "../../../../../context/TokenContext";
 
 const RolesList = () => {
   const [list, setList] = useState([]);
-  const [token] = useContext(TokenContext);
+  const {token} = useContext(TokenContext);
   const toast = useToast();
 
   const fetchRoleList = async () => {

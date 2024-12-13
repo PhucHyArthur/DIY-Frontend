@@ -30,7 +30,7 @@ import { DataContext } from "../../../../context/Context";
 
 const FakeRacks = ({ aisleId }) => {
   const { getRacks } = useContext(DataContext);
-  const [token] = useContext(TokenContext);
+  const {token} = useContext(TokenContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRackState = {
     name: "",

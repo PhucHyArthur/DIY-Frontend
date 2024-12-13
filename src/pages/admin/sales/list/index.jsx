@@ -240,7 +240,7 @@ const SaleList = () => {
                         <Table>
                           <Thead>
                             <Tr>
-                              <Th>Materials</Th>
+                              <Th>Product</Th>
                               <Th>Price Each</Th>
                               <Th>Quantity</Th>
                               <Th>Line Total</Th>
