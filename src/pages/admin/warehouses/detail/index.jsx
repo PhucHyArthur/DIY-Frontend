@@ -35,7 +35,6 @@ import { TokenContext } from "../../../../context/TokenContext";
 
 const WareshousesDetail = () => {
   const [token] = useState(localStorage.getItem('authToken'));
-  console.log(token)
   const navigate = useNavigate();
   const toast = useToast();
   const { warehouseId } = useParams();
