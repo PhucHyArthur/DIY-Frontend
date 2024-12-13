@@ -58,8 +58,7 @@ function App() {
     <Router>
       <Routes>
         {/* Route cho trang login */}
-        {/* <Route path="/" element={token ? <Navigate to="/admin/dashboard" /> : <Login />} /> */}
-        <Route path="/" element={<Login />} />  
+        <Route path="/" element={token ? <Navigate to="/admin/dashboard" /> : <Login />} />
         {/* Các route cho admin settings */}
         <Route path="/admin/settings" element={
           <PrivateRoute>
@@ -84,9 +83,9 @@ function App() {
         <Route path="/activate-account" element={<ActivateAccount />} />
         {/* Các route cho admin panel */}
         <Route path="/admin" element={
-          // <PrivateRoute>
-          // </PrivateRoute>
+          <PrivateRoute>
             <AdminPanel />
+          </PrivateRoute>
         }>
           {/* Route cho Dashboard */}
           <Route path="dashboard" element={<Dashboard />} />
