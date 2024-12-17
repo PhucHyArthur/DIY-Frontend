@@ -10,7 +10,7 @@ const BillsList = () => {
 
   // Tạo dữ liệu lọc
   const filteredPurchases = purchaseOrders.filter(item => item.status === "Arrived");
-  const filteredSales = salesOrders.filter(item => item.status === "pending");
+  const filteredSales = salesOrders.filter(item => item.status === "Pending");
 
   // Trạng thái để theo dõi danh sách nào được chọn
   const [selectedList, setSelectedList] = useState("purchases"); // Mặc định là "purchases"

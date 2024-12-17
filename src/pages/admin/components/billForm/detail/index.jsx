@@ -196,6 +196,7 @@ const BillsDetailForm = () => {
         location: {
           rack: rackSelect?.value || "",
           bin_number: binInput?.value || "On Bin",
+          quantity: item.quantity
         },
       };
     });
@@ -204,6 +205,7 @@ const BillsDetailForm = () => {
     dataToImport.forEach(item => importLine(item))
     importPO()
     getMaterials()
+  navigate('../list')
   };
 
   useEffect(() => {
@@ -220,7 +222,7 @@ const BillsDetailForm = () => {
           <Button onClick={handleExportPDF}>
             <LuArrowDownToLine /> PDF
           </Button>
-          <Button colorScheme="green" onClick={handleImport}>
+          <Button colorScheme="green" onClick={()=>handleImport()}>
             Import
           </Button>
         </Flex>

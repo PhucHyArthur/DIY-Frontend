@@ -8,13 +8,15 @@ const Racks = ({ rack, setRackId }) => {
   const { locations } = useContext(DataContext);
   const [rackItems, setRackItems] = useState(0);
   const [progress, setProgress] = useState(0);
-  const[bgColor,setBgColor] = useState("#d8e0ea");
- 
+  const[processBgColor,setProcessBgColor] = useState("#3dc4a4");
+  const[bgColor,setBgColor] = useState("#b9e5d4");
   const setColor = (num) =>{
-    if (num > 100) {
-      setBgColor("#fc2c03") 
-    } else if (num >= 70) {
-      setBgColor("#fc7303")
+    if (num >= 90) {
+      setProcessBgColor("#d7504d")
+      setBgColor("#fec8c6")
+    } else if (num >= 60) {
+      setProcessBgColor("#fc7303")
+      setBgColor("#f5ddc3")
     }
   }
 
@@ -39,13 +41,13 @@ const Racks = ({ rack, setRackId }) => {
       <Box
         padding={"8"}
         borderRadius={"6"}
-        background={"#d8e0ea"}
+        background={bgColor}
         position={"relative"}
         width={"7%"} // Adjusted width for better click area
         _hover={{
           cursor: "pointer",
-          background: "#b0c4de",
-          transition: "background 0.3s",
+          // background: "#b0c4de",
+          // transition: "background 0.3s",
         }}
         onClick={() => setRackId(rack.id)} // Set rack ID on click
       >
@@ -55,10 +57,10 @@ const Racks = ({ rack, setRackId }) => {
           position="absolute"
           bottom="0"
           left={0}
-          width={progress}
+          width={`${progress}%`}
           maxW={"100%"}
           height="100%"
-          backgroundColor={bgColor}
+          backgroundColor={processBgColor}
           transition="height 0.3s ease"
         />
 

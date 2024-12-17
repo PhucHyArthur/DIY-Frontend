@@ -1,5 +1,5 @@
 // Zones.js
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LuMenu, LuPlus, LuPen, LuTrash2 } from "react-icons/lu";
 import {
   IconButton,
@@ -200,6 +200,8 @@ const Zones = ({ zone, setRackId }) => {
         getZones()
       }
   };
+
+  useEffect(()=>{},[aisles])
 
   return (
     <Box
