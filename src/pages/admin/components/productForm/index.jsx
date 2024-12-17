@@ -10,16 +10,20 @@ import {
   HStack,
   Flex,
   Select,
+  useToast,
+
 } from "@chakra-ui/react";
 import { LuImagePlus } from "react-icons/lu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API, INVENTORY } from "../../../../constant/API";
 import { TokenContext } from "../../../../context/TokenContext";
+import { DataContext } from "../../../../context/Context";
+
 
 const ProductForm = ({ id = null, mode = "add" }) => {
   const { token } = useContext(TokenContext);
-
+  const { racks,getProducts } = useContext(DataContext);
   // State chung cho form
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -35,6 +39,9 @@ const ProductForm = ({ id = null, mode = "add" }) => {
   const [mainImage, setMainImage] = useState(null);
   const [additionalImages, setAdditionalImages] = useState([null, null, null]);
   const [isLoading, setIsLoading] = useState(mode !== "add");
+
+  const toast = useToast()
+  const naviagte = useNavigate()
 
   useEffect(() => {
     if (mode === "edit" || mode === "detail") {
@@ -92,13 +99,17 @@ const ProductForm = ({ id = null, mode = "add" }) => {
     formData.append("unit", unit);
     formData.append("description", description);
     formData.append("expired_date", expiryDate);
-    formData.append("location", JSON.stringify({ rack, bin_number: binNumber }));
-
-    if (mainImage instanceof File) formData.append("uploaded_images", mainImage);
+    formData.append(
+      "location",
+      JSON.stringify({ rack, bin_number: binNumber })
+    );
+  
+    if (mainImage instanceof File)
+      formData.append("uploaded_images", mainImage);
     additionalImages.forEach((image) => {
       if (image instanceof File) formData.append("uploaded_images", image);
     });
-
+  
     try {
       if (mode === "add") {
         await axios.post(`${API}${INVENTORY.Product_Create}`, formData, {
@@ -107,7 +118,17 @@ const ProductForm = ({ id = null, mode = "add" }) => {
             "Content-Type": "multipart/form-data",
           },
         });
-        alert("Product created successfully!");
+  
+        toast({
+          title: "Product Created",
+          description: "The product has been created successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+        getProducts()
+        naviagte("../list")
       } else if (mode === "edit") {
         await axios.put(`${API}${INVENTORY.Product_Update}${id}/`, formData, {
           headers: {
@@ -115,13 +136,28 @@ const ProductForm = ({ id = null, mode = "add" }) => {
             "Content-Type": "multipart/form-data",
           },
         });
-        alert("Product updated successfully!");
+  
+        toast({
+          title: "Product Updated",
+          description: "The product has been updated successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true
+        });
       }
     } catch (error) {
       console.error("Error submitting product:", error);
-      alert("Failed to submit product!");
+  
+      toast({
+        title: "Submission Failed",
+        description: {error},
+        status: "error",
+        duration: 3000,
+        isClosable: true
+      });
     }
   };
+  
 
   return (
     <Box
@@ -153,6 +189,9 @@ const ProductForm = ({ id = null, mode = "add" }) => {
                   borderRadius="md"
                   width="30vh"
                   height="30vh"
+                  display={'flex'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
                   style={{
                     backgroundImage:
                       mainImage && !(mainImage instanceof File)
@@ -162,7 +201,7 @@ const ProductForm = ({ id = null, mode = "add" }) => {
                     backgroundPosition: "center",
                   }}
                 >
-                  {!mainImage && <LuImagePlus size={48} />}
+                  {!mainImage && <LuImagePlus size={48}/>}
                 </Box>
               </label>
             </Flex>
@@ -186,6 +225,9 @@ const ProductForm = ({ id = null, mode = "add" }) => {
                       borderRadius="md"
                       width="100px"
                       height="100px"
+                      display={'flex'}
+                      alignItems={'center'}
+                      justifyContent={'center'}
                       style={{
                         backgroundImage:
                           image && !(image instanceof File)
@@ -214,33 +256,52 @@ const ProductForm = ({ id = null, mode = "add" }) => {
 
             <FormControl>
               <FormLabel>Category</FormLabel>
-              <Input value={category} onChange={(e) => setCategory(e.target.value)} />
+              <Input
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
             </FormControl>
 
             <FormControl>
               <FormLabel>Selling Price</FormLabel>
-              <Input value={sellingPrice} onChange={(e) => setSellingPrice(e.target.value)} />
+              <Input
+                value={sellingPrice}
+                onChange={(e) => setSellingPrice(e.target.value)}
+              />
             </FormControl>
 
             <FormControl>
               <FormLabel>Quantity in Stock</FormLabel>
-              <Input value={totalQuantity} onChange={(e) => setTotalQuantity(e.target.value)} />
+              <Input
+                value={totalQuantity}
+                onChange={(e) => setTotalQuantity(e.target.value)}
+              />
             </FormControl>
 
             <FormControl>
-              <FormLabel>Select Unit Count</FormLabel>
-              <input value={unit} onChange={(e) => setUnit(e.target.value)} />
+              <FormLabel>Unit Count</FormLabel>
+              <Input value={unit} onChange={(e) => setUnit(e.target.value)} />
             </FormControl>
 
             <FormControl>
               <FormLabel>Location</FormLabel>
-              <Input value={rack} placeholder="Rack" onChange={(e) => setRack(e.target.value)} />
+              <Flex gap={3}>
+              <Select
+                value={rack}
+                onChange={(e) => setRack(e.target.value)}
+              >
+                {racks.map((rack) => (
+                  <option value={rack.id} key={rack.id}>
+                    {rack.name}
+                  </option>
+                ))}
+              </Select>
               <Input
-                mt={2}
                 value={binNumber}
                 placeholder="Bin Number"
                 onChange={(e) => setBinNumber(e.target.value)}
               />
+              </Flex>
             </FormControl>
 
             <FormControl>
@@ -254,7 +315,10 @@ const ProductForm = ({ id = null, mode = "add" }) => {
 
             <FormControl>
               <FormLabel>Description</FormLabel>
-              <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+              <Textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </FormControl>
           </Stack>
 

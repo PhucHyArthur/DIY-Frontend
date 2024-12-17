@@ -10,7 +10,6 @@ const CustomToast = () => {
             status: status,
             duration: 2000,
             isClosable: true,
-            position: "top-right",
         })
     }
 
