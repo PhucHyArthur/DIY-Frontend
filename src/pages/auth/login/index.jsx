@@ -3,7 +3,8 @@ import { API, EMPLOYEE } from "../../../constant/API";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { TokenContext} from "../../../context/TokenContext";
-
+import { Box, Flex, Text } from "@chakra-ui/react";
+import "./index.css"
 const Login = () => {
   const {token, setToken, setResponseData} = useContext(TokenContext);
   const navigate = useNavigate();
@@ -39,23 +40,16 @@ const Login = () => {
   };
   
   return (
-    <div
-      className="relative min-h-screen bg-cover bg-center"
-      style={{
-        backgroundImage: `url('https://gssoftware.in/images/b2.jpg')`,
-      }}
-    >
-      {/* Overlay để làm mờ hình nền */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <Flex className="login-page" justifyContent={'center'} alignItems={'center'}>
+        <Flex borderRadius={12} zIndex={1} className="login-container">
 
-      {/* Nội dung chính */}
-      <div className="items-center flex justify-center">
-        <div className="relative py-10 px-12 mt-20 bg-white rounded-xl shadow-xl z-10 max-w-lg">
+        <Flex alignItems={'center'} justifyContent={'center'} padding={20} borderRadius={"12px 0px 0px 12px"}>
+          <Text fontSize='xl' color={'white'} as='b'>Welcome to ERP SYSTEM</Text>
+        </Flex>
+
+        <Box backgroundColor={'white'} padding={"40px"} borderRadius={"0px 12px 12px 0px"}>
           <form onSubmit={handleSubmit}>
             <div>
-              <h1 className="text-4xl font-bold text-indigo-600 mb-6 animate-bounce">
-                Welcome to ERP
-              </h1>
               <label
                 htmlFor="username"
                 className="block text-gray-800 font-bold mt-4"
@@ -100,9 +94,9 @@ const Login = () => {
               Login
             </button>
           </form>
-        </div>
-      </div>
-    </div>
+        </Box>
+        </Flex>
+      </Flex>
   );
 };
 

@@ -1,0 +1,11 @@
+.item-status{
+    height: 100px;
+    width: 23%;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.item-status .icon{
+    height: 50px;
+    width: 50px;
+}
