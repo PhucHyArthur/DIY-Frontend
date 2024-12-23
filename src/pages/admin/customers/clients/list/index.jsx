@@ -1,15 +1,56 @@
-import React from 'react';
-import { Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Text, Button,Input, ButtonGroup,Flex,HStack,Menu,MenuItem,MenuList,MenuButton } from '@chakra-ui/react';
+import React, { useContext, useState, useEffect } from "react";
+import { Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Text, Button,Input, ButtonGroup,Flex,HStack,Menu,MenuItem,MenuList,MenuButton,useToast, } from '@chakra-ui/react';
 import { LuChevronRight,LuMoveDown } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
-const clients = [
-  { id: 1, name: 'Hiếu', email: 'hieu@gmail.com', phone: '123456789', recentPurchase: 'Sản phẩm A' },
-  { id: 2, name: 'Đông', email: 'dong@gmail.com', phone: '987654-21', recentPurchase: 'Sản phẩm B' },
-  { id: 3, name: 'Hoàng', email: 'hoang@gmail.com', phone: '456789123', recentPurchase: 'Sản phẩm C' },
+import { API, EMPLOYEE } from "../../../../../constant/API";
+import { TokenContext } from "../../../../../context/TokenContext";
+import axios from "axios";
 
-];
+
+// const clients = [
+//   { id: 1, name: 'Hiếu', email: 'hieu@gmail.com', phone: '123456789', recentPurchase: 'Sản phẩm A' },
+//   { id: 2, name: 'Đông', email: 'dong@gmail.com', phone: '987654-21', recentPurchase: 'Sản phẩm B' },
+//   { id: 3, name: 'Hoàng', email: 'hoang@gmail.com', phone: '456789123', recentPurchase: 'Sản phẩm C' },
+
+// ];
 
 const ClientsList = () => {
+  const [token] = useState(localStorage.getItem('authToken'));
+  const [list, setList] = useState([]);
+  const toast = useToast();
+
+  const fetchRoleList = async () => {
+    try {
+      const response = await axios.get(`${API}${EMPLOYEE.Employee_List}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status >= 200 && response.status < 300) {
+        const filteredList = response.data.filter(client => client.role === "EndUser");
+        setList(filteredList);
+        console.log(filteredList);
+      } else {
+        throw new Error("Failed to fetch Employees");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Unable to fetch Employees.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+};
+
+
+  useEffect(() => {
+    fetchRoleList();
+  }, []);
+
   return (
     <Box p={6}>
 <Flex justifyContent={"space-between"}>
@@ -52,9 +93,9 @@ const ClientsList = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {clients.map((client) => (
+            {list.map((client) => (
               <Tr key={client.id}>
-                <Td>{client.name}</Td>
+                <Td>{client.username}</Td>
                 <Td>{client.email}</Td>
                 <Td>{client.phone}</Td>
                 <Td>{client.recentPurchase}</Td>
