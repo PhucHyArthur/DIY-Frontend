@@ -1,4 +1,4 @@
-import { Box, Tooltip } from "@chakra-ui/react";
+import { Box, Tooltip,Flex } from "@chakra-ui/react";
 import React, { useContext, useState, useEffect } from "react";
 import { DataContext } from "../../../../context/Context";
 
@@ -45,7 +45,6 @@ const Racks = ({ rack, setRackId }) => {
         (newMList.length > 0
           ? newMList.reduce((acc, item) => acc + Number(item.quantity), 0)
           : 0);
-      console.log("Rack: ", rack.id, totalQuantity);
       setRackItems(totalQuantity);
       setProgress((totalQuantity / rack.capacity) * 100);
       setColor((totalQuantity / rack.capacity) * 100);
@@ -59,7 +58,6 @@ const Racks = ({ rack, setRackId }) => {
       label={`${rack.name} | ${progress}% Fillness | Capacity: ${rackItems}/${rack.capacity}`}
     >
       <Box position={"relative"}>
-        {" "}
         <Box
           padding={"8"}
           borderRadius={"6px"}

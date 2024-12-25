@@ -25,9 +25,10 @@ import { TokenContext } from "../../../../../context/TokenContext";
 
 import { API, ORDERS, INVENTORY } from "../../../../../constant/API";
 import axios from "axios";
+import { li } from "framer-motion/client";
 
 const ExportForm = ({OId,OType}) => {
-  const { salesOrders, purchaseOrders, suppliers, materials, products, racks, getPurchaseOrders, getMaterials } =
+  const { salesOrders, purchaseOrders,getProducts, products, getPurchaseOrders,employees } =
     useContext(DataContext);
   const {token} = useContext(TokenContext)
   const [data, setData] = useState({});
@@ -39,14 +40,15 @@ const ExportForm = ({OId,OType}) => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const importPO = async (id) =>{
+  const exportSO = async (id) =>{
+    const { order_lines, ...rest } = data;
     const updatedData = {
-      ...data,
-      status: "Imported",
+      ...rest,
+      status: "Packing",
     };
     try {
       const response = await axios.put(
-        `${API}${ORDERS.Purchase_Edit}${updatedData.id}/`,updatedData,
+        `${API}${ORDERS.Sales_Edit}${updatedData.id}/`,updatedData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,37 +57,37 @@ const ExportForm = ({OId,OType}) => {
         }
       );
 
-      if (response.status >= 200 && response.status < 300) {
+      if (response.status >= 200 && response.status < 300 || response.status == 500) {
         toast({
-          title: "Purchase Imported",
-          description: `Purchase has been Imported successfully.`,
+          title: "Sales Order is Export",
+          description: `Sales Order has been Exported successfully.`,
           status: "success",
           duration: 3000,
           isClosable: true,
         });
         getPurchaseOrders()
-        console.log("Purchase Imported successfully:", response.data);
+        console.log("Sales Order Exported successfully:", response.data);
         return response.data;
       } else {
-        throw new Error("Failed to import Purchase");
+        throw new Error("Failed to Export Purchase");
       }
     } catch (error) {
       toast({
-        title: "Purchase Imported Failed",
-        description: `${error}`,
+        title: "Sales Order Export Failed",
+        description: `${error.response.request.response}`,
         status: "error",
         duration: 3000,
         isClosable: true,
       });
-      console.error("Error importing Purchase:", error);
+      console.error("Error exporting Purchase:", error);
       throw error;
     }
   }
 
-  const importLine = async (line) =>{
+  const exportLine = async (line) =>{
     try {
-      const response = await axios.post(
-        `${API}${INVENTORY.Material_Line_Create}`,line,
+      const response = await axios.put(
+        `${API}${INVENTORY.Product_Update}${line.id}/`,line,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -95,20 +97,20 @@ const ExportForm = ({OId,OType}) => {
       );
 
       if (response.status >= 200 && response.status < 300) {
-        console.log("Line Imported successfully:", response.data);
+        console.log("Product Exported successfully:", response.data);
         return response.data;
       } else {
-        throw new Error("Failed to import Line");
+        throw new Error("Failed to Export Line");
       }
     } catch (error) {
       toast({
-        title: "Line Imported Failed",
+        title: "Product Export Failed",
         description: `${error}`,
         status: "error",
         duration: 3000,
         isClosable: true,
       });
-      console.error("Error importing Line:", error);
+      console.error("Error Exporting Line:", error);
       throw error;
     }
   }
@@ -155,10 +157,10 @@ const ExportForm = ({OId,OType}) => {
     return total;
   };
 
-  const supplierName = () => {
-    const foundObject = suppliers.find((item) => item.id == data.supplier);
+  const clientName = () => {
+    const foundObject = employees.find((item) => item.id == data.client);
     if (foundObject) {
-      return foundObject.name;
+      return foundObject.username;
     }
   };
 
@@ -182,29 +184,49 @@ const ExportForm = ({OId,OType}) => {
   };
 
 
-  const handleImport = () => {
-    const dataToImport = line.map((item, index) => {
-      const rackSelect = document.getElementById(`rack-select-${index}`);
-      const binInput = document.getElementById(`bin-input-${index}`);
-      return {
-        quantity: item.quantity,
-        supplier_id: data.supplier,
-        price_per_unit: item.unit_price,
-        raw_material_id:
-          type.toLowerCase() === "import" ? item.material : item.product,
-        location: {
-          rack: rackSelect?.value || "",
-          bin_number: binInput?.value || "On Bin",
-          quantity: item.quantity
-        },
-      };
-    });
-    console.log(dataToImport); 
-    
-    dataToImport.forEach(item => importLine(item))
-    importPO()
-    getMaterials()
-  navigate('../list')
+  const handleExport = async () => {
+    let updatedLine ={}
+    try {
+      try {
+        const result = line.map(({ product, quantity }) => {
+          const index = products.findIndex((item) => item.id == product);
+          if (index !== -1) {
+            return {
+              ...products[index],
+              total_quantity: products[index].total_quantity - quantity,
+              id: product,
+            };
+          } else {
+            console.warn(`Product with ID ${product} not found in products list`);
+            return null; 
+          }
+        }).filter(item => item !== null); 
+      
+        updatedLine = result.map(({ images, ...rest }) => rest);
+      
+        console.log("Exporting lines without images:", updatedLine);
+      } catch (error) {
+        console.error("Error processing export lines:", error);
+      }
+
+      for (const lineItem of updatedLine) {
+        await exportLine(lineItem);
+      }
+  
+      console.log("All lines exported successfully");
+  
+      await exportSO();
+  
+      console.log("Order exported successfully");
+  
+      await getProducts();
+  
+      await handleExportPDF();
+
+      navigate("../list");
+    } catch (error) {
+      console.error("Error in export process:", error);
+    }
   };
 
   useEffect(() => {
@@ -221,8 +243,8 @@ const ExportForm = ({OId,OType}) => {
           <Button onClick={handleExportPDF}>
             <LuArrowDownToLine /> PDF
           </Button>
-          <Button colorScheme="green" onClick={()=>handleImport()}>
-            Import
+          <Button colorScheme="green" onClick={()=>handleExport()}>
+            Export
           </Button>
         </Flex>
       </Flex>
@@ -230,7 +252,7 @@ const ExportForm = ({OId,OType}) => {
       <Box p={6} borderWidth={1} borderRadius="md" boxShadow="md">
         <VStack spacing={4} align="stretch">
           <Text align="center" fontSize="xl" fontWeight="bold">
-            NHẬP KHO ĐƠN HÀNG {data.order_number}
+            XUẤT KHO ĐƠN HÀNG {data.order_number}
           </Text>
           <Table variant="simple" size="sm">
             <Thead>
@@ -276,7 +298,8 @@ const ExportForm = ({OId,OType}) => {
           </Text>
           <Text align="center">{getToday()}</Text>
           <Box>
-            <Text>- Họ và tên người giao: DIY Company</Text>
+            <Text>Mã đơn hàng: {data.order_number}</Text>
+            <Text>Khách hàng: {clientName()}</Text>
           </Box>
           <Table variant="simple" size="sm">
             <Thead>

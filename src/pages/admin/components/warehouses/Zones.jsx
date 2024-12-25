@@ -28,6 +28,8 @@ import {
   ModalCloseButton,
   FormHelperText,
   FormErrorMessage,
+  Flex,
+  Text,
 } from "@chakra-ui/react";
 
 import Aisles from "./Aisles";
@@ -39,13 +41,13 @@ import { DataContext } from "../../../../context/Context";
 
 const Zones = ({ zone, setRackId }) => {
   const { getAisles, aisles, getZones } = useContext(DataContext);
-  const {token} = useContext(TokenContext);
+  const { token } = useContext(TokenContext);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [errors, setErrors] = useState({});
   const toast = useToast();
 
-  const filteredAisles = aisles.filter((aisle) => aisle.zone === zone.id)
+  const filteredAisles = aisles.filter((aisle) => aisle.zone === zone.id);
 
   const [newAisle, setNewAisle] = useState({
     zone: zone.id,
@@ -85,19 +87,15 @@ const Zones = ({ zone, setRackId }) => {
     }
     return newErrors;
   };
-  // Create Aisle 
+  // Create Aisle
   const createAisle = async (Data) => {
     try {
-      const response = await axios.post(
-        `${API}${WAREHOUSES.Aisle_Add}`,
-        Data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${API}${WAREHOUSES.Aisle_Add}`, Data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         toast({
@@ -107,7 +105,7 @@ const Zones = ({ zone, setRackId }) => {
           duration: 3000,
           isClosable: true,
         });
-        getAisles()
+        getAisles();
         console.log("Aisle created successfully:", response.data);
         return response.data;
       } else {
@@ -126,7 +124,7 @@ const Zones = ({ zone, setRackId }) => {
     }
   };
 
-  const deleteZone = async (id) =>{
+  const deleteZone = async (id) => {
     try {
       const response = await axios.delete(
         `${API}${WAREHOUSES.Zones_Delete}${id}/`,
@@ -162,14 +160,13 @@ const Zones = ({ zone, setRackId }) => {
       console.error("Error deleteing Zone:", error.response.request.response);
       throw error;
     }
-  }
+  };
 
   // Handle form submission
   const handleAddAisle = () => {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
-
-      createAisle(newAisle)
+      createAisle(newAisle);
 
       setNewAisle({
         zone: zone.id,
@@ -178,7 +175,7 @@ const Zones = ({ zone, setRackId }) => {
       });
 
       setErrors({});
-      getAisles()
+      getAisles();
       onClose();
     } else {
       // Set validation errors
@@ -187,22 +184,23 @@ const Zones = ({ zone, setRackId }) => {
   };
 
   const handleDeleteZone = (id) => {
-      if(filteredAisles.length > 0){
-        toast({
-          title: "Zone Deleted Failed",
-          description: `There are items in "${zone.name}"`,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        return
-      }else{
-        deleteZone(id)
-        getZones()
-      }
+    if (filteredAisles.length > 0) {
+      toast({
+        title: "Zone Deleted Failed",
+        description: `There are items in "${zone.name}"`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    } else {
+      deleteZone(id);
+      getZones();
+    }
   };
 
-  useEffect(()=>{},[aisles])
+  console.log("zones.jsx", zone);
+  useEffect(() => {}, [aisles]);
 
   return (
     <Box
@@ -216,6 +214,13 @@ const Zones = ({ zone, setRackId }) => {
       }}
       mb={4} // Added margin bottom for spacing between zones
     >
+      <Flex justifyContent={"center"} gap={"4px"}>
+        <Text>{zone.name}</Text>
+        |
+        <Text>Capacity : {zone.capacity}</Text>
+        |
+        <Text>Max Aisle : {zone.number_of_aisles}</Text>
+      </Flex>
       {/* Options Menu */}
       <Menu>
         <MenuButton
@@ -232,7 +237,11 @@ const Zones = ({ zone, setRackId }) => {
             Add Aisle
           </MenuItem>
           <MenuItem icon={<LuPen />}>Edit Zone Detail</MenuItem>
-          <MenuItem color={"red"} icon={<LuTrash2 />} onClick={()=>handleDeleteZone(zone.id)}>
+          <MenuItem
+            color={"red"}
+            icon={<LuTrash2 />}
+            onClick={() => handleDeleteZone(zone.id)}
+          >
             Delete Zone
           </MenuItem>
         </MenuList>
@@ -253,8 +262,8 @@ const Zones = ({ zone, setRackId }) => {
       {/* List of Aisles */}
       <Box display={"flex"} gap={4} flexDirection={"column"} marginTop={5}>
         {filteredAisles.map((aisle) => (
-            <Aisles key={aisle.id} aisle={aisle} setRackId={setRackId} />
-          ))}
+          <Aisles key={aisle.id} aisle={aisle} setRackId={setRackId} />
+        ))}
       </Box>
 
       {/* Add Aisle Modal */}
