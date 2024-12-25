@@ -15,15 +15,34 @@ import {
 
 import materialImg from "../../../../image/diy.png"
 import productImg from "../../../../image/finproduct.png"
+
 const WarehousesList = () => {
-  const { warehouses } = useContext(DataContext);
+  const { warehouses,products,materials } = useContext(DataContext);
   const initialWarehouse = {
     name: "",
     capacity: 0,
     address: "",
   };
+
   const [warehouse, setWarehouse] = useState(initialWarehouse);
-  useEffect(() => {}, []);
+
+  const [material, setMaterial] = useState({
+    item: materials.length,
+    quantity:materials.reduce((acc,val)=>acc+val.total_quantity,0),
+    capacity: materials.reduce((acc, val) => {
+      return acc + (val.raw_materials_lines.length > 0 
+        ? val.raw_materials_lines.reduce((innerAcc, innerVal) => innerAcc + innerVal.quantity, 0) 
+        : 0);
+    }, 0)
+  })
+
+  const [product, setProduct] = useState({
+    item: products.length,
+    quantity:products.reduce((acc,val)=>acc+val.total_quantity,0),
+    capacity:products.reduce((acc,val)=>acc+val.total_quantity*parseFloat(val.unit),0)
+  })
+
+  const [progress,setProgress] = useState(product.capacity+material.capacity)
 
   return (
     <Box>
@@ -56,8 +75,9 @@ const WarehousesList = () => {
           <Image height={'15%'} src={materialImg} className="icon"/>
           <Stat>
             <StatLabel>Raw Material</StatLabel>
-            <StatNumber>0.00</StatNumber>
-            <StatHelpText>Quantity 0.00</StatHelpText>
+            <StatLabel>Number of items: {material.item}</StatLabel>
+            <StatNumber>{material.capacity}</StatNumber>
+            <StatHelpText>Quantity {material.quantity}</StatHelpText>
           </Stat>
         </Flex>
 
@@ -67,8 +87,9 @@ const WarehousesList = () => {
         <Image height={'15%'} src={productImg} className="icon"/>
           <Stat>
             <StatLabel>Finished Product</StatLabel>
-            <StatNumber>0.00</StatNumber>
-            <StatHelpText>Quantity 0.00</StatHelpText>
+            <StatLabel>Number of items: {product.item}</StatLabel>
+            <StatNumber>{product.capacity}</StatNumber>
+            <StatHelpText>Quantity {product.quantity}</StatHelpText>
           </Stat>
         </Flex>
 
@@ -93,7 +114,7 @@ const WarehousesList = () => {
         </Flex>
       </Flex>
 
-      <WarehouseTable warehouses={warehouses} />
+      <WarehouseTable warehouses={warehouses} progress={progress}/>
     </Box>
   );
 };

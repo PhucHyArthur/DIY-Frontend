@@ -107,6 +107,7 @@ const Zones = ({ zone, setRackId }) => {
           duration: 3000,
           isClosable: true,
         });
+        getAisles()
         console.log("Aisle created successfully:", response.data);
         return response.data;
       } else {

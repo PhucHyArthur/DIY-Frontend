@@ -16,34 +16,15 @@ import {
 import { Link } from "react-router-dom";
 import { DataContext } from "../../../../context/Context";
 
-const WarehouseTable = ({ warehouses }) => {
+const WarehouseTable = ({ warehouses, progress }) => {
   const {loactions } = useContext(DataContext);
-  const [progress,setProgress] = useState(0)
 
   const [warehousesList, setWarehousesList] = useState(
     warehouses.map(warehouse => ({
       ...warehouse,
-      progress: 80
+      progress: progress
     }))
   );
-  
-  useEffect(() => {
-    if (loactions) {
-      const newProgress = loactions.reduce((acc, item) => acc + Number(item.quantity), 0);
-      setWarehousesList(prevList =>
-        prevList.map((warehouse, index) => 
-          index === 0 ? { ...warehouse, progress: newProgress } : warehouse
-        )
-      );
-      console.log(newProgress);
-    } else {
-      setWarehousesList(prevList =>
-        prevList.map((warehouse, index) => 
-          index === 0 ? { ...warehouse, progress: 0 } : warehouse
-        )
-      );
-    }
-  }, [loactions]);
   
   return (
     <Box
@@ -85,6 +66,7 @@ const WarehouseTable = ({ warehouses }) => {
 
               <Td>
                 <HStack spacing={2}>
+                  
                   {/* <Link to={`../edit/${Warehouse.id}`}>
                     <Button size="sm" colorScheme="green">
                       Edit
@@ -96,7 +78,8 @@ const WarehouseTable = ({ warehouses }) => {
                       View
                     </Button>
                   </Link>
-{/* 
+
+                {/* 
                   <Button size="sm" colorScheme="red">
                     Delete
                   </Button> */}
