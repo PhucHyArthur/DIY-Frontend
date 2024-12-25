@@ -8,6 +8,7 @@ import { LuChevronRight } from "react-icons/lu";
 import { useParams } from 'react-router-dom';
 import PersonForm from '../../../components/personForm';
 const ClientsDetail = () => {
+  const { id } = useParams();
   return (
     <div>
       <Flex justifyContent={"space-between"} p={6}>
@@ -19,7 +20,7 @@ const ClientsDetail = () => {
           <Text fontSize="l" fontWeight="medium" color={"orange.400"}>Client Detail</Text>
         </HStack>
       </Flex>
-      <PersonForm type={"client"}/>
+      <PersonForm id={id} type={"client"}/>
     </div>
   )
 }

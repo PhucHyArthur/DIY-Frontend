@@ -16,7 +16,7 @@ const ProductsDetail = () => {
         <Text fontSize="l" fontWeight="medium" color={"orange.400"}>Product Detail</Text>
       </HStack>
     </Flex>
-    <ProductForm id={productId} type="view"/>
+    <ProductForm id={productId} mode="detail"/>
     </div>
 
   )
