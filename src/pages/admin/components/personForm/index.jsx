@@ -26,8 +26,8 @@ const generateRandomPassword = () => {
   return password;
 };
 
-const PersonForm = ({ type, action, onSave, onBack, onChange }) => {
-  const { id } = useParams();
+const PersonForm = ({ type, action, onSave, onBack, onChange, isClientPage,representative,onUpdate }) => {
+  const { id, clientId } = useParams();
   const toast = useToast();
   const [formData, setFormData] = useState({
     username: '',
@@ -55,6 +55,18 @@ const PersonForm = ({ type, action, onSave, onBack, onChange }) => {
   const [roles, setRoles] = useState([]); // State để lưu danh sách roles
   const {token} = useContext(TokenContext);
   const navigate = useNavigate();
+  useEffect(()=>{
+    if(representative){
+      setPersonData({
+        name: representative.name ||'',
+        birth: representative.birth ||'',
+        gender: representative.gender ||'',
+        tel: representative.tel ||'',
+        email: representative.email ||'',
+        position: representative.position ||'',
+      })
+    }
+  },[representative])
 
   // Fetch danh sách roles
   useEffect(() => {
@@ -73,34 +85,36 @@ const PersonForm = ({ type, action, onSave, onBack, onChange }) => {
   }, [token]);
 
   // Fetch data cho chế độ "edit" hoặc "detail"
-  useEffect(() => {
-    if ((action === 'edit' || action === 'detail') && id) {
-      setIsLoading(true);
-      axios
-        .get(`${API}${EMPLOYEE.Employee_Detail}${id}/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          const data = response.data;
-          setFormData({
-            username: data.username || '',
-            password: '****',
-            email: data.email || '',
-            role_name: data.role_name || '',
-            phone_number: data.phone_number || '',
-            address: data.address || '',
-            hire_date: data.hire_date || '',
-            gender: data.gender || '',
-          });
-        })
-        .catch((error) => {
-          console.error('Error fetching user details:', error);
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, [action, id, token]);
+useEffect(() => {
+  const fetchId = clientId || id;
+  if ((action === "edit" || action === "detail") && fetchId) {
+    setIsLoading(true);
+    axios
+      .get(`${API}${EMPLOYEE.Employee_Detail}${fetchId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        setFormData({
+          username: data.username || "",
+          password: "****",
+          email: data.email || "",
+          role_name: data.role || "",
+          phone_number: data.phone_number || "",
+          address: data.address || "",
+          hire_date: data.hire_date || "",
+          gender: data.gender || "",
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching user details:", error);
+      })
+      .finally(() => setIsLoading(false));
+  }
+}, [action, id, clientId, token]);
+
 
   // Xử lý thay đổi input
   const handleChange = (e) => {
@@ -232,7 +246,7 @@ const PersonForm = ({ type, action, onSave, onBack, onChange }) => {
                 value={formData.role_name}
                 onChange={handleChange}
                 placeholder="Select Role"
-                isReadOnly={action === "detail"}
+                isDisabled={action === "detail"}
               >
                 {roles.map((role) => (
                   <option key={role.id} value={role.name}>
@@ -391,7 +405,13 @@ const PersonForm = ({ type, action, onSave, onBack, onChange }) => {
           <Button
             variant="outline"
             colorScheme="blue"
-            onClick={() => navigate("/users/list")}
+            onClick={() =>
+              navigate(
+                isClientPage
+                  ? "/admin/customers/clients/list"
+                  : "/admin/settings/users/list"
+              )
+            }
           >
             Cancel
           </Button>
@@ -406,9 +426,15 @@ const PersonForm = ({ type, action, onSave, onBack, onChange }) => {
           <Button
             colorScheme="orange"
             isLoading={isLoading}
-            onClick={type === "supplier" ? onSave : handleSubmit}
+            onClick={
+              type === "supplier"
+                ? action === "edit"
+                  ? onUpdate 
+                  : onSave 
+                : handleSubmit 
+            }
           >
-            Save
+            {action === 'edit' ? 'Update' : 'Save'}
           </Button>
         </HStack>
       )}

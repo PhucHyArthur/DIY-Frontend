@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Box, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator } from '@chakra-ui/react';
 import CompanyForm from '../companyForm';
 import PersonForm from '../personForm';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import { API,SUPPLIERS} from '../../../../constant/API';
 import { DataContext } from '../../../../context/Context';
 import CustomToast from '../../../../components/Toast';
+import { useParams } from 'react-router-dom';
 
 const steps = [
   { title: 'Business Detail', description: 'Enter company information' },
@@ -14,9 +15,10 @@ const steps = [
   { title: 'Personal Detail', description: 'Enter personal details' },
 ];
 
-function SupplierStepper() {
+function SupplierStepper({action}) {
+  const{supplierId}=useParams()
   const [currentStep, setCurrentStep] = useState(0);
-  const {getSuppliers} = useContext(DataContext)
+  const {getSuppliers, suppliers, representatives} = useContext(DataContext)
   const [token] = useState(localStorage.getItem('authToken'));
   const showToast = CustomToast(); 
   const [formData, setFormData] = useState({
@@ -42,6 +44,52 @@ function SupplierStepper() {
       swift_code: '',
     }
   });
+
+   // Fetch danh sách suppliers nếu chưa có
+   useEffect(() => {
+    if (suppliers.length === 0) {
+      getSuppliers();
+    }
+  }, [suppliers, getSuppliers]);
+  // Cập nhật dữ liệu khi supplierId thay đổi
+  useEffect(() => {
+    if (supplierId && suppliers.length > 0) {
+      const selectedSupplier = suppliers.find(
+        (supplier) => supplier.id === parseInt(supplierId)
+      );
+  
+      if (selectedSupplier) {
+        const representative = representatives.find(
+          (rep) => rep.id=== parseInt(supplierId)
+        );
+  
+        setFormData({
+          supplier: {
+            name: selectedSupplier.name || '',
+            address: selectedSupplier.address || '',
+            tel: selectedSupplier.tel || '',
+            email: selectedSupplier.email || '',
+            tax_code: selectedSupplier.tax_code || '',
+          },
+          representative: {
+            name: representative?.name || '',
+            birth: representative?.birth || '',
+            gender: representative?.gender  || '',
+            tel: representative?.tel  || '',
+            email: representative?.email  || '',
+            position: representative?.position  || '',
+          },
+          bank: {
+            bank_name: selectedSupplier.bank_name || '',
+            bank_branch: selectedSupplier.bank_branch || '',
+            bank_number: selectedSupplier.bank_number || '',
+            swift_code: selectedSupplier.swift_code || '',
+          },
+        });
+      }
+    }
+  }, [supplierId, suppliers, representatives]);
+  
 
   const handleNextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -104,6 +152,57 @@ function SupplierStepper() {
     }
   };
 
+  const handleUpdate = async () => {
+    try {
+      if (!supplierId) {
+        showToast("error", "Update Error", "Invalid Supplier ID!");
+        return;
+      }
+  
+      // Chuẩn bị dữ liệu cần gửi cho API
+      const supplierData = { ...formData.supplier, ...formData.bank };
+      const representativeData = { 
+        ...formData.representative,
+        ...formData.bank, 
+        supplier_id: supplierId 
+      };
+  
+      // Cập nhật thông tin Supplier
+      await axios.put(
+        `${API}${SUPPLIERS.Edit.replace("<int:pk>", supplierId)}`,
+        supplierData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      // Cập nhật thông tin Representative
+      const representativeId = representatives.find(rep => rep.supplier_id === supplierId)?.id;
+      if (representativeId) {
+        await axios.put(
+          `${API}${SUPPLIERS.Representative_Edit.replace("<int:pk>", supplierId)}`,
+          representativeData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
+  
+      // Thông báo thành công
+      showToast("success", "Update Successful", "Supplier and Representative updated successfully!");
+      await getSuppliers(); // Làm mới danh sách nhà cung cấp
+    } catch (error) {
+      console.error('Error updating supplier or representative:', error.response?.data || error.message);
+      showToast("error", "Update Error", "Failed to update Supplier and Representative!");
+    }
+  };  
+
   return (
     <Box p={5}>
       {/* Stepper */}
@@ -132,15 +231,17 @@ function SupplierStepper() {
       <Box>
         {currentStep === 0 && (
           <CompanyForm
-          
+          company={formData.supplier}
           onSave={handleNextStep}
           onBack={handlePreviousStep}
+          action={action}
           onChange={(data) => handleFormChange('supplier', data)}
         />
         )}
         {currentStep === 1 && (
           <BankDetailForm
-            type="supplier"
+            bank={formData.bank}
+            action={action}
             onSave={handleNextStep}
             onBack={handlePreviousStep}
             onChange={(data) => handleFormChange('bank', data)}
@@ -148,11 +249,13 @@ function SupplierStepper() {
         )}
         {currentStep === 2 && (
           <PersonForm
+          representative={formData.representative}
           type="supplier"
           onSave={handleSubmit}
           onBack={handlePreviousStep}
           onChange={(data) => handleFormChange('representative', data)}
-          
+          action={action}
+          onUpdate={handleUpdate}
         />
         )}
       </Box>

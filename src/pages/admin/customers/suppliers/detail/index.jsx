@@ -19,7 +19,7 @@ const SuppliersDetail = () => {
           <Text fontSize="l" fontWeight="medium" color={"orange.400"}>Supplier Detail</Text>
         </HStack>
       </Flex>
-      <SupplierTabs/>
+      <SupplierTabs action = 'detail'/>
       </div>
   )
 }

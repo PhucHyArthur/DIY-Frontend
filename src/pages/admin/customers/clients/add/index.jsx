@@ -19,7 +19,7 @@ const ClientsAdd = () => {
           <Text fontSize="l" fontWeight="medium" color={"orange.400"}>Add Client</Text>
         </HStack>
       </Flex>
-      <PersonForm type={"client"}/>
+      <PersonForm isClientPage={true} type={"client"}/>
     </div>
   )
 }

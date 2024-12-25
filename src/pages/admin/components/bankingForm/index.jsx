@@ -1,13 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { ChakraProvider, Box, Heading, FormControl, FormLabel, Input, Button, VStack } from '@chakra-ui/react';
 
-function BankDetailForm({onSave, onBack, type, onChange}) {
+function BankDetailForm({onSave, onBack, type, onChange,bank}) {
   const [bankData, setBankData] = useState({
     bank_name: '',
     bank_branch: '',
     bank_number: '',
     swift_code: '',
   });
+
+  useEffect(()=>{
+    if (bank) {
+      setBankData({
+        bank_name: bank.bank_name ||'',
+        bank_branch: bank.bank_branch ||'',
+        bank_number: bank.bank_number ||'',
+        swift_code: bank.swift_code ||'',
+      });
+    }
+  },[bank])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
