@@ -47,7 +47,6 @@ import axios from "axios";
 import { API, WAREHOUSES } from "../../../../constant/API";
 import { TokenContext } from "../../../../context/TokenContext";
 
-
 const WareshousesDetail = () => {
   const [token] = useState(localStorage.getItem("authToken"));
   const navigate = useNavigate();
@@ -58,7 +57,7 @@ const WareshousesDetail = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [errors, setErrors] = useState({});
   const [selectedRackId, setSelectedRackId] = useState(null);
-  const warehouse = warehouses.filter(item => item.id == warehouseId)
+  const warehouse = warehouses.filter((item) => item.id == warehouseId);
   const [materialList, setMaterialList] = useState({});
   const [productList, setProductList] = useState({});
   const initialZone = {
@@ -220,15 +219,35 @@ const WareshousesDetail = () => {
           <Button colorScheme="red">Delete Warehouse</Button>
         </Flex>
       </Flex>
-      <Flex margin={"30px"} flexDirection={'column'} alignItems={'center'}> 
-      <Text as='b'>{ zones.reduce((acc,val)=> acc + val.capacity,0)+"/"+warehouse[0].capacity}</Text>
-      <Flex width={"100%"} height={'5vh'} bg={'gray.300'}borderRadius={6} overflow={"hidden"}>
-        {zones.map(zone=>(
-          <Tooltip>
-          <Box height={"100%"} width={(zone.capacity/warehouse[0].capacity)*100+"%"} bg={'blue.500'} borderLeft={'1px solid black'}></Box>
-          </Tooltip>
-        ))}
-      </Flex>
+      <Flex margin={"30px"} flexDirection={"column"} alignItems={"center"}>
+        <Text as="b">
+          {zones.reduce((acc, val) => acc + val.capacity, 0) +
+            "/" +
+            warehouse[0].capacity}
+        </Text>
+        <Flex
+          width="100%"
+          height="5vh"
+          bg="gray.300"
+          borderRadius={6}
+          overflow="hidden"
+          position="relative"
+        >
+          {zones.map((zone, index) => (
+            <Tooltip
+              key={index}
+              label={`${zone.name} | ${zone.capacity}`}
+            >
+              <Box
+                height="100%"
+                width={`${(zone.capacity / warehouse[0].capacity) * 100}%`}
+                bg="blue.500"
+                borderLeft={index > 0 ? "1px solid black" : "none"}
+                position="relative"
+              />
+            </Tooltip>
+          ))}
+        </Flex>
       </Flex>
       <Flex>
         <Flex
@@ -273,7 +292,17 @@ const WareshousesDetail = () => {
                           <Tr>
                             <Td>
                               <Center>
-                                <Circle size="10px" bg={material.quantity>20?"green.400":material.quantity<5?"red.600":"tomato"}color="white" />
+                                <Circle
+                                  size="10px"
+                                  bg={
+                                    material.quantity > 20
+                                      ? "green.400"
+                                      : material.quantity < 5
+                                      ? "red.600"
+                                      : "tomato"
+                                  }
+                                  color="white"
+                                />
                               </Center>
                             </Td>
                             <Td>{material.name}</Td>
@@ -287,7 +316,17 @@ const WareshousesDetail = () => {
                           <Tr>
                             <Td>
                               <Center>
-                                <Circle size="10px" bg={product.quantity>20?"green.400":product.quantity<5?"red.600":"tomato"}color="white" />
+                                <Circle
+                                  size="10px"
+                                  bg={
+                                    product.quantity > 20
+                                      ? "green.400"
+                                      : product.quantity < 5
+                                      ? "red.600"
+                                      : "tomato"
+                                  }
+                                  color="white"
+                                />
                               </Center>
                             </Td>
                             <Td>{product.name}</Td>

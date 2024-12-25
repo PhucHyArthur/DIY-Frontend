@@ -137,7 +137,7 @@ const MaterialsList = () => {
               <Th cursor="pointer" onClick={() => handleSort("quantity")} width={"10%"}>
                 Quantity
               </Th>
-              <Th width={"5%"}>Available</Th>
+              {/* <Th width={"5%"}>Available</Th> */}
               <Th width={"20%"}>Action</Th>
             </Tr>
           </Thead>
@@ -169,14 +169,14 @@ const MaterialsList = () => {
                   </Td>
                   <Td>{material.category}</Td>
                   <Td>{material.total_quantity}</Td>
-                  <Td>
+                  {/* <Td>
                     <Flex justifyContent={"center"}>
                       <Switch
                         isChecked={material.is_available}
                         onChange={() => openModal(material.id, "toggle")}
                       />
                     </Flex>
-                  </Td>
+                  </Td> */}
                   <Td>
                     <Flex gap={2}>
                       <Link to={`../edit/${material.id}`}>

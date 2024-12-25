@@ -291,8 +291,8 @@ const PurchaseList = () => {
                             {purchaseOrder.order_lines.map((line,index) => (
                               <Tr key={index}>
                                 <Td>{materialName(line.material)}</Td>
-                                <Td>{line.quantity}</Td>
                                 <Td>{line.unit_price}</Td>
+                                <Td>{line.quantity}</Td>
                               </Tr>
                             ))}
                           </Tbody>

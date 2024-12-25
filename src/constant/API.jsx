@@ -32,10 +32,10 @@ export const INVENTORY = {
     Material_Line_Delete: "inventory/raw-materials-line/delete/<int:pk>/",
 
     Product_List: "inventory/finished-products/list/",
-    Product_Detail: "inventory/finished-products/<int:pk>/",
+    Product_Detail: "inventory/finished-products/",
     Product_Create: "inventory/finished-products/create/",
-    Product_Update: "inventory/finished-products/edit/<int:pk>/",
-    Product_Delete: "inventory/finished-products/delete/<int:pk>/",
+    Product_Update: "inventory/finished-products/edit/",
+    Product_Delete: "inventory/finished-products/delete/",
 }
 
 export const WAREHOUSES = {

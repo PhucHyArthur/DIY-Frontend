@@ -72,7 +72,7 @@ const BillsDetailForm = ({OId,OType}) => {
     } catch (error) {
       toast({
         title: "Purchase Imported Failed",
-        description: `${error}`,
+        description: `${error.response.request.response}`,
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -103,7 +103,7 @@ const BillsDetailForm = ({OId,OType}) => {
     } catch (error) {
       toast({
         title: "Line Imported Failed",
-        description: `${error}`,
+        description: `${error.response.request.response}`,
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -198,6 +198,7 @@ const BillsDetailForm = ({OId,OType}) => {
     dataToImport.forEach(item => importLine(item))
     importPO()
     getMaterials()
+    handleExportPDF()
     navigate('../list')
   };
 
