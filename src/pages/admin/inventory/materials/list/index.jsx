@@ -242,7 +242,7 @@ const MaterialsList = () => {
                                 <Td>{line.supplier_name}</Td>
                                 <Td>{line.price_per_unit}</Td>
                                 <Td>{line.quantity}</Td>
-                                <Td>{line.location?.bin_number}</Td>
+                                <Td>{line.bin_number}</Td>
                                 <Td>{line.line_total}</Td>
                               </Tr>
                             ))}

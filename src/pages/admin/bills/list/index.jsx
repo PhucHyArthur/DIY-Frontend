@@ -1,16 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { LuChevronRight, LuMoveDown } from "react-icons/lu";
 import { Box, Button, Checkbox, Table, Thead, Tbody, Tr, Th, Td, Text, Flex, HStack, MenuList, Menu, MenuItem, MenuButton, Input, Select } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { DataContext } from '../../../../context/Context';
 
 const BillsList = () => {
   const { materials, purchaseOrders, salesOrders } = useContext(DataContext);
 
+
   // Tạo dữ liệu lọc
-  const filteredPurchases = purchaseOrders.filter(item => item.status === "Arrived");
-  const filteredSales = salesOrders.filter(item => item.status === "Pending");
+  const filteredPurchases = purchaseOrders.filter(item => item.status.toLowerCase() === "arrived");
+  const filteredSales = salesOrders.filter(item => item.status.toLowerCase() === "pending");
 
   // Trạng thái để theo dõi danh sách nào được chọn
   const [selectedList, setSelectedList] = useState("purchases"); // Mặc định là "purchases"

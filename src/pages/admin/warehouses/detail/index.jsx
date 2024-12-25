@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, HStack, Flex, Box, Select } from "@chakra-ui/react";
+import { Text, HStack, Flex, Box, Select, Tooltip } from "@chakra-ui/react";
 
 import { useDisclosure } from "@chakra-ui/react";
 
@@ -24,30 +24,50 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  Circle,
+  Center,
+} from "@chakra-ui/react";
+
 import { LuChevronRight } from "react-icons/lu";
 import { useParams, useNavigate } from "react-router-dom";
 import { DataContext } from "../../../../context/Context";
 import Zones from "../../components/warehouses/Zones";
 
 import axios from "axios";
-import { API,WAREHOUSES } from "../../../../constant/API";
+import { API, WAREHOUSES } from "../../../../constant/API";
 import { TokenContext } from "../../../../context/TokenContext";
 
+
 const WareshousesDetail = () => {
-  const [token] = useState(localStorage.getItem('authToken'));
+  const [token] = useState(localStorage.getItem("authToken"));
   const navigate = useNavigate();
   const toast = useToast();
   const { warehouseId } = useParams();
-  const { zones, warehouses, getZones } = useContext(DataContext);
+  const { zones, warehouses, getZones, materials, products } =
+    useContext(DataContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [errors, setErrors] = useState({});
   const [selectedRackId, setSelectedRackId] = useState(null);
+  const warehouse = warehouses.filter(item => item.id == warehouseId)
+  const [materialList, setMaterialList] = useState({});
+  const [productList, setProductList] = useState({});
   const initialZone = {
     warehouse: warehouseId,
     name: "",
     capacity: 0,
     number_of_aisles: 0,
   };
+
   const [zone, setZone] = useState(initialZone);
   const changeWarehouse = (id) => {
     navigate(`./../${id}`);
@@ -58,7 +78,7 @@ const WareshousesDetail = () => {
     if (!zone.name.trim()) {
       newErrors.name = "Rack name is required.";
     }
-    if (!zone.capacity || zone.capacity < 100 ) {
+    if (!zone.capacity || zone.capacity < 100) {
       newErrors.capacity = "Capacity must be between 100 and 1000.";
     }
     if (
@@ -73,16 +93,12 @@ const WareshousesDetail = () => {
 
   const createZone = async (data) => {
     try {
-      const response = await axios.post(
-        `${API}${WAREHOUSES.Zones_Add}`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${API}${WAREHOUSES.Zones_Add}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       if (response.status >= 200 && response.status < 300) {
         console.log("Rack created successfully:", response.data);
         return response.data;
@@ -113,7 +129,6 @@ const WareshousesDetail = () => {
         getZones();
         setErrors({});
         onClose();
-
       } catch (error) {
         toast({
           title: "Error Adding Zone.",
@@ -131,6 +146,37 @@ const WareshousesDetail = () => {
       setErrors(validationErrors);
     }
   };
+  const filterMaterialProduct = (id) => {
+    if (products) {
+      let newPList = products.filter((item) => item.rack === id);
+      setProductList(newPList);
+    }
+    if (materials) {
+      let newMList = [];
+      materials.forEach((item) => {
+        item.raw_materials_lines
+          ? item.raw_materials_lines.forEach((line) => {
+              if (line.rack == id) {
+                const newM = {
+                  name: item.name,
+                  quantity: line.quantity,
+                  line_total: line.line_total,
+                  price_per_unit: line.price_per_unit,
+                };
+                newMList.push(newM);
+              }
+            })
+          : "";
+      });
+      setMaterialList(newMList);
+    }
+  };
+  useEffect(() => {
+    if (selectedRackId) {
+      filterMaterialProduct(selectedRackId);
+    }
+  }, [selectedRackId]);
+
   return (
     <Box>
       <Flex justifyContent={"space-between"} p={6}>
@@ -156,7 +202,7 @@ const WareshousesDetail = () => {
           </Text>
         </HStack>
       </Flex>
-      <Flex margin={12} gap={"15px"}>
+      <Flex margin={12} gap={"15px"} marginBottom={0}>
         <Select
           placeholder="Select Warehouse"
           value={warehouseId}
@@ -174,6 +220,16 @@ const WareshousesDetail = () => {
           <Button colorScheme="red">Delete Warehouse</Button>
         </Flex>
       </Flex>
+      <Flex margin={"30px"} flexDirection={'column'} alignItems={'center'}> 
+      <Text as='b'>{ zones.reduce((acc,val)=> acc + val.capacity,0)+"/"+warehouse[0].capacity}</Text>
+      <Flex width={"100%"} height={'5vh'} bg={'gray.300'}borderRadius={6} overflow={"hidden"}>
+        {zones.map(zone=>(
+          <Tooltip>
+          <Box height={"100%"} width={(zone.capacity/warehouse[0].capacity)*100+"%"} bg={'blue.500'} borderLeft={'1px solid black'}></Box>
+          </Tooltip>
+        ))}
+      </Flex>
+      </Flex>
       <Flex>
         <Flex
           width={"60%"}
@@ -189,8 +245,64 @@ const WareshousesDetail = () => {
               <Zones zone={zone} setRackId={setSelectedRackId} />
             ))}
         </Flex>
-        <Flex width={"40%"} background={"yellow.100"}>
-          {selectedRackId}
+        <Flex width={"40%"} justifyContent={"center"}>
+          {selectedRackId ? (
+            <Flex flexDirection={"column"}>
+              <Flex alignItems={"center"} gap={4}>
+                <Circle size="10px" bg="green.400" color="white" />
+                Good
+                <Circle size="10px" bg="tomato" color="white" />
+                Need to add more
+                <Circle size="10px" bg="red.600" color="white" />
+                Low Quantity
+              </Flex>
+              <TableContainer>
+                <Table variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th>Status</Th>
+                      <Th>Name</Th>
+                      <Th>Quantity</Th>
+                      <Th>Price</Th>
+                    </Tr>
+                  </Thead>
+
+                  <Tbody>
+                    {materialList.length > 0
+                      ? materialList.map((material) => (
+                          <Tr>
+                            <Td>
+                              <Center>
+                                <Circle size="10px" bg={material.quantity>20?"green.400":material.quantity<5?"red.600":"tomato"}color="white" />
+                              </Center>
+                            </Td>
+                            <Td>{material.name}</Td>
+                            <Td>{material.quantity}</Td>
+                            <Td isNumeric>{material.price_per_unit}</Td>
+                          </Tr>
+                        ))
+                      : ""}
+                    {productList.length > 0
+                      ? productList.map((product) => (
+                          <Tr>
+                            <Td>
+                              <Center>
+                                <Circle size="10px" bg={product.quantity>20?"green.400":product.quantity<5?"red.600":"tomato"}color="white" />
+                              </Center>
+                            </Td>
+                            <Td>{product.name}</Td>
+                            <Td>{product.total_quantity}</Td>
+                            <Td isNumeric>{product.selling_price}</Td>
+                          </Tr>
+                        ))
+                      : ""}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </Flex>
+          ) : (
+            "Choose a Rack"
+          )}
         </Flex>
       </Flex>
 

@@ -26,7 +26,7 @@ import { TokenContext } from "../../../../../context/TokenContext";
 import { API, ORDERS, INVENTORY } from "../../../../../constant/API";
 import axios from "axios";
 
-const BillsDetailForm = ({OId,OType}) => {
+const ExportForm = ({OId,OType}) => {
   const { salesOrders, purchaseOrders, suppliers, materials, products, racks, getPurchaseOrders, getMaterials } =
     useContext(DataContext);
   const {token} = useContext(TokenContext)
@@ -181,6 +181,7 @@ const BillsDetailForm = ({OId,OType}) => {
     pdf.save(`${data.order_number}.pdf`);
   };
 
+
   const handleImport = () => {
     const dataToImport = line.map((item, index) => {
       const rackSelect = document.getElementById(`rack-select-${index}`);
@@ -189,16 +190,21 @@ const BillsDetailForm = ({OId,OType}) => {
         quantity: item.quantity,
         supplier_id: data.supplier,
         price_per_unit: item.unit_price,
-        raw_material_id: type.toLowerCase() === "import" ? item.material : item.product,
-        rack: rackSelect?.value || "",
-        bin_number: binInput?.value || "On Bin",
+        raw_material_id:
+          type.toLowerCase() === "import" ? item.material : item.product,
+        location: {
+          rack: rackSelect?.value || "",
+          bin_number: binInput?.value || "On Bin",
+          quantity: item.quantity
+        },
       };
     });
- 
+    console.log(dataToImport); 
+    
     dataToImport.forEach(item => importLine(item))
     importPO()
     getMaterials()
-    navigate('../list')
+  navigate('../list')
   };
 
   useEffect(() => {
@@ -233,8 +239,6 @@ const BillsDetailForm = ({OId,OType}) => {
                 <Th>Vật phẩm ,vật tư</Th>
                 <Th>Số lượng</Th>
                 <Th>Đơn giá</Th>
-                <Th>Kệ</Th>
-                <Th>Số giỏ</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -250,22 +254,6 @@ const BillsDetailForm = ({OId,OType}) => {
                   </Td>
                   <Td>{item.quantity}</Td>
                   <Td>{item.unit_price}</Td>
-                  <Td>
-                    <Select id={`rack-select-${index}`}>
-                      {racks.map((rack) => (
-                        <option key={rack.id} value={rack.id}>
-                          {rack.name}
-                        </option>
-                      ))}
-                    </Select>
-                  </Td>
-                  <Td>
-                    <Input
-                      id={`bin-input-${index}`}
-                      width={"30%"}
-                      placeholder={"Bin_number"}
-                    />
-                  </Td>
                 </Tr>
               ))}
             </Tbody>
@@ -284,16 +272,11 @@ const BillsDetailForm = ({OId,OType}) => {
             <Text>Thành phố Đà Nẵng, Việt Nam</Text>
           </Box>
           <Text align="center" fontSize="xl" fontWeight="bold">
-            PHIẾU NHẬP KHO
+            PHIẾU NHẬP XUẤT KHO
           </Text>
           <Text align="center">{getToday()}</Text>
-          <Flex justifyContent="space-between">
-            <Text>Số: XXX</Text>
-            <Text>Nợ: XXX</Text>
-            <Text>Có: XXX</Text>
-          </Flex>
           <Box>
-            <Text>- Họ và tên người giao: {supplierName()}</Text>
+            <Text>- Họ và tên người giao: DIY Company</Text>
           </Box>
           <Table variant="simple" size="sm">
             <Thead>
@@ -320,21 +303,17 @@ const BillsDetailForm = ({OId,OType}) => {
                   <Td>{item.quantity}</Td>
                   <Td>{item.quantity}</Td>
                   <Td>{item.unit_price}</Td>
-                  <Td>{item.unit_price * item.quantity + "000 VNĐ"}</Td>
+                  <Td>{item.unit_price * item.quantity + " VNĐ"}</Td>
                 </Tr>
               ))}
             </Tbody>
           </Table>
           <Box>
-            <Text fontWeight="bold">Tổng Cộng: {getTotal()}.000 VNĐ</Text>
+            <Text fontWeight="bold">Tổng Cộng: {getTotal()} VNĐ</Text>
           </Box>
           <Flex justifyContent="space-between" mt={8}>
             <Box>
               <Text fontWeight="bold">Người lập phiếu</Text>
-              <Text>(Ký, họ tên)</Text>
-            </Box>
-            <Box>
-              <Text fontWeight="bold">Người giao hàng</Text>
               <Text>(Ký, họ tên)</Text>
             </Box>
             <Box>
@@ -353,4 +332,4 @@ const BillsDetailForm = ({OId,OType}) => {
   );
 };
 
-export default BillsDetailForm;
+export default ExportForm;

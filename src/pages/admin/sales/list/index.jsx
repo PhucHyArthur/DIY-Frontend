@@ -27,7 +27,7 @@ import { Link } from "react-router-dom";
 import { DataContext } from "../../../../context/Context";
 
 const SaleList = () => {
-  const { salesOrders } = useContext(DataContext);
+  const { salesOrders,products } = useContext(DataContext);
   const [viewProducts, setViewProducts] = useState(salesOrders);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -79,6 +79,12 @@ const SaleList = () => {
     return suppliers[index].name;
   };
 
+  const productName = (id) => {
+    const index = products.findIndex((item) => item.id === id);
+
+    return products[index].name;
+  };
+
   const toggleExpandedRow = (productId) => {
     setExpandedRow(expandedRow === productId ? null : productId);
   };
@@ -87,7 +93,7 @@ const SaleList = () => {
     <Box p={6}>
       <Flex justifyContent={"space-between"}>
         <Text fontSize="xl" fontWeight="medium">
-          Purchase Orders List
+          Sales Orders List
         </Text>
 
         <HStack>
@@ -100,11 +106,11 @@ const SaleList = () => {
               transition: "all, 0.5s",
             }}
           >
-            Purchase Orders
+            Sales Orders 
           </Text>
           <LuChevronRight />
           <Text fontSize="l" fontWeight="medium" color={"orange.400"}>
-            Purchase Orders List
+            Sales Orders  List
           </Text>
         </HStack>
       </Flex>
@@ -249,11 +255,10 @@ const SaleList = () => {
                           <Tbody>
                             {salesOrder.order_lines.map((line) => (
                               <Tr key={line.id}>
-                                {/* <Td>{line.supplier_name}</Td>
-                                <Td>{line.price_per_unit}</Td>
+                                <Td>{productName(line.product)}</Td>
+                                <Td>{line.unit_price}</Td>
                                 <Td>{line.quantity}</Td>
-                                <Td>{line.location?.bin_number}</Td>
-                                <Td>{line.line_total}</Td> */}
+                                <Td>{line.line_total}</Td>
                               </Tr>
                             ))}
                           </Tbody>
