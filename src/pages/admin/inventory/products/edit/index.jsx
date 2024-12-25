@@ -17,7 +17,7 @@ const ProductsEdit = () => {
         <Text fontSize="l" fontWeight="medium" color={"orange.400"}>Product Edit</Text>
       </HStack>
     </Flex>
-    <ProductForm id={productId} type="edit"/>
+    <ProductForm id={productId} mode="edit"/>
     </div>
   )
 }

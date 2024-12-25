@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, HStack, Flex } from '@chakra-ui/react';
 import { LuChevronRight } from "react-icons/lu";
-import MaterialForm from "../../../components/productForm"; 
+import ProductForm from '../../../components/productForm';
 
 const ProductsAdd = () => {
   return (
@@ -27,7 +27,7 @@ const ProductsAdd = () => {
           </Text>
         </HStack>
       </Flex>
-      <MaterialForm mode="add" />
+      <ProductForm id={null} mode="add" />
     </div>
   );
 };

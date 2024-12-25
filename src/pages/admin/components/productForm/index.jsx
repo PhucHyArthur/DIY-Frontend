@@ -21,9 +21,9 @@ import { TokenContext } from "../../../../context/TokenContext";
 import { DataContext } from "../../../../context/Context";
 
 
-const ProductForm = ({ id = null, mode = "add" }) => {
+const ProductForm = ({ id, mode}) => {
   const { token } = useContext(TokenContext);
-  const { racks,getProducts } = useContext(DataContext);
+  const { racks,getProducts,products } = useContext(DataContext);
   // State chung cho form
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -43,37 +43,38 @@ const ProductForm = ({ id = null, mode = "add" }) => {
   const toast = useToast()
   const naviagte = useNavigate()
 
+
+
   useEffect(() => {
     if (mode === "edit" || mode === "detail") {
-      const fetchProduct = async () => {
-        try {
-          const response = await axios.get(
-            `${API}${INVENTORY.Product_Detail}${id}/`,
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-          const data = response.data;
-
-          setName(data.name);
-          setCategory(data.category);
-          setSellingPrice(data.selling_price);
-          setTotalQuantity(data.total_quantity);
-          setUnit(data.unit);
-          setRack(data.location?.rack || "");
-          setBinNumber(data.location?.bin_number || "");
-          setDescription(data.description);
-          setExpiryDate(data.expired_date);
-          setMainImage(data.images[0]?.url || null);
-          setAdditionalImages(data.images.slice(1) || []);
-        } catch (error) {
-          console.error("Error fetching product details:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchProduct();
+      if (!products || products.length === 0) {
+        console.error("Products are empty or not loaded");
+        return;
+      }
+  
+      const product = products.find((p) => p.id === Number(id.productId) || p.id === id.productId);
+      console.log("Found product:", product);
+  
+      if (product) {
+        setName(product.name);
+        setCategory(product.category);
+        setSellingPrice(product.selling_price);
+        setTotalQuantity(product.total_quantity);
+        setUnit(product.unit);
+        setRack(product.rack || "");
+        setBinNumber(product.bin_number || "");
+        setDescription(product.description);
+        setExpiryDate(product.expired_date);
+        setMainImage(product.images[0]?.url || null);
+        setAdditionalImages(product.images.slice(1) || []);
+      } else {
+        console.error("Product not found in context");
+      }
+      setIsLoading(false);
     }
-  }, [id, mode, token]);
+  }, [id, mode, products]);
+  
+  
 
   // Xử lý upload ảnh
   const handleMainImageUpload = (e) => {
@@ -99,10 +100,8 @@ const ProductForm = ({ id = null, mode = "add" }) => {
     formData.append("unit", unit);
     formData.append("description", description);
     formData.append("expired_date", expiryDate);
-    formData.append(
-      "location",
-      JSON.stringify({ rack, bin_number: binNumber })
-    );
+    formData.append("rack", rack);
+    formData.append("bin_number", binNumber);
   
     if (mainImage instanceof File)
       formData.append("uploaded_images", mainImage);
@@ -130,7 +129,8 @@ const ProductForm = ({ id = null, mode = "add" }) => {
         getProducts()
         naviagte("../list")
       } else if (mode === "edit") {
-        await axios.put(`${API}${INVENTORY.Product_Update}${id}/`, formData, {
+        console.log('update')
+        await axios.put(`${API}${INVENTORY.Product_Update}`.replace("<int:pk>", id.productId), formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
