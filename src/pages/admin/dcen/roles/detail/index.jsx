@@ -24,7 +24,7 @@ const RolesDetail = () => {
   const [description, setDescription] = useState("");
   const [permissionsState, setPermissionsState] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [token] = useContext(TokenContext);
+  const {token} = useContext(TokenContext);
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -42,18 +42,22 @@ const RolesDetail = () => {
         navigate("../list");
         return;
       }
-
+  
       try {
         const response = await axios.get(`${API}${EMPLOYEE.Role_Detail}${id}/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
+  
         const { name, description, scopes } = response.data;
-
+  
         setRoleName(name);
         setDescription(description);
-
-        // Chuyển đổi scopes thành permissionsState
+  
+        // Kiểm tra nếu scopes là một mảng
+        if (!Array.isArray(scopes)) {
+          throw new Error("Invalid data format: 'scopes' is not an array.");
+        }
+  
         const permissionsData = [
           { id: "user_management", permissions: [{ name: "Users" }] },
           { id: "contact_management", permissions: [{ name: "Clients" }, { name: "Suppliers" }] },
@@ -62,12 +66,12 @@ const RolesDetail = () => {
           { id: "order_management", permissions: [{ name: "Purchases Orders" }, { name: "Sales Orders" }] },
           { id: "import_export_management", permissions: [{ name: "Import" }, { name: "Export" }] },
         ];
-
+  
         const updatedPermissionsState = [];
         permissionsData.forEach((group) => {
           group.permissions.forEach((perm) => {
             const baseName = perm.name.toLowerCase().replace(/\s+/g, "_");
-
+  
             updatedPermissionsState.push({
               group: group.id,
               name: perm.name,
@@ -78,12 +82,13 @@ const RolesDetail = () => {
             });
           });
         });
-
+  
         setPermissionsState(updatedPermissionsState);
       } catch (error) {
+        console.error("Failed to fetch role details:", error);
         toast({
           title: "Error",
-          description: "Failed to fetch role details.",
+          description: error.response?.data?.message || "Failed to fetch role details.",
           status: "error",
           duration: 3000,
           isClosable: true,
@@ -93,10 +98,10 @@ const RolesDetail = () => {
         setLoading(false);
       }
     };
-
+  
     fetchRoleData();
   }, [id, token, navigate, toast]);
-
+  
   if (loading) return <Box>Loading...</Box>;
 
   return (
